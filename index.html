@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>YSG Audio</title>
 <meta name="description" content="YSG Audio: SoundField, Bus Routing Auditor, Attenuation Auditor 소개와 다운로드 링크를 모은 허브 페이지.">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="assets/ysg-audio-icon.svg">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 <style>
   :root{
     --ink:#0a0d13; --ink-1:#0f131b; --ink-2:#141922; --ink-3:#1c2331;
@@ -43,6 +46,7 @@
   .langswitch:before{content:"";position:absolute;top:3px;left:3px;width:30px;height:20px;border-radius:999px;background:rgba(93,208,216,.18);border:1px solid rgba(93,208,216,.62);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
   .langswitch span{position:relative;z-index:1;text-align:center} body.lang-en .langswitch:before{transform:translateX(30px)} body.lang-en .langswitch .en, body:not(.lang-en) .langswitch .ko{color:var(--text)}
   .hero{padding:clamp(56px,8vw,110px) 0 clamp(34px,5vw,70px)}
+  .hero__grid{display:grid;grid-template-columns:minmax(330px,.86fr) minmax(520px,1.14fr);gap:clamp(28px,5vw,74px);align-items:center}
   .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--wave)}
   .eyebrow:before{content:"";width:26px;height:1px;background:currentColor;opacity:.7}
   h1,h2,h3{font-family:var(--sans);font-weight:700;line-height:1.12;letter-spacing:0;margin:0;word-break:keep-all}
@@ -51,6 +55,28 @@
   .lead{max-width:760px;margin:22px 0 0;color:var(--muted);font-size:clamp(1.02rem,1.5vw,1.2rem)}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
   .chip{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.02em;border:1px solid var(--line-2);border-radius:999px;padding:5px 11px;background:var(--ink-1)}
+  .hero-panel{position:relative;border:1px solid var(--line-2);border-radius:14px;background:linear-gradient(180deg,var(--ink-2),var(--ink-1));overflow:hidden;min-height:440px;box-shadow:0 34px 90px -44px rgba(0,0,0,.92),inset 0 1px 0 rgba(255,255,255,.03)}
+  .hero-panel:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 0 38%,rgba(93,208,216,.08) 45%,transparent 54%);transform:translateX(-80%);animation:heroScan 6s linear infinite}
+  .hero-panel__bar{display:flex;align-items:center;gap:14px;padding:9px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
+  .hero-panel__body{position:relative;min-height:394px;padding:20px}
+  .hub-logo{position:absolute;left:50%;top:50%;width:112px;height:112px;transform:translate(-50%,-50%);border:1px solid rgba(93,208,216,.25);border-radius:24px;background:rgba(10,13,19,.68);display:grid;place-items:center;box-shadow:0 0 54px rgba(93,208,216,.12);animation:hubFloat 5.4s ease-in-out infinite}
+  .hub-logo img{width:74px;height:74px}
+  .orbit{position:absolute;left:50%;top:50%;width:min(78%,430px);aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid rgba(90,140,196,.16);border-radius:50%;animation:orbitSpin 28s linear infinite}
+  .orbit.o2{width:min(56%,310px);animation-duration:19s;animation-direction:reverse;border-color:rgba(93,208,216,.16)}
+  .orbit:before,.orbit:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--wave);box-shadow:0 0 18px var(--wave)}
+  .orbit:before{left:50%;top:-4px}.orbit:after{right:8%;bottom:15%;background:var(--accent)}
+  .tool-node{position:absolute;min-width:152px;border:1px solid var(--line);border-radius:10px;background:rgba(15,19,27,.86);padding:12px 13px;font-family:var(--mono);box-shadow:0 20px 56px -38px #000;animation:nodeDrift 5.8s ease-in-out infinite}
+  .tool-node b{display:block;color:var(--text);font-size:12px}.tool-node span{display:block;margin-top:4px;color:var(--muted-2);font-size:10.5px}
+  .tool-node.sf{left:6%;top:14%;border-left:2px solid var(--wave)}
+  .tool-node.bus{right:5%;top:30%;border-left:2px solid var(--accent);animation-delay:.7s}
+  .tool-node.att{left:12%;bottom:13%;border-left:2px solid var(--err);animation-delay:1.35s}
+  .signal-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .signal-lines path{fill:none;stroke:rgba(93,208,216,.24);stroke-width:1.2;stroke-dasharray:5 10;animation:dashFlow 2.8s linear infinite}
+  .signal-lines path:nth-child(2){stroke:rgba(82,144,212,.26);animation-duration:3.5s}
+  .signal-lines path:nth-child(3){stroke:rgba(208,106,106,.24);animation-duration:4.1s}
+  .meter-row{position:absolute;right:20px;bottom:18px;left:20px;display:flex;gap:5px;align-items:end;height:44px;opacity:.7}
+  .meter-row i{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--wave),rgba(82,144,212,.35));animation:meterRise 1.6s ease-in-out infinite}
+  .meter-row i:nth-child(2n){animation-delay:.18s}.meter-row i:nth-child(3n){animation-delay:.32s}.meter-row i:nth-child(4n){animation-delay:.5s}
   .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0 76px}
   .tool{position:relative;border:1px solid var(--line-2);border-radius:14px;background:linear-gradient(180deg,var(--ink-2),var(--ink-1));overflow:hidden;box-shadow:0 30px 80px -40px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.03);transition:transform .18s,border-color .18s}
   .tool:hover{transform:translateY(-4px);border-color:rgba(93,208,216,.42)}
@@ -69,7 +95,13 @@
   footer{border-top:1px solid var(--line);padding:34px 0;color:var(--muted-2);font-family:var(--mono);font-size:12px}
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}.reveal.in{opacity:1;transform:none}
   @keyframes barBeat{0%,100%{transform:scaleY(.72)}45%{transform:scaleY(1.12)}}
-  @media (max-width:1000px){.tools{grid-template-columns:1fr}.topbar__in{gap:10px}}
+  @keyframes heroScan{0%{transform:translateX(-85%)}100%{transform:translateX(85%)}}
+  @keyframes hubFloat{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-8px)}}
+  @keyframes orbitSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  @keyframes nodeDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @keyframes dashFlow{to{stroke-dashoffset:-60}}
+  @keyframes meterRise{0%,100%{height:22%}45%{height:92%}}
+  @media (max-width:1000px){.hero__grid{grid-template-columns:1fr}.tools{grid-template-columns:1fr}.topbar__in{gap:10px}}
   @media (max-width:720px){:root{--pad:8px}.brand{font-size:13px}.tools{margin-bottom:54px}.langswitch{width:62px;height:26px;margin-left:auto}.langswitch:before{width:27px;height:18px}body.lang-en .langswitch:before{transform:translateX(27px)}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
@@ -88,16 +120,35 @@
 
 <main>
   <section class="hero">
-    <div class="wrap">
-      <span class="eyebrow" data-en="Tool Library">Tool Library</span>
-      <h1 data-en="A home for <span class=&quot;hl&quot;>audio workflow tools</span><br>built for real production">실제 작업을 위해 만든 <span class="hl">오디오 워크플로우 툴</span> 모음</h1>
-      <p class="lead" data-en="Browse YSG audio utilities, open each product page, and download the tools from their GitHub repositories.">
-        YSG에서 만든 오디오 유틸리티를 한 곳에서 보고, 각 툴 소개 페이지와 다운로드 링크로 바로 이동할 수 있습니다.
-      </p>
-      <div class="meta">
-        <span class="chip">SoundField</span>
-        <span class="chip">Wwise Bus Routing Auditor</span>
-        <span class="chip">Wwise Attenuation Auditor</span>
+    <div class="wrap hero__grid">
+      <div>
+        <span class="eyebrow" data-en="Tool Library">Tool Library</span>
+        <h1 data-en="A home for <span class=&quot;hl&quot;>audio workflow tools</span><br>built for real production">실제 작업을 위해 만든 <span class="hl">오디오 워크플로우 툴</span> 모음</h1>
+        <p class="lead" data-en="Browse YSG audio utilities, open each product page, and download the tools from their GitHub repositories.">
+          YSG에서 만든 오디오 유틸리티를 한 곳에서 보고, 각 툴 소개 페이지와 다운로드 링크로 바로 이동할 수 있습니다.
+        </p>
+        <div class="meta">
+          <span class="chip">SoundField</span>
+          <span class="chip">Wwise Bus Routing Auditor</span>
+          <span class="chip">Wwise Attenuation Auditor</span>
+        </div>
+      </div>
+      <div class="hero-panel" aria-label="YSG Audio tool hub animation">
+        <div class="hero-panel__bar"><span class="tick wave"></span><span>YSG Audio · connected tools</span></div>
+        <div class="hero-panel__body">
+          <svg class="signal-lines" viewBox="0 0 620 394" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M120 90 C240 80 260 190 310 197 C370 205 410 140 510 145"/>
+            <path d="M130 310 C245 290 250 210 310 197 C384 178 450 240 520 260"/>
+            <path d="M310 197 C275 120 220 120 130 90 M310 197 C250 250 210 285 130 310"/>
+          </svg>
+          <div class="orbit"></div>
+          <div class="orbit o2"></div>
+          <div class="hub-logo"><img src="assets/ysg-audio-icon.svg" alt=""></div>
+          <div class="tool-node sf"><b>SoundField</b><span>search · audition</span></div>
+          <div class="tool-node bus"><b>Bus Routing</b><span>signal · heatmap</span></div>
+          <div class="tool-node att"><b>Attenuation</b><span>3D / 2D audit</span></div>
+          <div class="meter-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
       </div>
     </div>
   </section>
