@@ -467,7 +467,7 @@
   }
   @media (max-width:720px){
     .topbar__in{gap:10px}
-    .ysig{display:none}
+    .ysig{display:inline-flex}
     .brand__v{display:none}
     .langswitch{width:62px;height:26px;margin-left:auto}
     .langswitch:before{width:27px;height:18px}
@@ -487,6 +487,17 @@
     *,*:before,*:after{animation:none!important;transition:none!important}
     .reveal{opacity:1;transform:none}
   }
+  .ysig__mark i{
+    animation:ysgAudioBadgeBeat 1.8s ease-in-out infinite !important;
+    transform-origin:center center;
+    will-change:transform;
+  }
+  .ysig__mark i:nth-child(2){ animation-delay:.12s !important; }
+  .ysig__mark i:nth-child(3){ animation-delay:.24s !important; }
+  .ysig__mark i:nth-child(4){ animation-delay:.36s !important; }
+  .ysig__mark i:nth-child(5){ animation-delay:.48s !important; }
+  .ysig__mark i:nth-child(6){ animation-delay:.6s !important; }
+  @keyframes ysgAudioBadgeBeat{ 0%,100%{ transform:scaleY(.68); } 45%{ transform:scaleY(1.18); } }
 </style>
 </head>
 <body>
@@ -494,7 +505,7 @@
 
 <header class="topbar">
   <div class="topbar__in">
-    <a class="ysig" href="../" aria-label="YSG Audio Tools">
+    <a class="ysig" href="../index.html" aria-label="YSG Audio">
       <span class="ysig__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
       <span>YSG<span style="color:var(--wave)">.AUDIO</span></span>
     </a>
