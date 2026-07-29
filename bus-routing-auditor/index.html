@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wwise Bus Routing Auditor | 버스 라우팅 감사 도구</title>
 <meta name="description" content="Wwise 프로젝트의 Sound 오브젝트를 스캔해 이름과 Work Unit 기준으로 버스 라우팅 위반을 찾고, Signal Flow와 Heatmap으로 점검하는 WAAPI 기반 감사 도구 소개 페이지.">
-<link rel="icon" href="../assets/favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="../assets/ysg-audio-icon.svg">
-<link rel="apple-touch-icon" href="../assets/favicon.png">
+<link rel="icon" href="../assets/favicon-v2.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/ysg-audio-mark-v2.svg">
+<link rel="apple-touch-icon" href="../assets/favicon-v2.png">
 <style>
   :root{
     --ink:#0a0d13;
@@ -278,6 +278,7 @@
   }
   h1 .hl{color:var(--accent)}
   h1 .hl2{color:var(--wave)}
+  .mobbr{display:none}
   .hero__sub{max-width:650px;margin:0 0 26px;color:#aebccd;font-size:clamp(1rem,1.25vw,1.18rem);line-height:1.75}
   .actions{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 26px}
   .btn{
@@ -468,18 +469,45 @@
     .rail{display:none}
   }
   @media (max-width:720px){
-    .topbar__in{gap:10px}
-    .ysig{display:inline-flex}
+    :root{--pad:8px}
+    html,body{width:100%;max-width:100%;overflow-x:hidden}
+    .wrap{width:100%;max-width:100%;padding-inline:8px}
+    .topbar__in{width:100vw;max-width:none;gap:8px 10px;padding:9px max(8px, env(safe-area-inset-left));flex-wrap:wrap}
+    .ysig{display:inline-flex;max-width:138px;overflow:hidden;flex:0 0 auto}
+    .ysig__mark{width:26px;flex:0 0 26px}
+    .ysig span:last-child{white-space:nowrap}
+    .brand{order:3;flex:1 0 100%;width:100%;gap:7px;margin-right:0;overflow:hidden}
+    .brand__logo{width:22px;height:22px;flex:0 0 22px}
+    .brand__name{font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis}
     .brand__v{display:none}
     .langswitch{width:62px;height:26px;margin-left:auto}
     .langswitch:before{width:27px;height:18px}
     body.lang-en .langswitch:before{transform:translateX(27px)}
-    .hero{padding-top:40px}
+    .hero .wrap,.hero__grid,.hero__grid > div{width:min(calc(100vw - 32px), 358px);max-width:min(calc(100vw - 32px), 358px);min-width:0}
+    .hero .wrap{margin-left:8px;margin-right:0}
+    .hero__grid{grid-template-columns:minmax(0,1fr)}
+    h1{max-width:100%;font-size:clamp(1.85rem, 9.7vw, 2.2rem);overflow-wrap:anywhere;word-break:keep-all}
+    .mobbr{display:block}
+    .hero__sub{width:100%;max-width:min(calc(100vw - 32px), 358px);font-size:.96rem;overflow-wrap:anywhere;word-break:break-all}
+    .actions,.chips{max-width:100%}
+    .chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .chip{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .hero__visual,.appframe,.mock,.mainpanel,.sidepanel{min-width:0}
+    .appframe{width:min(calc(100vw - 32px), 358px);max-width:min(calc(100vw - 32px), 358px)}
+    .hero__visual{width:min(calc(100vw - 32px), 358px);max-width:min(calc(100vw - 32px), 358px)}
+    .mock{grid-template-columns:1fr;min-height:0}
+    .hero{padding-top:40px;width:100%;max-width:100%;overflow:hidden}
     .cards,.install,.legend,.heat{grid-template-columns:1fr}
-    .mock{grid-template-columns:1fr}
     .sidepanel{border-right:0;border-bottom:1px solid var(--line)}
-    .row{grid-template-columns:1fr 1fr;height:auto;min-height:42px}
-    .flow{overflow-x:auto;padding-bottom:4px}
+    .appframe__bar{height:auto;min-height:40px;padding:8px 10px}
+    .appframe__title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px}
+    .toolbar{gap:6px}
+    .pill{font-size:10px;height:26px;padding:5px 8px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .row{grid-template-columns:1fr 1fr;height:auto;min-height:42px;font-size:10px;gap:5px;overflow:hidden}
+    .row span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .flow{overflow-x:auto;padding-bottom:4px;max-width:100%}
+    .node{min-width:92px;font-size:10px;padding:8px}
+    .miniheat{grid-template-columns:repeat(2,1fr)}
     .gh{width:28px;height:28px}
     .product-logo{width:62px;height:62px;top:-22px}
     section{padding:62px 0}
@@ -512,7 +540,7 @@
       <span>YSG<span style="color:var(--wave)">.AUDIO</span></span>
     </a>
     <a class="brand" href="#top">
-      <img class="brand__logo" src="assets/bus-routing-auditor-logo.svg" alt="" aria-hidden="true">
+      <img class="brand__logo" src="assets/bus-routing-auditor-logo-v2.svg" alt="" aria-hidden="true">
       <span class="brand__name">Bus Routing <b>Auditor</b></span>
       <span class="brand__v">V.2.0.0</span>
     </a>
@@ -545,7 +573,7 @@
     <div class="wrap hero__grid">
       <div>
         <div class="kicker" data-en="WAAPI Routing Inspection">WAAPI Routing Inspection</div>
-        <h1 data-en="Audit Wwise <span class=&quot;hl&quot;>bus routing</span><br>and trace every <span class=&quot;hl2&quot;>signal path</span>">Wwise <span class="hl">버스 라우팅</span>을 한 번에 점검하고 <span class="hl2">흐름으로 추적</span></h1>
+        <h1 data-en="Audit Wwise <span class=&quot;hl&quot;>bus routing</span><br>and trace every <span class=&quot;hl2&quot;>signal path</span>">Wwise <span class="hl">버스 라우팅</span>을<span class="mobbr"></span> 한 번에 점검하고<span class="mobbr"></span> <span class="hl2">흐름으로 추적</span></h1>
         <p class="hero__sub" data-en="Scan every Sound object in the project and judge the expected bus from asset names and Work Unit paths. Violations, Signal Flow, and bus Heatmap stay connected so misplaced routing can be found and fixed quickly.">
           프로젝트 전체 Sound 오브젝트를 스캔해 에셋 이름과 Work Unit 경로 기준으로 예상 버스를 판정합니다.
           위반 목록, Signal Flow, 버스별 Heatmap을 한 화면 흐름으로 연결해 잘못 라우팅된 사운드를 빠르게 찾고 수정할 수 있습니다.
@@ -564,7 +592,7 @@
       </div>
 
       <div class="hero__visual">
-        <div class="product-logo"><img src="assets/bus-routing-auditor-logo.svg" alt="Bus Routing Auditor logo"></div>
+        <div class="product-logo"><img src="assets/bus-routing-auditor-logo-v2.svg" alt="Bus Routing Auditor logo"></div>
         <div class="appframe">
           <div class="appframe__bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
