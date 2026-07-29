@@ -101,13 +101,14 @@
   .ysglogo__mark{ width:34px; height:18px; position:relative; display:inline-flex; align-items:center; justify-content:center; gap:2px; }
   .ysglogo__mark i{ display:block; width:3px; border-radius:999px;
     background:linear-gradient(180deg, rgba(93,208,216,.95), rgba(82,144,212,.86));
-    box-shadow:0 0 10px rgba(93,208,216,.20); }
+    box-shadow:0 0 10px rgba(93,208,216,.20);
+    animation:barBeat 1.8s ease-in-out infinite; }
   .ysglogo__mark i:nth-child(1){ height:6px; opacity:.65; }
-  .ysglogo__mark i:nth-child(2){ height:12px; opacity:.82; }
-  .ysglogo__mark i:nth-child(3){ height:18px; }
-  .ysglogo__mark i:nth-child(4){ height:10px; opacity:.78; }
-  .ysglogo__mark i:nth-child(5){ height:15px; opacity:.92; }
-  .ysglogo__mark i:nth-child(6){ height:7px; opacity:.68; }
+  .ysglogo__mark i:nth-child(2){ height:12px; opacity:.82; animation-delay:.12s; }
+  .ysglogo__mark i:nth-child(3){ height:18px; animation-delay:.24s; }
+  .ysglogo__mark i:nth-child(4){ height:10px; opacity:.78; animation-delay:.36s; }
+  .ysglogo__mark i:nth-child(5){ height:15px; opacity:.92; animation-delay:.48s; }
+  .ysglogo__mark i:nth-child(6){ height:7px; opacity:.68; animation-delay:.6s; }
   .ysglogo b{ color:var(--wave); font-weight:800; }
   .brand{ display:flex; align-items:baseline; gap:10px; text-decoration:none; margin-right:auto; min-width:0; }
   .brand__mark{ font-family:var(--mono); font-weight:700; letter-spacing:.02em; font-size:15px; white-space:nowrap; }
@@ -514,6 +515,7 @@
   /* reveal on scroll */
   .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in{ opacity:1; transform:none; }
+  @keyframes barBeat{ 0%,100%{ transform:scaleY(.72); } 45%{ transform:scaleY(1.12); } }
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
 
   /* ---------- narrow screens ---------- */
@@ -581,8 +583,8 @@
 
 <div class="topbar">
   <div class="topbar__in">
-    <a class="ysglogo" href="#top" aria-label="YSGSound">
-      <span class="ysglogo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>YSG<b>Sound</b></span>
+    <a class="ysglogo" href="../" aria-label="YSG Audio Tools">
+      <span class="ysglogo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>YSG<b>.AUDIO</b></span>
     </a>
     <a class="brand" href="#top">
       <svg class="brand__ico" aria-hidden="true" focusable="false"><use href="#attmark"/></svg>
