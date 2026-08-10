@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>YSG Audio</title>
-<meta name="description" content="YSG Audio: SoundField, Bus Routing Auditor, Attenuation Auditor 소개와 다운로드 링크를 모은 허브 페이지.">
+<meta name="description" content="YSG Audio: SoundField, Stereo Auditor, Bus Routing Auditor, Attenuation Auditor 소개와 다운로드 링크를 모은 허브 페이지.">
 <link rel="icon" href="assets/favicon-v2.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/ysg-audio-mark-v2.svg">
 <link rel="apple-touch-icon" href="assets/favicon-v2.png">
@@ -74,14 +74,16 @@
   .tool-node.sf{left:6%;top:14%;border-left:2px solid var(--wave)}
   .tool-node.bus{right:5%;top:30%;border-left:2px solid var(--accent);animation-delay:.7s}
   .tool-node.att{left:12%;bottom:13%;border-left:2px solid var(--err);animation-delay:1.35s}
+  .tool-node.stereo{right:7%;bottom:13%;border-left:2px solid var(--violet);animation-delay:1.9s}
   .signal-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   .signal-lines path{fill:none;stroke:rgba(93,208,216,.24);stroke-width:1.2;stroke-dasharray:5 10;animation:dashFlow 2.8s linear infinite}
   .signal-lines path:nth-child(2){stroke:rgba(82,144,212,.26);animation-duration:3.5s}
   .signal-lines path:nth-child(3){stroke:rgba(208,106,106,.24);animation-duration:4.1s}
+  .signal-lines path:nth-child(4){stroke:rgba(154,140,240,.28);animation-duration:3.8s}
   .meter-row{position:absolute;right:20px;bottom:18px;left:20px;display:flex;gap:5px;align-items:end;height:44px;opacity:.7}
   .meter-row i{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--wave),rgba(82,144,212,.35));animation:meterRise 1.6s ease-in-out infinite}
   .meter-row i:nth-child(2n){animation-delay:.18s}.meter-row i:nth-child(3n){animation-delay:.32s}.meter-row i:nth-child(4n){animation-delay:.5s}
-  .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0 76px}
+  .tools{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0 76px}
   .tool{position:relative;border:1px solid var(--line-2);border-radius:14px;background:linear-gradient(180deg,var(--ink-2),var(--ink-1));overflow:hidden;box-shadow:0 30px 80px -40px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.03);transition:transform .18s,border-color .18s}
   .tool:hover{transform:translateY(-4px);border-color:rgba(93,208,216,.42)}
   .bar{display:flex;align-items:center;gap:14px;padding:9px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
@@ -91,6 +93,7 @@
   .mark img{width:42px;height:42px}
   .wavebars{display:flex;align-items:center;gap:3px}.wavebars i{display:block;width:4px;border-radius:4px;background:linear-gradient(180deg,var(--wave),var(--accent))}.wavebars i:nth-child(1){height:12px}.wavebars i:nth-child(2){height:25px}.wavebars i:nth-child(3){height:38px}.wavebars i:nth-child(4){height:20px}.wavebars i:nth-child(5){height:31px}
   .attmark{position:relative}.attmark:before{content:"3D";color:var(--err);font-size:15px}.attmark:after{content:"ATT";position:absolute;bottom:11px;color:var(--wave);font-size:12px}
+  .stereomark{position:relative;overflow:hidden}.stereomark:before,.stereomark:after{content:"";position:absolute;left:10px;right:10px;height:11px;background:linear-gradient(90deg,transparent,rgba(93,208,216,.9),rgba(106,134,255,.95),rgba(168,105,255,.9),transparent);clip-path:polygon(0 48%,8% 33%,16% 62%,25% 19%,34% 72%,44% 28%,54% 68%,65% 13%,76% 71%,87% 31%,100% 49%,100% 55%,87% 62%,76% 40%,65% 86%,54% 35%,44% 70%,34% 27%,25% 83%,16% 39%,8% 67%,0 54%)}.stereomark:before{top:15px}.stereomark:after{bottom:14px;transform:scaleY(-1)}
   .tool h2{font-size:clamp(1.25rem,2vw,1.65rem);margin-bottom:10px}.tool p{margin:0;color:var(--muted);font-size:.96rem}
   .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
   .btn{min-height:36px;display:inline-flex;align-items:center;gap:7px;padding:0 14px;border:1px solid var(--line-2);border-radius:999px;background:rgba(20,25,34,.78);color:var(--text);font-family:var(--mono);font-size:12px;font-weight:700;text-decoration:none}
@@ -136,6 +139,7 @@
         </p>
         <div class="meta">
           <span class="chip">SoundField</span>
+          <span class="chip">Stereo Auditor</span>
           <span class="chip">Wwise Bus Routing Auditor</span>
           <span class="chip">Wwise Attenuation Auditor</span>
         </div>
@@ -147,6 +151,7 @@
             <path d="M120 90 C240 80 260 190 310 197 C370 205 410 140 510 145"/>
             <path d="M130 310 C245 290 250 210 310 197 C384 178 450 240 520 260"/>
             <path d="M310 197 C275 120 220 120 130 90 M310 197 C250 250 210 285 130 310"/>
+            <path d="M310 197 C390 235 430 285 520 305"/>
           </svg>
           <div class="orbit"></div>
           <div class="orbit o2"></div>
@@ -154,6 +159,7 @@
           <div class="tool-node sf"><b>SoundField</b><span>search · audition</span></div>
           <div class="tool-node bus"><b>Bus Routing</b><span>signal · heatmap</span></div>
           <div class="tool-node att"><b>Attenuation</b><span>3D / 2D audit</span></div>
+          <div class="tool-node stereo"><b>Stereo Auditor</b><span>waveform · width</span></div>
           <div class="meter-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
       </div>
@@ -161,6 +167,21 @@
   </section>
 
   <section class="wrap tools reveal" aria-label="tool cards">
+    <article class="tool">
+      <div class="bar"><span class="tick" style="background:var(--violet)"></span><span>stereo · waveform · phase</span></div>
+      <div class="body">
+        <div class="mark stereomark"></div>
+        <h2>Stereo Auditor</h2>
+        <p data-en="Drop in an audio file to classify its channel relationship, inspect stereo strength across a high-resolution waveform, and review sustained phase-risk regions.">
+          오디오 파일의 채널 관계를 판정하고, 고해상도 웨이브폼에서 구간별 스테레오 강도와 지속되는 위상 위험 구간을 확인합니다.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="stereo-auditor/" data-en="View Page">페이지 보기</a>
+          <span class="btn" data-en="Early Build">얼리 빌드</span>
+        </div>
+      </div>
+    </article>
+
     <article class="tool">
       <div class="bar"><span class="tick wave"></span><span>search · audition · export</span></div>
       <div class="body">
