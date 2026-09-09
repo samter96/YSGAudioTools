@@ -28,8 +28,11 @@
 
   .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:linear-gradient(var(--ink),rgba(8,11,17,.72));backdrop-filter:blur(10px)}
   .topbar__in{max-width:var(--maxw);margin:0 auto;padding:11px var(--pad);display:flex;align-items:center;gap:18px}
-  .ysig{display:inline-flex;align-items:center;gap:8px;min-height:28px;padding:4px 10px 4px 6px;border:1px solid rgba(79,216,232,.2);border-radius:999px;background:linear-gradient(90deg,rgba(79,216,232,.1),rgba(106,125,255,.04));font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-decoration:none}
-  .ysig__mark{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--wave)}
+  .ysig{display:inline-flex;align-items:center;gap:8px;padding:0 10px 0 6px;border:1px solid rgba(79,216,232,.2);border-radius:999px;background:linear-gradient(90deg,rgba(79,216,232,.1),rgba(106,125,255,.04));font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-decoration:none;height:30px}
+  .ysig__mark{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 24px}
+  /* 컬러 풀버전 마크 — currentColor 를 쓰지 않아 페이지별 시안색을 따르지 않고
+     브랜드 색으로 고정된다. */
+  .ysig__mark img{width:100%;height:100%;display:block}
   .ysig__mark svg{width:100%;height:100%;display:block}
   
   
@@ -41,8 +44,8 @@
   .nav{display:flex;gap:2px}
   .nav a{padding:6px 10px;border-radius:7px;color:var(--muted);font-family:var(--mono);font-size:12px;text-decoration:none;transition:.16s}
   .nav a:hover{color:var(--text);background:var(--ink-3)}
-  .langswitch{width:68px;height:28px;flex:0 0 auto;border:1px solid var(--line-2);border-radius:999px;background:rgba(14,18,25,.86);color:var(--muted);font-family:var(--mono);font-size:11px;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;padding:0;cursor:pointer}
-  .langswitch:before{content:"";position:absolute;top:3px;left:3px;width:30px;height:20px;border-radius:999px;background:rgba(79,216,232,.18);border:1px solid rgba(79,216,232,.62);transition:transform .22s}
+  .langswitch{width:68px;height:30px;flex:0 0 auto;border:1px solid var(--line-2);border-radius:999px;background:rgba(14,18,25,.86);color:var(--muted);font-family:var(--mono);font-size:11px;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;padding:0;cursor:pointer}
+  .langswitch:before{content:"";position:absolute;top:3px;left:3px;width:30px;height:22px;border-radius:999px;background:rgba(79,216,232,.18);border:1px solid rgba(79,216,232,.62);transition:transform .22s}
   .langswitch span{position:relative;z-index:1;text-align:center}
   body.lang-en .langswitch:before{transform:translateX(30px)}
   body.lang-en .langswitch .en,body:not(.lang-en) .langswitch .ko{color:var(--text)}
@@ -67,7 +70,7 @@
   .btn:hover:not(.btn--muted){border-color:var(--wave);transform:translateY(-1px)}
   .btn .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber);animation:softBlink 2.2s ease-in-out infinite}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{border:1px solid var(--line);border-radius:999px;background:rgba(20,26,36,.55);color:var(--muted);padding:4px 10px;font-family:var(--mono);font-size:12px}
+  .chip{border:1px solid var(--line);border-radius:999px;background:rgba(20,26,36,.55);color:var(--muted);padding:0 10px;font-family:var(--mono);font-size:12px;height:30px;display:inline-flex;align-items:center}
   section.content{padding:clamp(58px,7vw,92px) 0;border-top:1px solid var(--line)}
   .section__head{display:grid;grid-template-columns:1fr .82fr;gap:40px;align-items:end;margin-bottom:38px}
   .section__head h2{margin-top:10px;color:#eff5fa;font-size:clamp(1.8rem,3vw,3rem);line-height:1.08}
@@ -312,13 +315,27 @@
 
   @media(max-width:1240px){.core,.fmt{grid-template-columns:1fr}.chain__flow{grid-template-columns:1fr;gap:14px;min-height:0}.wire{height:34px;margin:0}.wire i{left:50%;right:auto;top:0!important;bottom:0;width:1px;height:auto;background:repeating-linear-gradient(180deg,rgba(96,132,196,.55) 0 5px,transparent 5px 12px);background-size:1px 12px;animation:none}.wire i:nth-child(2),.wire i:nth-child(3),.wire b{display:none}.chain__meta{padding:0}}
   @media(max-width:1100px){.nav,.rail{display:none}.hero{min-height:auto}.hero__grid,.section__head{grid-template-columns:1fr}.cards,.minis,.specs,.status-grid,.scale__lanes{grid-template-columns:repeat(2,1fr)}.objgrid{grid-template-columns:repeat(34,1fr)}}
-  @media(max-width:720px){:root{--pad:9px}.topbar__in{gap:8px;flex-wrap:wrap}.brand{order:3;flex:1 0 100%}.brand__v{display:none}.langswitch{margin-left:auto}.hero{padding-top:36px}h1{font-size:clamp(2rem,9.4vw,2.6rem)}.cards,.minis,.specs,.status-grid,.scale__lanes{grid-template-columns:1fr}.field{aspect-ratio:5/4}.hud{min-width:0;font-size:8.5px;padding:7px 9px}.hud__row:nth-child(2),.hud__row:nth-child(5){display:none}.ears{width:150px;padding:7px 9px}.field__legend{display:none}.reflect{height:210px}.budget,.reflect__legend{display:none}.objgrid{grid-template-columns:repeat(25,1fr);gap:3px}.notice{align-items:flex-start;flex-direction:column;gap:10px}section.content{padding:56px 0}}
+  @media(max-width:720px){:root{--pad:9px}.topbar__in{gap:8px;flex-wrap:wrap}.brand{order:3;flex:1 0 100%}.brand__v{display:none}.langswitch{margin-left:auto;height:28px}.hero{padding-top:36px}h1{font-size:clamp(2rem,9.4vw,2.6rem)}.cards,.minis,.specs,.status-grid,.scale__lanes{grid-template-columns:1fr}.field{aspect-ratio:5/4}.hud{min-width:0;font-size:8.5px;padding:7px 9px}.hud__row:nth-child(2),.hud__row:nth-child(5){display:none}.ears{width:150px;padding:7px 9px}.field__legend{display:none}.reflect{height:210px}.budget,.reflect__legend{display:none}.objgrid{grid-template-columns:repeat(25,1fr);gap:3px}.notice{align-items:flex-start;flex-direction:column;gap:10px}section.content{padding:56px 0}
+}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.fmt-layer{opacity:1}.fmt-layer.f2,.fmt-layer.f3,.fmt-layer.f4{opacity:0}.fmt-row{border-color:var(--line)}.rpath.culled,.bounce{opacity:.7}.rpath.o1,.rpath.o2{opacity:1}}
+
+  /* ── 좁은 화면 알약 높이 통일 (2026-09-09) ────────────────────────────────
+     YSG 배지 · 언어토글 · GitHub 버튼 · 칩을 한 높이로 맞춘다. 데스크톱은 30px,
+     여기서는 28px 이다. 사용자 지적: "페이지 배지들이 서로 정렬이 안맞아".
+     ⚠ 이 블록은 **스타일 맨 끝**에 둬야 한다. 같은 specificity 는 나중 규칙이
+       이기는데, 일부 페이지의 기본 `.chip` 규칙이 미디어쿼리 뒤에 있어서
+       앞쪽에 두면 덮이지 않는다 (400px 폭 실측에서 chip 만 30px 로 남았다). */
+  @media (max-width: 720px){
+    .ysglogo, .ysig, .langswitch, .chip{ height:28px }
+    .ghicon, .ghbtn, .gh{ width:28px; height:28px }
+    .ysglogo__mark, .ysig__mark{ width:22px; height:22px; flex:0 0 22px }
+    .langswitch:before, .langswitch::before{ height:20px }
+  }
 </style>
 </head>
 <body>
 <header class="topbar"><div class="topbar__in">
-  <a class="ysig" href="../index.html" aria-label="YSG Audio"><span class="ysig__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/></svg></span><span>YSG<span style="color:var(--wave)">.AUDIO</span></span></a>
+  <a class="ysig" href="../index.html" aria-label="YSG Audio Tools"><span class="ysig__mark" aria-hidden="true"><img src="../assets/ysg-mark-color.svg" alt="" /></span><span>YSG<span style="color:var(--wave)">.AUDIO</span></span></a>
   <a class="brand" href="#top">
     <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="#4fd8e8" stroke-width="1.5"/><path d="M5.4 6.6a9 9 0 0 0 0 10.8M18.6 6.6a9 9 0 0 1 0 10.8" stroke="#6a7dff" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="1.5" fill="#b06cff"/></svg></span>
     <span class="brand__name">YSG<b>SpatialRenderer</b></span><span class="brand__v">DEV BUILD</span>
@@ -714,7 +731,7 @@
     </div>
   </div></section>
 </main>
-<footer class="footer"><div class="wrap">YSG Audio · YSGSpatialRenderer · <a href="mailto:Samter96@naver.com">Samter96@naver.com</a></div></footer>
+<footer class="footer"><div class="wrap">YSG Audio Tools · YSGSpatialRenderer · <a href="mailto:Samter96@naver.com">Samter96@naver.com</a></div></footer>
 <script>
 "use strict";
 (function(){

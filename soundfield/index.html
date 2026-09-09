@@ -87,15 +87,18 @@
   }
   .topbar__in{ max-width:var(--maxw); margin:0 auto; padding:11px var(--pad);
     display:flex; align-items:center; gap:20px; }
-  .ysglogo{ display:inline-flex; align-items:center; gap:8px; min-height:28px;
+  .ysglogo{ display:inline-flex; align-items:center; gap:8px; 
     font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.08em;
-    color:var(--text); text-decoration:none; padding:4px 10px 4px 6px;
+    color:var(--text); text-decoration:none; padding:0 10px 0 6px;
     border:1px solid rgba(93,208,216,.20); border-radius:999px;
-    background:linear-gradient(90deg, rgba(93,208,216,.10), rgba(82,144,212,.04)); }
+    background:linear-gradient(90deg, rgba(93,208,216,.10), rgba(82,144,212,.04));height:30px}
   /* 상단바 마크 — 옛 6개 막대(이퀄라이저)를 YSG Audio Tools 마크로 교체했다.
      막대는 파형 클리셰였고 브랜드 마크와도 따로 놀았다 (2026-09-09).
      기하는 brand/build_brand.py 가 계산한다 — path 를 손으로 고치지 말 것. */
-  .ysglogo__mark{ width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; color:var(--wave); }
+  .ysglogo__mark{ width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center;flex:0 0 24px}
+  /* 컬러 풀버전 마크 — currentColor 를 쓰지 않아 페이지별 시안색을 따르지 않고
+     브랜드 색으로 고정된다. */
+  .ysglogo__mark img{width:100%;height:100%;display:block}
   .ysglogo__mark svg{ width:100%; height:100%; display:block; }
   .ysglogo b{ color:var(--wave); font-weight:800; }
   .brand{ display:flex; align-items:baseline; gap:10px; text-decoration:none; margin-right:auto; }
@@ -110,7 +113,7 @@
   @media (max-width: 940px){ .navlinks{ display:none; } }
 
   .langswitch{
-    width:68px; height:28px; border:1px solid var(--line-2); border-radius:999px;
+    width:68px; height:30px; border:1px solid var(--line-2); border-radius:999px;
     background:rgba(15,19,27,.86); color:var(--muted);
     font-family:var(--mono); font-size:11px; letter-spacing:.05em;
     display:grid; grid-template-columns:1fr 1fr; align-items:center; position:relative;
@@ -118,7 +121,7 @@
   }
   .langswitch:focus-visible{ box-shadow:0 0 0 2px rgba(93,208,216,.26); border-color:rgba(93,208,216,.72); }
   .langswitch::before{
-    content:""; position:absolute; top:3px; left:3px; width:30px; height:20px;
+    content:""; position:absolute; top:3px; left:3px; width:30px; height:22px;
     border-radius:999px; background:rgba(93,208,216,.18); border:1px solid rgba(93,208,216,.62);
     transition:transform .22s cubic-bezier(.2,.8,.2,1);
   }
@@ -229,14 +232,14 @@
     body{ font-size:15px; }
     .wrap{ width:100vw; max-width:none; padding-inline:max(6px, env(safe-area-inset-left)); }
     .topbar__in{ width:100vw; max-width:none; gap:10px; padding:9px max(6px, env(safe-area-inset-left)); flex-wrap:wrap; }
-    .ysglogo{ padding-right:8px; font-size:11px; }
-    .ysglogo__mark{ width:18px; height:18px; }
+    .ysglogo{ padding-right:8px; font-size:11px;height:28px}
+    .ysglogo__mark{ width:22px; height:22px;flex:0 0 22px}
     .brand{ gap:6px; min-width:0; }
     .brand__mark{ font-size:14px; }
     .brand__v{ display:none; }
-    .langswitch{ width:62px; height:26px; margin-left:auto; }
+    .langswitch{ width:62px; height:28px; margin-left:auto; }
     .ghicon{ width:28px; height:28px; }
-    .langswitch::before{ width:27px; height:18px; }
+    .langswitch::before{ width:27px; height:20px; }
     body.lang-en .langswitch::before{ transform:translateX(27px); }
     .hero{ padding-top:34px; }
     .hero__grid{ gap:24px; }
@@ -279,7 +282,8 @@
     #index .stage[style]{ aspect-ratio:4/3 !important; min-height:360px; }
     #player .media, #player .stage, #export .stage{ min-height:260px; }
     .themes + .gallery .media{ min-height:230px; }
-  }
+  
+}
   @media (max-width: 430px){
     .wrap{ padding-inline:4px; }
     .topbar__in{ padding-inline:4px; }
@@ -287,7 +291,7 @@
     .ysglogo b{ display:inline; }
     .brand__mark{ font-size:13px; }
     .hero__title{ font-size:clamp(1.9rem, 12vw, 2.65rem); }
-    .chip{ font-size:11px; padding:4px 9px; }
+    .chip{ font-size:11px; padding:4px 9px;height:28px}
     .panel__bar .seg:nth-child(n+3){ display:none; }
     #player .media, #player .stage, #export .stage{ min-height:235px; }
     #search .stage[style]{ min-height:420px; }
@@ -331,7 +335,7 @@
   .hero__shot .media{ aspect-ratio:16/9; border-top:1px solid rgba(255,255,255,.03); }
   .hero__shot img{ object-fit:contain; object-position:center center; filter:saturate(1.06) contrast(1.04); }
   .chip{ font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:.02em;
-    border:1px solid var(--line-2); border-radius:999px; padding:5px 11px; background:var(--ink-1); }
+    border:1px solid var(--line-2); border-radius:999px; height:30px;display:inline-flex;align-items:center;padding:0 11px; background:var(--ink-1); }
   .chip b{ color:var(--text); font-weight:600; }
   .chip .dot{ color:var(--wave); }
 
@@ -694,14 +698,27 @@
   @keyframes barBeat{ 0%,100%{ transform:scaleY(.72); } 45%{ transform:scaleY(1.12); } }
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
   @keyframes ysgAudioBadgeBeat{ 0%,100%{ transform:scaleY(.68); } 45%{ transform:scaleY(1.18); } }
+
+  /* ── 좁은 화면 알약 높이 통일 (2026-09-09) ────────────────────────────────
+     YSG 배지 · 언어토글 · GitHub 버튼 · 칩을 한 높이로 맞춘다. 데스크톱은 30px,
+     여기서는 28px 이다. 사용자 지적: "페이지 배지들이 서로 정렬이 안맞아".
+     ⚠ 이 블록은 **스타일 맨 끝**에 둬야 한다. 같은 specificity 는 나중 규칙이
+       이기는데, 일부 페이지의 기본 `.chip` 규칙이 미디어쿼리 뒤에 있어서
+       앞쪽에 두면 덮이지 않는다 (400px 폭 실측에서 chip 만 30px 로 남았다). */
+  @media (max-width: 720px){
+    .ysglogo, .ysig, .langswitch, .chip{ height:28px }
+    .ghicon, .ghbtn, .gh{ width:28px; height:28px }
+    .ysglogo__mark, .ysig__mark{ width:22px; height:22px; flex:0 0 22px }
+    .langswitch:before, .langswitch::before{ height:20px }
+  }
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar__in">
-    <a class="ysglogo" href="../index.html" aria-label="YSG Audio">
-      <span class="ysglogo__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/></svg></span><span>YSG<b>.AUDIO</b></span>
+    <a class="ysglogo" href="../index.html" aria-label="YSG Audio Tools">
+      <span class="ysglogo__mark" aria-hidden="true"><img src="../assets/ysg-mark-color.svg" alt="" /></span><span>YSG<b>.AUDIO</b></span>
     </a>
     <a class="brand" href="#top">
       <span class="brand__mark">Sound<b>Field</b></span>
@@ -1391,7 +1408,7 @@
       기재된 제품·포맷 명칭은 각 소유자의 상표입니다.
     </p>
     <div class="foot__meta">
-      Made by <b>YSG Audio</b> (You Seung Gyun)<br>
+      Made by <b>YSG Audio Tools</b> (You Seung Gyun)<br>
       contact : <a href="mailto:Samter96@naver.com">Samter96@naver.com</a><br>
       SoundField v2.1.0 · Windows x64<br>
       <span id="year"></span>
@@ -1442,7 +1459,7 @@
   }
 
   var y = document.getElementById('year');
-  if(y){ y.textContent = '© ' + new Date().getFullYear() + ' YSG Audio'; }
+  if(y){ y.textContent = '© ' + new Date().getFullYear() + ' YSG Audio Tools'; }
 
   /* ---- KR / EN language switch ---- */
   var currentLang = 'ko';
