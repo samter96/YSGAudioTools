@@ -262,51 +262,105 @@
      ⚠ 박스에 **버전 번호를 넣지 말 것** (사용자 지시 2026-09-09).
        버전이 올라가는 순간 이 그림이 거짓이 된다.
      움직임 ② — 아주 느린 부유 + 포인터 기울기. */
+  /* ── 제품 사진의 공간 (배경) ────────────────────────────────────
+     박스를 어딘가에 올려놓은 것처럼 보이게 하는 배경이다. 사진이 아니라
+     그라디언트와 SVG 선으로 만든 방이다.
+
+     구성:  뒷벽(창광 + 보케)  →  수평선  →  테이블(원근 결선)
+            →  퍼지는 그림자  →  접지 그림자  →  바닥 반사  →  박스  →  비네트
+
+     ⚠ 배경 요소는 3D 사슬 밖에 두어야 한다. `.pkg__stage` 나 `.box` 에
+       `filter` 를 걸면 원근이 죽어 박스가 납작해진다 (2026-09-09 실패 기록). */
   .pkg{
-    position:relative; aspect-ratio:4/3.15; display:grid; place-items:center;
+    /* ⚠ 프레임 높이를 `aspect-ratio`(=폭 기준)로 두지 말 것.
+       박스 크기는 `vw` 기준이라 둘이 따로 움직이고, 어떤 폭에서는 박스가
+       프레임보다 커져 잘린다 (390px 에서 윗변 -2%, 1000px 에서 -16% 였다).
+       그래서 프레임 높이·아래 여백을 **박스 높이에서** 계산한다.
+       비율 1.613 / 0.403 은 박스가 위 13% · 아래 75% 에 앉는 값이다. */
+    --bw: clamp(128px, 17.5vw, 198px);
+    --bh: calc(var(--bw) * 1.3);
+    --bd: calc(var(--bw) * .27);
+    --horizon: 54%;          /* 테이블 뒷변 위치 */
+    position:relative;
+    height:calc(var(--bh) * 1.613);
+    display:flex; align-items:flex-end; justify-content:center;
+    padding-bottom:calc(var(--bh) * .403);
     perspective:1800px; perspective-origin:54% 38%;
     border-radius:var(--r); overflow:hidden; isolation:isolate;
+    /* 뒷벽 — 왼쪽 위에서 들어오는 빛 */
     background:
-      radial-gradient(112% 84% at 24% 6%, #ffffff, transparent 58%),
-      radial-gradient(84% 66% at 84% 20%, #eaeef9, transparent 60%),
-      linear-gradient(178deg, #f8fafd 0%, #edf0f8 58%, #e2e7f2 100%);
+      radial-gradient(88% 70% at 18% -6%, #ffffff 0%, rgba(255,255,255,0) 62%),
+      radial-gradient(70% 56% at 88% 8%, #f2f5fc 0%, rgba(242,245,252,0) 66%),
+      linear-gradient(178deg, #eef1f8 0%, #e6eaf4 40%, #dfe4f0 100%);
   }
-  /* 바닥 — 박스가 무언가 위에 놓인 느낌을 만드는 옅은 면 */
-  .pkg:after{
-    content:""; position:absolute; left:0; right:0; bottom:0; height:34%;
-    background:linear-gradient(180deg, rgba(205,213,233,0), rgba(196,205,228,.6));
-    z-index:0;
+  /* 창광 보케 — 흐린 광원 두 점. 사진 같은 깊이를 만든다 */
+  .env__bokeh{position:absolute; inset:0; z-index:0; pointer-events:none}
+  .env__bokeh i{
+    position:absolute; border-radius:50%; filter:blur(18px);
+    background:radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,0) 70%);
   }
+  .env__bokeh i:nth-child(1){width:16%; aspect-ratio:1; left:9%;  top:7%;  opacity:.9}
+  .env__bokeh i:nth-child(2){width:10%; aspect-ratio:1; left:26%; top:3%;  opacity:.7}
+  .env__bokeh i:nth-child(3){width:7%;  aspect-ratio:1; right:14%; top:11%; opacity:.55}
+
+  /* 테이블 — 수평선 아래 전부. 결선은 SVG 로 그린다 */
+  .env__table{
+    position:absolute; left:0; right:0; bottom:0; top:var(--horizon); z-index:0;
+    background:
+      linear-gradient(180deg, #dcd6cc 0%, #d3ccc0 22%, #c9c1b4 100%);
+  }
+  /* 테이블 위 광택 — 창 쪽에서 번지는 반사 */
+  .env__table:before{
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(60% 120% at 16% 0%, rgba(255,255,255,.72), rgba(255,255,255,0) 62%),
+      radial-gradient(46% 90% at 82% 6%, rgba(255,255,255,.34), rgba(255,255,255,0) 66%);
+  }
+  .env__table svg{position:absolute; inset:0; width:100%; height:100%}
+  /* 수평선 — 이 한 줄이 "놓여 있다" 를 만든다 */
+  .env__edge{
+    position:absolute; left:0; right:0; top:var(--horizon); height:1px; z-index:0;
+    background:linear-gradient(90deg,
+      rgba(150,142,128,0), rgba(150,142,128,.75) 18%,
+      rgba(150,142,128,.75) 82%, rgba(150,142,128,0));
+    box-shadow:0 2px 10px rgba(120,112,98,.28);
+  }
+  /* 가장자리 비네트 — 사진처럼 눌러 준다 */
+  .env__vig{
+    position:absolute; inset:0; z-index:3; pointer-events:none;
+    background:radial-gradient(78% 68% at 50% 44%,
+      rgba(0,0,0,0) 52%, rgba(38,42,54,.13) 100%);
+  }
+
   /* ⚠ 이 요소에 `filter` 나 `-webkit-box-reflect` 를 걸지 말 것.
      둘 다 3D 렌더링 맥락을 평탄화해서 `.pkg` 의 원근이 `.box` 까지 전달되지
-     않는다 — 박스가 종이처럼 납작해진다 (실제로 당했다, 2026-09-09).
-     그림자와 반사는 아래 `.pkg__contact` · `.pkg__mirror` 로 따로 그린다. */
-  .pkg__stage{position:relative; z-index:1; transform-style:preserve-3d}
-  /* 접지 그림자 — 박스 바로 아래에 좁고 진하게 */
-  .pkg__contact{
-    position:absolute; left:12%; right:12%; bottom:17%; height:7%;
-    background:radial-gradient(58% 100% at 47% 50%, rgba(23,30,48,.5), transparent 74%);
-    filter:blur(11px); z-index:0;
-  }
-  /* 넓게 퍼지는 바닥 그림자 */
+     않는다 — 박스가 종이처럼 납작해진다 (실제로 당했다, 2026-09-09). */
+  .pkg__stage{position:relative; z-index:2; transform-style:preserve-3d}
+
+  /* 퍼지는 그림자 — 테이블 위로 넓게 */
   .pkg__cast{
-    position:absolute; left:4%; right:2%; bottom:9%; height:22%;
-    background:radial-gradient(52% 100% at 44% 40%, rgba(27,34,51,.24), transparent 70%);
-    filter:blur(22px); z-index:0;
+    position:absolute; left:6%; right:4%; bottom:11%; height:20%;
+    background:radial-gradient(50% 100% at 42% 34%, rgba(74,66,52,.34), transparent 72%);
+    filter:blur(20px); z-index:1;
   }
-  /* 바닥 반사 — 앞면 색을 흐리게 되비춘 띠. `-webkit-box-reflect` 는 3D 를
-     평탄화하므로 쓰지 않고, 같은 아트워크를 뒤집어 얇게 깐다. */
+  /* 접지 그림자 — 박스 밑변에 좁고 진하게 */
+  .pkg__contact{
+    position:absolute; left:26%; right:24%; bottom:19%; height:4.5%;
+    background:radial-gradient(56% 100% at 46% 60%, rgba(46,40,30,.62), transparent 76%);
+    filter:blur(7px); z-index:1;
+  }
+  /* 바닥 반사 — 앞면 색이 테이블에 되비친 띠.
+     `-webkit-box-reflect` 는 3D 를 평탄화하므로 쓰지 않고 따로 깐다. */
   .pkg__mirror{
-    position:absolute; left:50%; bottom:14%; width:34%; height:16%;
-    transform:translateX(-46%) scaleY(-1) skewX(-16deg);
-    background:linear-gradient(180deg, rgba(52,74,150,.5), rgba(52,74,150,0) 78%);
-    filter:blur(7px); border-radius:6px; z-index:0; opacity:.7;
+    position:absolute; left:50%; bottom:12%; width:30%; height:9%;
+    transform:translateX(-52%) skewX(-14deg);
+    background:linear-gradient(180deg,
+      rgba(60,80,150,.42), rgba(90,70,150,.16) 45%, rgba(90,70,150,0) 100%);
+    filter:blur(6px); border-radius:0 0 8px 8px; z-index:1;
   }
 
   .box{
-    --bw: clamp(146px, 20.5vw, 232px);
-    --bh: calc(var(--bw) * 1.3);
-    --bd: calc(var(--bw) * 0.27);
+    /* 크기 변수는 `.pkg` 에 있다 — 프레임 높이가 그 값에서 계산되기 때문이다 */
     position:relative; width:var(--bw); height:var(--bh);
     transform-style:preserve-3d;
     transform:rotateX(3deg) rotateY(-30deg);
@@ -458,6 +512,7 @@
   /* ── 기능 타일 ──────────────────────────────────────────────── */
   .tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:48px}
   .tile{
+    min-width:0;   /* 그리드 트랙이 내용 최소폭에 밀리지 않게 */
     padding:28px; border:1px solid var(--line); border-radius:var(--r);
     background:#fff; display:flex; flex-direction:column; box-shadow:var(--shadow);
     transition:transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s;
@@ -541,9 +596,14 @@
   }
 
   /* ── 파형 막대 (움직임 ④ — 오디오 툴이라는 신호) ─────────────── */
-  .bars{display:flex; align-items:flex-end; gap:3px; height:44px; margin-top:20px}
+  /* ⚠ 막대의 `min-width` 와 `gap` 이 이 줄의 **최소폭**을 만든다. 56개 × 2px +
+     55 × 3px = 277px 이었고, 그 값이 타일 → 그리드 트랙을 밀어 320px 화면에서
+     문서가 가로로 넘쳤다 (실측으로 잡았다). 개수는 아래 스크립트가 폭에 맞춰
+     정하고, 여기서는 하한을 1px 로 낮춘다. */
+  .bars{display:flex; align-items:flex-end; gap:2px; height:44px; margin-top:20px;
+        min-width:0; overflow:hidden}
   .bars i{
-    flex:1 1 0; border-radius:2px; min-width:2px;
+    flex:1 1 0; border-radius:2px; min-width:1px;
     background:linear-gradient(180deg, var(--blue), var(--cyan));
     animation:bar 1.5s ease-in-out infinite alternate; opacity:.85;
   }
@@ -619,7 +679,11 @@
   /* ── 좁은 화면 ───────────────────────────────────────────── */
   @media (max-width: 1000px){
     .pitch{grid-template-columns:1fr}
-    .pkg{aspect-ratio:16/11; max-width:520px; margin-inline:auto}
+    /* ⚠ `width:100%` 를 빼지 말 것. `margin-inline:auto` 만 주면 그리드
+       아이템의 stretch 가 꺼져 폭이 내용 기준으로 쪼그라든다 — 프레임이
+       128px 까지 줄어 박스가 잘렸다 (실측으로 잡았다, 2026-09-09). */
+    .pkg{width:100%; max-width:520px; margin-inline:auto;
+         --bw:clamp(150px, 30vw, 210px)}
     .tiles, .rules{grid-template-columns:repeat(2,1fr)}
     .keys__grid{grid-template-columns:repeat(2,1fr)}
     .stat{grid-template-columns:1fr}
@@ -634,6 +698,13 @@
   }
   @media (max-width: 720px){
     .brand__v{display:none}
+  }
+  /* 320px 급 화면에서는 상단바가 넘친다 (실측: 문서폭 382 > 320).
+     배지의 `YSG.AUDIO` 글자를 감추고 마크만 남기면 72px 이 남아 한 줄에 들어간다. */
+  @media (max-width: 380px){
+    .ysglogo span{display:none}
+    .ysglogo{padding:0 6px}
+    .topbar__in{gap:10px}
   }
 </style>
 </head>
@@ -680,6 +751,26 @@
 
       <div class="pitch">
         <div class="pkg" aria-hidden="true">
+          <div class="env__bokeh"><i></i><i></i><i></i></div>
+          <div class="env__table">
+            <!-- 테이블 결선. 아래로 갈수록 간격이 벌어져 원근처럼 보인다.
+                 균일 간격으로 두면 격자무늬 벽지가 된다. -->
+            <svg viewBox="0 0 400 180" preserveAspectRatio="none">
+              <g stroke="#8d8574" stroke-width="1" opacity=".16">
+                <path d="M0 3h400"/><path d="M0 8h400"/><path d="M0 15h400"/>
+                <path d="M0 24h400"/><path d="M0 36h400"/><path d="M0 51h400"/>
+                <path d="M0 70h400"/><path d="M0 93h400"/><path d="M0 120h400"/>
+                <path d="M0 152h400"/>
+              </g>
+              <!-- 나뭇결 얼룩 몇 개 -->
+              <g fill="#9a917e" opacity=".1">
+                <ellipse cx="86" cy="58" rx="120" ry="7"/>
+                <ellipse cx="292" cy="104" rx="150" ry="9"/>
+                <ellipse cx="180" cy="146" rx="180" ry="11"/>
+              </g>
+            </svg>
+          </div>
+          <div class="env__edge"></div>
           <div class="pkg__cast"></div>
           <div class="pkg__mirror"></div>
           <div class="pkg__contact"></div>
@@ -767,6 +858,7 @@
               </div>
             </div>
           </div>
+          <div class="env__vig"></div>
         </div>
 
         <div class="pitch__copy">
@@ -1242,7 +1334,8 @@
   /* 파형 막대 — 높이·속도를 조금씩 흩어 기계적으로 안 보이게 */
   var bars = document.querySelector('.bars');
   if(bars){
-    var n = 56, html = '';
+    /* 좁은 화면에서 막대가 실오라기처럼 되지 않게 개수를 폭에서 정한다 */
+    var n = Math.max(20, Math.min(56, Math.round(bars.clientWidth / 8))), html = '';
     for(var i=0;i<n;i++){
       var d = (i * 37 % 100) / 100;
       html += '<i style="animation-delay:' + (-d * 1.5).toFixed(2) + 's;'
