@@ -425,14 +425,13 @@
     height:.84em; width:auto; flex:0 0 auto;
     filter:drop-shadow(0 1px 5px rgba(0,0,0,.45));
   }
+  /* 제품명은 흰색 단색이다. 그라디언트는 **마크에만** 준다 — 둘 다 넣으면
+     락업 안에서 색이 두 번 경쟁해 로고가 흐려진다 (사용자 판단 2026-09-09). */
   .box__pname{
-    /* 어두운 박스 위에서는 페이지의 블루→틸 램프가 묻힌다. 밝은 램프를 쓴다 —
-       앞면 아트워크(시안·블루·라일락)와 같은 계열이다. */
     font-size:1em; font-weight:800;
     letter-spacing:-.035em; line-height:1;
-    background:linear-gradient(96deg, #7ee8f5 4%, #a9c4ff 52%, #cbaaff 96%);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-    filter:drop-shadow(0 2px 14px rgba(0,0,0,.5));
+    color:#fff;
+    text-shadow:0 2px 14px rgba(0,0,0,.5);
   }
   /* 한 줄로 들어가야 인쇄물처럼 보인다. 자간 .17em 이면 앞면 폭(약 145px)을
      넘겨 두 줄로 접혔다 — 크기와 자간을 함께 줄였다. */
