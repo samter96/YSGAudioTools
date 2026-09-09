@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Attenuation Auditor — Wwise 3D/2D 어테뉴에이션 설정 검수 툴</title>
 <meta name="description" content="Attenuation Auditor: Wwise 프로젝트의 Actor-Mixer Hierarchy 를 WAAPI 로 스캔해 3D 인데 Attenuation 이 없는 경우와 2D 인데 Attenuation 이 걸린 경우를 한 번에 찾아내는 검수 툴. 판정 규칙 · 상속 처리 · 예외 관리 소개.">
-<link rel="icon" href="../assets/favicon-v2.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="../assets/ysg-audio-mark-v2.svg">
-<link rel="apple-touch-icon" href="../assets/favicon-v2.png">
+<link rel="icon" href="../assets/favicon-ysg.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/ysg-favicon.svg">
+<link rel="apple-touch-icon" href="../assets/favicon-ysg.png">
 <style>
   /* ============================================================
      Attenuation Auditor — intro / feature explainer
@@ -101,17 +101,11 @@
     color:var(--text); text-decoration:none; padding:4px 10px 4px 6px;
     border:1px solid rgba(93,208,216,.20); border-radius:999px;
     background:linear-gradient(90deg, rgba(93,208,216,.10), rgba(82,144,212,.04)); }
-  .ysglogo__mark{ width:34px; height:18px; position:relative; display:inline-flex; align-items:center; justify-content:center; gap:2px; }
-  .ysglogo__mark i{ display:block; width:3px; border-radius:999px;
-    background:linear-gradient(180deg, rgba(93,208,216,.95), rgba(82,144,212,.86));
-    box-shadow:0 0 10px rgba(93,208,216,.20);
-    animation:barBeat 1.8s ease-in-out infinite; }
-  .ysglogo__mark i:nth-child(1){ height:6px; opacity:.65; }
-  .ysglogo__mark i:nth-child(2){ height:12px; opacity:.82; animation-delay:.12s; }
-  .ysglogo__mark i:nth-child(3){ height:18px; animation-delay:.24s; }
-  .ysglogo__mark i:nth-child(4){ height:10px; opacity:.78; animation-delay:.36s; }
-  .ysglogo__mark i:nth-child(5){ height:15px; opacity:.92; animation-delay:.48s; }
-  .ysglogo__mark i:nth-child(6){ height:7px; opacity:.68; animation-delay:.6s; }
+  /* 상단바 마크 — 옛 6개 막대(이퀄라이저)를 YSG Audio Tools 마크로 교체했다.
+     막대는 파형 클리셰였고 브랜드 마크와도 따로 놀았다 (2026-09-09).
+     기하는 brand/build_brand.py 가 계산한다 — path 를 손으로 고치지 말 것. */
+  .ysglogo__mark{ width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; color:var(--wave); }
+  .ysglogo__mark svg{ width:100%; height:100%; display:block; }
   .ysglogo b{ color:var(--wave); font-weight:800; }
   .brand{ display:flex; align-items:baseline; gap:10px; text-decoration:none; margin-right:auto; min-width:0; }
   .brand__mark{ font-family:var(--mono); font-weight:700; letter-spacing:.02em; font-size:15px; white-space:nowrap; }
@@ -562,16 +556,6 @@
   .reveal.in{ opacity:1; transform:none; }
   @keyframes barBeat{ 0%,100%{ transform:scaleY(.72); } 45%{ transform:scaleY(1.12); } }
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
-  .ysglogo__mark i{
-    animation:ysgAudioBadgeBeat 1.8s ease-in-out infinite !important;
-    transform-origin:center center;
-    will-change:transform;
-  }
-  .ysglogo__mark i:nth-child(2){ animation-delay:.12s !important; }
-  .ysglogo__mark i:nth-child(3){ animation-delay:.24s !important; }
-  .ysglogo__mark i:nth-child(4){ animation-delay:.36s !important; }
-  .ysglogo__mark i:nth-child(5){ animation-delay:.48s !important; }
-  .ysglogo__mark i:nth-child(6){ animation-delay:.6s !important; }
   @keyframes ysgAudioBadgeBeat{ 0%,100%{ transform:scaleY(.68); } 45%{ transform:scaleY(1.18); } }
   @keyframes attSweep{ 0%,100%{ transform:translateY(-76px); opacity:.25; } 50%{ transform:translateY(76px); opacity:.9; } }
   @keyframes ringPulse{ 0%{ transform:scale(.78); opacity:.8; } 100%{ transform:scale(1.18); opacity:0; } }
@@ -586,7 +570,7 @@
     .wrap{ width:100vw; max-width:none; padding-inline:max(6px, env(safe-area-inset-left)); }
     .topbar__in{ width:100vw; max-width:none; gap:10px; padding:9px max(6px, env(safe-area-inset-left)); flex-wrap:wrap; }
     .ysglogo{ padding-right:8px; font-size:11px; }
-    .ysglogo__mark{ width:26px; }
+    .ysglogo__mark{ width:18px; height:18px; }
     .brand{ gap:6px; }
     .brand__mark{ font-size:13.5px; }
     .brand__v{ display:none; }
@@ -654,7 +638,7 @@
 <div class="topbar">
   <div class="topbar__in">
     <a class="ysglogo" href="../index.html" aria-label="YSG Audio">
-      <span class="ysglogo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>YSG<b>.AUDIO</b></span>
+      <span class="ysglogo__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/></svg></span><span>YSG<b>.AUDIO</b></span>
     </a>
     <a class="brand" href="#top">
       <svg class="brand__ico" aria-hidden="true" focusable="false"><use href="#attmark"/></svg>

@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Stereo Auditor | 스테레오 채널 분석 도구</title>
 <meta name="description" content="오디오 파일의 모노·듀얼 모노·니어 모노·스테레오 채널 관계와 구간별 스테레오 강도를 고해상도 웨이브폼으로 확인하는 Windows 독립 실행형 분석 도구.">
-<link rel="icon" href="../assets/favicon-v2.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="../assets/ysg-audio-mark-v2.svg">
-<link rel="apple-touch-icon" href="../assets/favicon-v2.png">
+<link rel="icon" href="../assets/favicon-ysg.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/ysg-favicon.svg">
+<link rel="apple-touch-icon" href="../assets/favicon-ysg.png">
 <style>
   :root{
     --ink:#0a0d13;--ink-1:#0f131b;--ink-2:#141922;--ink-3:#1c2331;
@@ -27,7 +27,8 @@
   .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:linear-gradient(var(--ink),rgba(10,13,19,.72));backdrop-filter:blur(10px)}
   .topbar__in{max-width:var(--maxw);margin:0 auto;padding:11px var(--pad);display:flex;align-items:center;gap:18px}
   .ysig{display:inline-flex;align-items:center;gap:8px;min-height:28px;padding:4px 10px 4px 6px;border:1px solid rgba(85,213,239,.2);border-radius:999px;background:linear-gradient(90deg,rgba(85,213,239,.1),rgba(106,134,255,.04));font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-decoration:none}
-  .ysig__mark{width:34px;height:18px;display:inline-flex;align-items:center;justify-content:center;gap:2px}.ysig__mark i{display:block;width:3px;border-radius:999px;background:linear-gradient(180deg,var(--wave),var(--accent));box-shadow:0 0 10px rgba(85,213,239,.2);animation:barBeat 1.8s ease-in-out infinite}.ysig__mark i:nth-child(1){height:6px}.ysig__mark i:nth-child(2){height:12px;animation-delay:.12s}.ysig__mark i:nth-child(3){height:18px;animation-delay:.24s}.ysig__mark i:nth-child(4){height:10px;animation-delay:.36s}.ysig__mark i:nth-child(5){height:15px;animation-delay:.48s}.ysig__mark i:nth-child(6){height:7px;animation-delay:.6s}
+  .ysig__mark{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--wave)}
+  .ysig__mark svg{width:100%;height:100%;display:block}
   .brand{display:flex;align-items:center;gap:10px;margin-right:auto;text-decoration:none;min-width:0}.brand__mark{width:28px;height:28px;border:1px solid rgba(106,134,255,.3);border-radius:8px;display:grid;place-items:center;background:rgba(106,134,255,.08);color:var(--wave);font-family:var(--mono);font-size:10px;font-weight:800}.brand__name{font-family:var(--mono);font-size:15px;font-weight:700;white-space:nowrap}.brand__name b{color:var(--accent)}.brand__v{font-family:var(--mono);font-size:11px;color:var(--muted-2);border:1px solid var(--line-2);border-radius:999px;padding:1px 8px}
   .nav{display:flex;gap:4px}.nav a{padding:6px 10px;border-radius:7px;color:var(--muted);font-family:var(--mono);font-size:12px;text-decoration:none}.nav a:hover{color:var(--text);background:var(--ink-3)}
   .langswitch{width:68px;height:28px;border:1px solid var(--line-2);border-radius:999px;background:rgba(15,19,27,.86);color:var(--muted);font-family:var(--mono);font-size:11px;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;padding:0;cursor:pointer}.langswitch:before{content:"";position:absolute;top:3px;left:3px;width:30px;height:20px;border-radius:999px;background:rgba(85,213,239,.18);border:1px solid rgba(85,213,239,.62);transition:transform .22s}.langswitch span{position:relative;z-index:1;text-align:center}body.lang-en .langswitch:before{transform:translateX(30px)}body.lang-en .langswitch .en,body:not(.lang-en) .langswitch .ko{color:var(--text)}
@@ -46,7 +47,7 @@
   .capture{display:grid;place-items:center}.capture-image{position:absolute;z-index:2;inset:0;width:100%;height:100%;object-fit:contain;background:#090b0f;opacity:0;transition:opacity .35s ease}.capture.screenshot-loaded .capture-image{opacity:1}.capture.screenshot-loaded .capture-slot{display:none}.capture-slot{position:relative;display:block;width:min(76%,650px);padding:42px 24px;border:1px dashed rgba(85,213,239,.28);border-radius:12px;text-align:center;background:rgba(15,19,27,.62)}.capture-slot strong{display:block;color:#bdc9d9;font-family:var(--mono);font-size:13px}.capture-slot span{display:block;margin-top:8px;color:var(--muted-2);font-family:var(--mono);font-size:11px}.capture-wave{height:58px;margin:22px auto 0;max-width:480px;display:flex;align-items:center;gap:3px;opacity:.72}.capture-wave i{flex:1;height:var(--h);border-radius:2px;background:linear-gradient(180deg,var(--wave),var(--accent),var(--violet));animation:wavePulse 2.7s ease-in-out infinite;animation-delay:var(--d)}
   .demo{z-index:5}.wave-area.demo-host{height:clamp(370px,36vw,520px)}.demo-host>.wave-svg,.demo-host>.phase-track{display:none}
   .release-row{display:flex;align-items:center;gap:18px;margin-top:22px;padding:18px;border:1px solid rgba(85,213,239,.25);border-radius:12px;background:linear-gradient(90deg,rgba(85,213,239,.08),rgba(106,134,255,.06))}.release-row .btn{flex:0 0 auto}.release-note{min-width:0;color:var(--muted);font-size:.82rem}.release-note b{display:block;color:var(--text);font-family:var(--mono);font-size:.86rem}.release-note code{display:block;margin-top:3px;color:var(--muted-2);font-family:var(--mono);font-size:.68rem;overflow-wrap:anywhere}
-  @keyframes barBeat{0%,100%{transform:scaleY(.72)}45%{transform:scaleY(1.12)}}@keyframes wavePulse{0%,100%{transform:scaleY(.62);opacity:.45}50%{transform:scaleY(1);opacity:1}}
+  @keyframes wavePulse{0%,100%{transform:scaleY(.62);opacity:.45}50%{transform:scaleY(1);opacity:1}}
   @keyframes fileDrop{0%,3%{transform:translate(-50%,-130%);opacity:0}6%{opacity:1}14%,18%{transform:translate(-50%,165%);opacity:1}22%,100%{transform:translate(-50%,165%);opacity:0}}
   @keyframes targetAccept{0%,10%,100%{border-color:rgba(85,213,239,.3);box-shadow:none}14%,19%{border-color:rgba(85,213,239,.8);box-shadow:0 0 34px rgba(85,213,239,.15),inset 0 0 24px rgba(85,213,239,.05)}}
   @keyframes demoDropLayer{0%,19%{opacity:1}23%,96%{opacity:0}100%{opacity:1}}
@@ -69,7 +70,7 @@
 </head>
 <body>
 <header class="topbar"><div class="topbar__in">
-  <a class="ysig" href="../index.html" aria-label="YSG Audio"><span class="ysig__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>YSG<span style="color:var(--wave)">.AUDIO</span></span></a>
+  <a class="ysig" href="../index.html" aria-label="YSG Audio"><span class="ysig__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/></svg></span><span>YSG<span style="color:var(--wave)">.AUDIO</span></span></a>
   <a class="brand" href="#top"><span class="brand__mark">L/R</span><span class="brand__name">Stereo <b>Auditor</b></span><span class="brand__v">V1.0.0</span></a>
   <nav class="nav" aria-label="페이지 섹션"><a href="#map" data-en="Waveform">웨이브폼</a><a href="#verdicts" data-en="Verdicts">판정</a><a href="#workflow" data-en="Workflow">워크플로우</a><a href="#download" data-en="Specs">사양</a></nav>
   <button class="langswitch" type="button" aria-label="언어 전환" aria-pressed="false"><span class="ko">KO</span><span class="en">EN</span></button>

@@ -1,0 +1,10 @@
+# Local-only working files. The brand generators and their SVG/ICO output are
+# tracked; the notes and rejected drafts around them are not - they carry local
+# machine paths and are only useful on the authoring PC.
+__pycache__/
+brand/PROGRESS.md
+brand/explore*
+brand/brand.html
+brand/preview.html
+brand/_retired/
+soundfield/TODO.md

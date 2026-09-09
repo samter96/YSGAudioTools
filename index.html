@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>YSG Audio</title>
 <meta name="description" content="YSG Audio: YSGSpatialRenderer, SoundField, Stereo Auditor, Bus Routing Auditor, Attenuation Auditor 소개와 다운로드 링크를 모은 허브 페이지.">
-<link rel="icon" href="assets/favicon-v2.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="assets/ysg-audio-mark-v2.svg">
-<link rel="apple-touch-icon" href="assets/favicon-v2.png">
+<link rel="icon" href="assets/favicon-ysg.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="assets/ysg-favicon.svg">
+<link rel="apple-touch-icon" href="assets/favicon-ysg.png">
 <style>
   :root{
     --ink:#0a0d13; --ink-1:#0f131b; --ink-2:#141922; --ink-3:#1c2331;
@@ -38,9 +38,15 @@
   .topbar{position:sticky;top:0;z-index:40;backdrop-filter:blur(9px);background:linear-gradient(var(--ink),rgba(10,13,19,.72));border-bottom:1px solid var(--line)}
   .topbar__in{max-width:var(--maxw);margin:0 auto;padding:11px var(--pad);display:flex;align-items:center;gap:20px}
   .ysglogo{display:inline-flex;align-items:center;gap:8px;min-height:28px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--text);text-decoration:none;padding:4px 10px 4px 6px;border:1px solid rgba(93,208,216,.20);border-radius:999px;background:linear-gradient(90deg,rgba(93,208,216,.10),rgba(82,144,212,.04))}
-  .ysglogo__mark{width:34px;height:18px;display:inline-flex;align-items:center;justify-content:center;gap:2px}
-  .ysglogo__mark i{display:block;width:3px;border-radius:999px;background:linear-gradient(180deg,rgba(93,208,216,.95),rgba(82,144,212,.86));box-shadow:0 0 10px rgba(93,208,216,.20);animation:barBeat 1.8s ease-in-out infinite}
-  .ysglogo__mark i:nth-child(1){height:6px;opacity:.65}.ysglogo__mark i:nth-child(2){height:12px;opacity:.82;animation-delay:.12s}.ysglogo__mark i:nth-child(3){height:18px;animation-delay:.24s}.ysglogo__mark i:nth-child(4){height:10px;opacity:.78;animation-delay:.36s}.ysglogo__mark i:nth-child(5){height:15px;opacity:.92;animation-delay:.48s}.ysglogo__mark i:nth-child(6){height:7px;opacity:.68;animation-delay:.6s}
+  /* 상단바 마크 — 옛 6개 막대(이퀄라이저)를 YSG Audio Tools 마크로 교체했다.
+     막대는 파형 클리셰였고 브랜드 마크와도 따로 놀았다 (2026-09-08).
+     기하는 brand/build_brand.py 가 계산한다 — 여기 path 를 손으로 고치지 말 것. */
+  /* 상단바 마크 — 옛 6개 막대(이퀄라이저)를 YSG Audio Tools 마크로 교체했다.
+     막대는 파형 클리셰였고 브랜드 마크와도 따로 놀았다 (2026-09-09).
+     기하는 brand/build_brand.py 가 계산한다 — path 를 손으로 고치지 말 것. */
+  .ysglogo__mark{ width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; color:var(--wave); }
+  .ysglogo__mark svg{ width:100%; height:100%; display:block; }
+  .ysglogo__mark svg{width:100%;height:100%;display:block}
   .brand{margin-right:auto;text-decoration:none;font-family:var(--mono);font-size:15px;font-weight:700}.brand b{color:var(--wave)}
   .langswitch{width:68px;height:28px;border:1px solid var(--line-2);border-radius:999px;background:rgba(15,19,27,.86);color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.05em;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;padding:0;cursor:pointer;outline:0}
   .langswitch:before{content:"";position:absolute;top:3px;left:3px;width:30px;height:20px;border-radius:999px;background:rgba(93,208,216,.18);border:1px solid rgba(93,208,216,.62);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
@@ -156,7 +162,7 @@
 <header class="topbar">
   <div class="topbar__in">
     <a class="ysglogo" href="./index.html" aria-label="YSG Audio">
-      <span class="ysglogo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="ysglogo__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/></svg></span>
       <span>YSG<b>.AUDIO</b></span>
     </a>
     <a class="brand" href="./index.html">YSG <b>Audio</b></a>
@@ -196,7 +202,7 @@
           </svg>
           <div class="orbit"></div>
           <div class="orbit o2"></div>
-          <div class="hub-logo"><img src="assets/ysg-audio-mark-v2.svg" alt=""></div>
+          <div class="hub-logo"><img src="assets/ysg-mark-color.svg" alt="YSG Audio Tools"></div>
           <div class="tool-node spatial"><b>YSGSpatialRenderer</b><span>hrtf · reflections</span></div>
           <div class="tool-node sf"><b>SoundField</b><span>search · audition</span></div>
           <div class="tool-node bus"><b>Bus Routing</b><span>signal · heatmap</span></div>
@@ -276,7 +282,7 @@
         </p>
         <div class="actions">
           <a class="btn primary" href="soundfield/" data-en="View Page">페이지 보기</a>
-          <a class="btn" href="https://github.com/samter96/SoundField/releases/download/v1.2.7/SoundField_Installer_v1.2.7.exe" data-en="Download">다운로드</a>
+          <a class="btn" href="https://github.com/samter96/SoundField/releases/download/v2.1.0/SoundField_Installer_v2.1.0.exe" data-en="Download">다운로드</a>
         </div>
       </div>
     </article>

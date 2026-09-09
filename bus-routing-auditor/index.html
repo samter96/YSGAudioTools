@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wwise Bus Routing Auditor | 버스 라우팅 감사 도구</title>
 <meta name="description" content="Wwise 프로젝트의 Sound 오브젝트를 스캔해 이름과 Work Unit 기준으로 버스 라우팅 위반을 찾고, Signal Flow와 Heatmap으로 점검하는 WAAPI 기반 감사 도구 소개 페이지.">
-<link rel="icon" href="../assets/favicon-v2.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="../assets/ysg-audio-mark-v2.svg">
-<link rel="apple-touch-icon" href="../assets/favicon-v2.png">
+<link rel="icon" href="../assets/favicon-ysg.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/ysg-favicon.svg">
+<link rel="apple-touch-icon" href="../assets/favicon-ysg.png">
 <style>
   :root{
     --ink:#0a0d13;
@@ -104,26 +104,20 @@
     letter-spacing:.08em;
     text-decoration:none;
   }
-  .ysig__mark{width:34px;height:18px;display:inline-flex;align-items:center;justify-content:center;gap:2px}
-  .ysig__mark i{
-    display:block;
-    width:3px;
-    border-radius:999px;
-    background:linear-gradient(180deg, rgba(93,208,216,.95), rgba(82,144,212,.86));
-    box-shadow:0 0 10px rgba(93,208,216,.20);
-    animation:barBeat 1.7s ease-in-out infinite;
-  }
-  .ysig__mark i:nth-child(2){animation-delay:.12s}
-  .ysig__mark i:nth-child(3){animation-delay:.24s}
-  .ysig__mark i:nth-child(4){animation-delay:.36s}
-  .ysig__mark i:nth-child(5){animation-delay:.48s}
-  .ysig__mark i:nth-child(6){animation-delay:.6s}
-  .ysig__mark i:nth-child(1){height:6px;opacity:.65}
-  .ysig__mark i:nth-child(2){height:12px;opacity:.82}
-  .ysig__mark i:nth-child(3){height:18px}
-  .ysig__mark i:nth-child(4){height:10px;opacity:.78}
-  .ysig__mark i:nth-child(5){height:15px;opacity:.92}
-  .ysig__mark i:nth-child(6){height:7px;opacity:.68}
+  .ysig__mark{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--wave)}
+  .ysig__mark svg{width:100%;height:100%;display:block}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   .brand{display:flex;align-items:center;gap:10px;margin-right:auto;text-decoration:none;min-width:0}
   .brand__logo{width:28px;height:28px;filter:drop-shadow(0 0 12px rgba(93,208,216,.22))}
   .brand__name{font-family:var(--mono);font-size:15px;font-weight:700;white-space:nowrap}
@@ -450,7 +444,7 @@
   .reveal{opacity:0;transform:translateY(16px);transition:opacity .65s ease, transform .65s ease}
   .reveal.in{opacity:1;transform:none}
 
-  @keyframes barBeat{0%,100%{transform:scaleY(.72)}45%{transform:scaleY(1.12)}}
+  
   @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
   @keyframes scanSweep{0%{transform:translateY(-150px)}100%{transform:translateY(520px)}}
   @keyframes rowShine{0%,55%{transform:translateX(-110%)}85%,100%{transform:translateX(110%)}}
@@ -474,7 +468,7 @@
     .wrap{width:100%;max-width:100%;padding-inline:8px}
     .topbar__in{width:100vw;max-width:none;gap:8px 10px;padding:9px max(8px, env(safe-area-inset-left));flex-wrap:wrap}
     .ysig{display:inline-flex;max-width:138px;overflow:hidden;flex:0 0 auto}
-    .ysig__mark{width:26px;flex:0 0 26px}
+    .ysig__mark{width:18px;height:18px;flex:0 0 18px}
     .ysig span:last-child{white-space:nowrap}
     .brand{order:3;flex:1 0 100%;width:100%;gap:7px;margin-right:0;overflow:hidden}
     .brand__logo{width:22px;height:22px;flex:0 0 22px}
@@ -517,17 +511,13 @@
     *,*:before,*:after{animation:none!important;transition:none!important}
     .reveal{opacity:1;transform:none}
   }
-  .ysig__mark i{
-    animation:ysgAudioBadgeBeat 1.8s ease-in-out infinite !important;
-    transform-origin:center center;
-    will-change:transform;
-  }
-  .ysig__mark i:nth-child(2){ animation-delay:.12s !important; }
-  .ysig__mark i:nth-child(3){ animation-delay:.24s !important; }
-  .ysig__mark i:nth-child(4){ animation-delay:.36s !important; }
-  .ysig__mark i:nth-child(5){ animation-delay:.48s !important; }
-  .ysig__mark i:nth-child(6){ animation-delay:.6s !important; }
-  @keyframes ysgAudioBadgeBeat{ 0%,100%{ transform:scaleY(.68); } 45%{ transform:scaleY(1.18); } }
+  
+  
+  
+  
+  
+  
+  
 </style>
 </head>
 <body>
@@ -536,7 +526,7 @@
 <header class="topbar">
   <div class="topbar__in">
     <a class="ysig" href="../index.html" aria-label="YSG Audio">
-      <span class="ysig__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="ysig__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/></svg></span>
       <span>YSG<span style="color:var(--wave)">.AUDIO</span></span>
     </a>
     <a class="brand" href="#top">

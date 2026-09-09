@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>YSGSpatialRenderer | 게임 오디오 공간 음향 렌더러</title>
 <meta name="description" content="Wwise 오디오 오브젝트를 머리 전달 함수로 바이노럴 렌더링하고, 근접장·지향성·초기 반사·회절까지 하나의 파이프라인에서 처리하는 게임 오디오 공간 음향 렌더러.">
-<link rel="icon" href="../assets/favicon-v2.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="../assets/ysg-audio-mark-v2.svg">
-<link rel="apple-touch-icon" href="../assets/favicon-v2.png">
+<link rel="icon" href="../assets/favicon-ysg.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/ysg-favicon.svg">
+<link rel="apple-touch-icon" href="../assets/favicon-ysg.png">
 <style>
   :root{
     --ink:#080b11;--ink-1:#0e1219;--ink-2:#141a24;--ink-3:#1b2331;
@@ -29,9 +29,10 @@
   .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:linear-gradient(var(--ink),rgba(8,11,17,.72));backdrop-filter:blur(10px)}
   .topbar__in{max-width:var(--maxw);margin:0 auto;padding:11px var(--pad);display:flex;align-items:center;gap:18px}
   .ysig{display:inline-flex;align-items:center;gap:8px;min-height:28px;padding:4px 10px 4px 6px;border:1px solid rgba(79,216,232,.2);border-radius:999px;background:linear-gradient(90deg,rgba(79,216,232,.1),rgba(106,125,255,.04));font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-decoration:none}
-  .ysig__mark{width:34px;height:18px;display:inline-flex;align-items:center;justify-content:center;gap:2px}
-  .ysig__mark i{display:block;width:3px;border-radius:999px;background:linear-gradient(180deg,var(--wave),var(--accent));box-shadow:0 0 10px rgba(79,216,232,.2);animation:barBeat 1.8s ease-in-out infinite}
-  .ysig__mark i:nth-child(1){height:6px}.ysig__mark i:nth-child(2){height:12px;animation-delay:.12s}.ysig__mark i:nth-child(3){height:18px;animation-delay:.24s}.ysig__mark i:nth-child(4){height:10px;animation-delay:.36s}.ysig__mark i:nth-child(5){height:15px;animation-delay:.48s}.ysig__mark i:nth-child(6){height:7px;animation-delay:.6s}
+  .ysig__mark{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--wave)}
+  .ysig__mark svg{width:100%;height:100%;display:block}
+  
+  
   .brand{display:flex;align-items:center;gap:10px;margin-right:auto;text-decoration:none;min-width:0}
   .brand__mark{width:30px;height:30px;flex:0 0 auto;border:1px solid rgba(106,125,255,.32);border-radius:9px;display:grid;place-items:center;background:rgba(106,125,255,.08)}
   .brand__mark svg{width:19px;height:19px}
@@ -277,7 +278,7 @@
   .notice b{display:block;font-family:var(--mono);font-size:.86rem;color:var(--text)}
   .notice span{color:var(--muted);font-size:.86rem}
 
-  @keyframes barBeat{0%,100%{transform:scaleY(.72)}45%{transform:scaleY(1.12)}}
+  
   @keyframes softBlink{0%,100%{opacity:.35}50%{opacity:1}}
   @keyframes sweep{0%{transform:translateX(-85%)}100%{transform:translateX(85%)}}
   @keyframes dashPull{to{stroke-dashoffset:-60}}
@@ -317,7 +318,7 @@
 </head>
 <body>
 <header class="topbar"><div class="topbar__in">
-  <a class="ysig" href="../index.html" aria-label="YSG Audio"><span class="ysig__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>YSG<span style="color:var(--wave)">.AUDIO</span></span></a>
+  <a class="ysig" href="../index.html" aria-label="YSG Audio"><span class="ysig__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.45" stroke-linejoin="round"/></svg></span><span>YSG<span style="color:var(--wave)">.AUDIO</span></span></a>
   <a class="brand" href="#top">
     <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="#4fd8e8" stroke-width="1.5"/><path d="M5.4 6.6a9 9 0 0 0 0 10.8M18.6 6.6a9 9 0 0 1 0 10.8" stroke="#6a7dff" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="1.5" fill="#b06cff"/></svg></span>
     <span class="brand__name">YSG<b>SpatialRenderer</b></span><span class="brand__v">DEV BUILD</span>

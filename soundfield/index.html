@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SoundField — 대용량 사운드 라이브러리 즉시 검색·오디션 툴</title>
 <meta name="description" content="SoundField: 수 TB 규모의 사운드 라이브러리를 즉시 검색하고, 멀티채널·Ambisonics를 바이노럴로 오디션하며, 필요한 구간을 내보내는 standalone 검색 툴.">
-<link rel="icon" href="../assets/favicon-v2.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="../assets/ysg-audio-mark-v2.svg">
-<link rel="apple-touch-icon" href="../assets/favicon-v2.png">
+<link rel="icon" href="../assets/favicon-ysg.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/ysg-favicon.svg">
+<link rel="apple-touch-icon" href="../assets/favicon-ysg.png">
 <style>
   /* ============================================================
      SoundField — intro / feature explainer
@@ -92,17 +92,11 @@
     color:var(--text); text-decoration:none; padding:4px 10px 4px 6px;
     border:1px solid rgba(93,208,216,.20); border-radius:999px;
     background:linear-gradient(90deg, rgba(93,208,216,.10), rgba(82,144,212,.04)); }
-  .ysglogo__mark{ width:34px; height:18px; position:relative; display:inline-flex; align-items:center; justify-content:center; gap:2px; }
-  .ysglogo__mark i{ display:block; width:3px; border-radius:999px;
-    background:linear-gradient(180deg, rgba(93,208,216,.95), rgba(82,144,212,.86));
-    box-shadow:0 0 10px rgba(93,208,216,.20);
-    animation:barBeat 1.8s ease-in-out infinite; }
-  .ysglogo__mark i:nth-child(1){ height:6px; opacity:.65; }
-  .ysglogo__mark i:nth-child(2){ height:12px; opacity:.82; animation-delay:.12s; }
-  .ysglogo__mark i:nth-child(3){ height:18px; animation-delay:.24s; }
-  .ysglogo__mark i:nth-child(4){ height:10px; opacity:.78; animation-delay:.36s; }
-  .ysglogo__mark i:nth-child(5){ height:15px; opacity:.92; animation-delay:.48s; }
-  .ysglogo__mark i:nth-child(6){ height:7px; opacity:.68; animation-delay:.6s; }
+  /* 상단바 마크 — 옛 6개 막대(이퀄라이저)를 YSG Audio Tools 마크로 교체했다.
+     막대는 파형 클리셰였고 브랜드 마크와도 따로 놀았다 (2026-09-09).
+     기하는 brand/build_brand.py 가 계산한다 — path 를 손으로 고치지 말 것. */
+  .ysglogo__mark{ width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; color:var(--wave); }
+  .ysglogo__mark svg{ width:100%; height:100%; display:block; }
   .ysglogo b{ color:var(--wave); font-weight:800; }
   .brand{ display:flex; align-items:baseline; gap:10px; text-decoration:none; margin-right:auto; }
   .brand__mark{ font-family:var(--mono); font-weight:700; letter-spacing:.02em; font-size:15px; }
@@ -236,7 +230,7 @@
     .wrap{ width:100vw; max-width:none; padding-inline:max(6px, env(safe-area-inset-left)); }
     .topbar__in{ width:100vw; max-width:none; gap:10px; padding:9px max(6px, env(safe-area-inset-left)); flex-wrap:wrap; }
     .ysglogo{ padding-right:8px; font-size:11px; }
-    .ysglogo__mark{ width:26px; }
+    .ysglogo__mark{ width:18px; height:18px; }
     .brand{ gap:6px; min-width:0; }
     .brand__mark{ font-size:14px; }
     .brand__v{ display:none; }
@@ -699,16 +693,6 @@
   .reveal.in{ opacity:1; transform:none; }
   @keyframes barBeat{ 0%,100%{ transform:scaleY(.72); } 45%{ transform:scaleY(1.12); } }
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
-  .ysglogo__mark i{
-    animation:ysgAudioBadgeBeat 1.8s ease-in-out infinite !important;
-    transform-origin:center center;
-    will-change:transform;
-  }
-  .ysglogo__mark i:nth-child(2){ animation-delay:.12s !important; }
-  .ysglogo__mark i:nth-child(3){ animation-delay:.24s !important; }
-  .ysglogo__mark i:nth-child(4){ animation-delay:.36s !important; }
-  .ysglogo__mark i:nth-child(5){ animation-delay:.48s !important; }
-  .ysglogo__mark i:nth-child(6){ animation-delay:.6s !important; }
   @keyframes ysgAudioBadgeBeat{ 0%,100%{ transform:scaleY(.68); } 45%{ transform:scaleY(1.18); } }
 </style>
 </head>
@@ -717,11 +701,11 @@
 <div class="topbar">
   <div class="topbar__in">
     <a class="ysglogo" href="../index.html" aria-label="YSG Audio">
-      <span class="ysglogo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span>YSG<b>.AUDIO</b></span>
+      <span class="ysglogo__mark" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/><path d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/></svg></span><span>YSG<b>.AUDIO</b></span>
     </a>
     <a class="brand" href="#top">
       <span class="brand__mark">Sound<b>Field</b></span>
-      <span class="brand__v">v1.3.0 · Windows x64</span>
+      <span class="brand__v">v2.1.0 · Windows x64</span>
     </a>
     <nav class="navlinks" aria-label="섹션">
       <a href="#binaural">바이노럴</a>
@@ -744,8 +728,8 @@
         <span class="dl__ico" aria-hidden="true">▾</span><span class="dl__label">다운로드</span>
       </button>
       <div class="dl__menu" role="menu">
-        <a class="dl__opt" role="menuitem" href="https://github.com/samter96/SoundField/releases/download/v1.3.0/SoundField_Installer_v1.3.0.exe" download>
-          <span class="dl__os"><span class="dl__osname">Windows</span><span class="dl__meta">v1.3.0 · x64 · .exe</span></span>
+        <a class="dl__opt" role="menuitem" href="https://github.com/samter96/SoundField/releases/download/v2.1.0/SoundField_Installer_v2.1.0.exe" download>
+          <span class="dl__os"><span class="dl__osname">Windows</span><span class="dl__meta">v2.1.0 · x64 · .exe</span></span>
           <span class="dl__go" aria-hidden="true">↓</span>
         </a>
         <span class="dl__opt dl__opt--mac" role="menuitem" aria-disabled="true">
@@ -787,7 +771,7 @@
         원본 라이브러리는 <b style="color:var(--text)">읽기 전용</b>으로만 다루어 절대 건드리지 않습니다.
       </p>
       <div class="hero__meta">
-        <span class="chip"><span class="dot">●</span> standalone (PyQt6)</span>
+        <span class="chip"><span class="dot">●</span> standalone (Tauri 2)</span>
         <span class="chip">수 <b>TB</b> 규모</span>
         <span class="chip">WAV · MP3 · FLAC · AIFF</span>
         <span class="chip">로컬 인덱스</span>
@@ -825,11 +809,11 @@
     </div>
 
     <div class="binaural-summary">
-      <div class="bsummary"><div class="bsummary__k">speaker layouts</div><div class="bsummary__v"><b>3~8채널 스피커 포맷</b>을 실제 방위각으로 공간 인코딩합니다. 5.1의 LFE는 규약대로 모니터링 체인에서 제외합니다.</div></div>
+      <div class="bsummary"><div class="bsummary__k">speaker layouts</div><div class="bsummary__v"><b>3~9채널 스피커 포맷</b>을 실제 방위각으로 공간 인코딩합니다. 7.0.2의 높이 채널까지 포함하고, 5.1의 LFE는 규약대로 모니터링 체인에서 제외합니다.</div></div>
       <div class="bsummary"><div class="bsummary__k">native ambisonics</div><div class="bsummary__v"><b>AmbiX는 원래 차수를 유지해 직접 디코딩</b>하고, FuMa는 채널 순서와 W 레벨을 AmbiX 규격으로 정확히 변환합니다.</div></div>
       <div class="bsummary"><div class="bsummary__k">non-destructive</div><div class="bsummary__v">원본 파일과 인덱스를 바꾸지 않습니다. 판정이 애매하면 <b>강제 변환 대신 A/B 선택</b>을 제공합니다.</div></div>
     </div>
-    <nav class="binaural-jump" aria-label="바이노럴 핵심 기능 바로가기"><a href="#binaural-detect">01 · 자동 판정</a><a href="#binaural-route">02 · 포맷별 처리</a><a href="#binaural-choice">03 · A/B 선택</a></nav>
+    <nav class="binaural-jump" aria-label="바이노럴 핵심 기능 바로가기"><a href="#binaural-detect">01 · 자동 판정</a><a href="#binaural-route">02 · 포맷별 처리</a><a href="#binaural-choice">03 · A/B 선택</a><a href="#binaural-order">04 · 채널 순서</a></nav>
 
     <div class="bstories">
       <article class="bstory" id="binaural-detect">
@@ -935,6 +919,48 @@
           </div>
         </div>
       </article>
+
+      <article class="bstory" id="binaural-order">
+        <div class="bstory__copy order-copy">
+          <span class="bstory__index">04 · channel order</span>
+          <h3>같은 5.1인데 채널 순서가 다른 파일을 가려낸다</h3>
+          <p>5.1·7.1은 채널이 담기는 <b>순서</b>가 두 갈래로 돌아다닙니다. 영화 계열은
+            L·C·R·Lb·Rb·LFE, 윈도우 계열은 L·R·C·LFE·Lb·Rb 순인데 파일 헤더만으로는
+            어느 쪽인지 알 수 없는 경우가 많습니다. 순서를 잘못 잡으면 <b>중앙이 한쪽으로
+            쏠리고 LFE가 스피커 자리에 들어갑니다.</b> 그래서 두 순서를 번갈아 들려주고,
+            고른 값을 파일 하나에만 저장하거나 <b>그 폴더의 같은 채널 수 파일 전체</b>에
+            한 번에 적용할 수 있습니다.</p>
+          <div class="bstory__tags"><span>film order</span><span>wave order</span><span>compare &amp; listen</span><span>folder-wide save</span></div>
+        </div>
+        <div class="bvisual" aria-label="채널 순서 비교 청취 애니메이션">
+          <div class="bvisual__bar"><span>CHANNEL ORDER COMPARE</span><span class="live">● preview</span></div>
+          <div class="choice-stage">
+            <div class="choice-dialog">
+              <div class="choice-dialog__head">
+                <div class="choice-dialog__title">5.1 채널 순서 확인</div>
+                <div class="choice-dialog__reason">6채널 5.1이지만 채널이 담긴 순서를 헤더에서 확정할 수 없습니다.</div>
+              </div>
+              <div class="choice-wave" aria-hidden="true"><i style="--h:16px;--i:1"></i><i style="--h:30px;--i:2"></i><i style="--h:20px;--i:3"></i><i style="--h:40px;--i:4"></i><i style="--h:26px;--i:5"></i><i style="--h:44px;--i:6"></i><i style="--h:19px;--i:7"></i><i style="--h:33px;--i:8"></i><i style="--h:23px;--i:9"></i><i style="--h:41px;--i:10"></i><i style="--h:27px;--i:11"></i><i style="--h:37px;--i:12"></i><i style="--h:17px;--i:13"></i><i style="--h:32px;--i:14"></i><i style="--h:22px;--i:15"></i><i style="--h:39px;--i:16"></i><i style="--h:25px;--i:17"></i><i style="--h:35px;--i:18"></i><i style="--h:15px;--i:19"></i><i style="--h:42px;--i:20"></i><i style="--h:28px;--i:21"></i><i style="--h:36px;--i:22"></i><i style="--h:21px;--i:23"></i><i style="--h:31px;--i:24"></i><i style="--h:40px;--i:25"></i><i style="--h:24px;--i:26"></i><i style="--h:34px;--i:27"></i><i style="--h:18px;--i:28"></i></div>
+              <div class="choice-options">
+                <div class="choice-option" style="animation-delay:-2.6s">
+                  <div class="choice-option__name">FILM · L C R</div>
+                  <div class="choice-option__desc">L · C · R · Lb · Rb · LFE</div>
+                  <div class="choice-option__listen">▶ 영화 순서로 듣기</div>
+                </div>
+                <div class="choice-option" style="animation-delay:-2.6s">
+                  <div class="choice-option__name">WAVE · L R C</div>
+                  <div class="choice-option__desc">L · R · C · LFE · Lb · Rb</div>
+                  <div class="choice-option__listen">▶ 윈도우 순서로 듣기</div>
+                </div>
+              </div>
+              <div class="choice-save">
+                <span class="choice-status" style="animation-delay:-2.6s">이 폴더의 6채널 파일에 적용</span>
+                <span class="choice-reset">자동 판정으로 초기화</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
     </div>
 
     <div class="binaural-proof">
@@ -1006,7 +1032,7 @@
         </div>
         <div class="idbar">
           <span class="chip">이름 <b>SoundField</b></span>
-          <span class="chip">버전 <b>1.3.0</b></span>
+          <span class="chip">버전 <b>2.1.0</b></span>
           <span class="chip">플랫폼 <b>Windows x64</b></span>
         </div>
       </div>
@@ -1195,6 +1221,8 @@
         <h3>중복 검수</h3>
         <p><b>중복 자동 탐지</b> — 같은 파일이 여러 경로에 있으면 묶어서 표시합니다.</p>
         <p><b>정리</b> — 하나만 남기고 나머지는 검토 후 처리합니다.</p>
+        <p><b>검색 제외</b> — 각 그룹에서 경로가 가장 짧은 1개만 남기고 나머지를 검색에서 뺍니다. 파일도 인덱스도 지우지 않고 검색 결과에만 안 보이게 표시합니다.</p>
+        <p><b>제외 관리</b> — 제외한 항목은 따로 목록으로 남습니다. 전체를 되돌리거나 골라서 되돌릴 수 있고, 되돌리면 즉시 검색 결과에 다시 나타납니다.</p>
         <p class="note"><b>안전 —</b> 원본은 지우지 않고 검수 목록으로만 보여줍니다.</p>
       </div>
     </div>
@@ -1206,7 +1234,7 @@
       <span class="eyebrow wave">Playback &amp; waveform</span>
       <h2>클릭 한 번으로 파형과 함께 듣는다</h2>
       <p class="section__lead">
-        결과를 선택하면 곧바로 파형이 그려지고 재생됩니다. 확대·구간 선택·세그먼트 감지까지 오디션에 필요한 기능을 갖췄습니다.
+        결과를 선택하면 곧바로 파형이 그려지고 재생됩니다. 진폭 확대·구간 선택·세그먼트 감지까지 오디션에 필요한 기능을 갖췄습니다.
       </p>
     </div>
 
@@ -1217,7 +1245,7 @@
     </div>
     <div class="demo audition-demo">
       <figure class="panel" style="margin:0">
-        <div class="panel__bar"><span class="seg"><span class="tick b"></span>WAVEFORM PLAYER</span><span class="spacer"></span><span>zoom · segment · region</span></div>
+        <div class="panel__bar"><span class="seg"><span class="tick b"></span>WAVEFORM PLAYER</span><span class="spacer"></span><span>amplitude · segment · region</span></div>
         <div class="media" data-ar="16/9">
           <span class="media__badge">gif</span>
           <img alt="파형 플레이어 화면" data-src="assets/play_lite.gif">
@@ -1227,10 +1255,11 @@
       <div class="demo__side">
         <h3>오디션 도구</h3>
         <p><b>전용 재생 엔진</b> — 저지연 재생 엔진 + 폴백. WAV·MP3·FLAC·AIFF 지원.</p>
-        <p><b>파형 표시</b> — Nuendo/MediaBay 계열의 대칭 파형, 진폭·시간 확대.</p>
+        <p><b>파형 표시</b> — Nuendo/MediaBay 계열의 대칭 파형. 세로(진폭)만 확대하고 가로 시간축은 항상 파일 전체가 한 화면에 들어옵니다.</p>
         <p><b>구간 선택</b> — 파형을 드래그해 원하는 구간만 재생·내보내기.</p>
         <p><b>세그먼트 감지</b> — 무음 기준으로 소리 덩어리를 자동 분할해 탐색.</p>
         <p><b>재생 히스토리</b> — 최근 재생 목록을 슬라이드 드로어로 다시 꺼내기.</p>
+        <p><b>배속 재생</b> — 0.5x ~ 2.0x. 배속을 걸어 둔 채로 구간을 내보내면 그 속도로 렌더한 파일이 만들어집니다.</p>
       </div>
     </div>
 
@@ -1267,18 +1296,22 @@
     <div class="grid2">
       <div class="prose">
         <p>
-          구간 내보내기는 원본 오디오의 <span class="kw">데이터 청크</span>를 바이트 단위로 잘라내는 방식이라,
-          포맷과 무관하게 <b style="color:var(--text)">샘플 손실 없이</b> 저장됩니다.
+          WAV 구간 내보내기는 원본 오디오의 <span class="kw">데이터 청크</span>를 바이트 단위로 잘라내는 방식이라,
+          다시 인코딩하지 않고 <b style="color:var(--text)">샘플 손실 없이</b> 저장됩니다.
+          MP3·FLAC·AIFF 는 구간 잘라내기를 지원하지 않아, 그 파일들은 <b style="color:var(--text)">원본 전체</b>가 전달됩니다.
         </p>
         <p>
           방송용 정보(<span class="kw">bext</span>), 제작 메타(<span class="kw">iXML</span>), 마커(<span class="kw">cue</span>) 같은 청크를
           그대로 보존해, 잘라낸 파일도 원본의 정보를 유지합니다.
         </p>
         <p>또한 감지된 세그먼트나 선택 구간을 외부 DAW로 <b style="color:var(--text)">드래그 앤 드롭</b>해, 필요한 구간만 타임라인에 바로 스폿할 수 있습니다.</p>
+        <p>재생 배속을 1.0x 가 아닌 값으로 두고 내보내면 그 속도로 렌더한 별도 파일
+          (<span class="kw">이름_0.45x.wav</span>)이 만들어집니다. 이름이 달라 DAW가 1.0x 원본과
+          <b style="color:var(--text)">다른 소재로 취급</b>합니다.</p>
       </div>
       <div class="split">
         <div class="fact violet"><h4>보존되는 청크</h4><ul><li><b>bext</b> — 방송용 메타</li><li><b>iXML</b> — 제작 메타</li><li><b>cue</b> — 마커 정보</li></ul></div>
-        <div class="fact"><h4>내보내기 방식</h4><ul><li>구간 드래그 선택</li><li>포맷 무관 무손실 슬라이스</li><li>DAW 타임라인으로 바로 스폿</li></ul></div>
+        <div class="fact"><h4>내보내기 방식</h4><ul><li>구간 드래그 선택</li><li>WAV 무손실 슬라이스 (그 외 포맷은 원본 전체)</li><li>DAW 타임라인으로 바로 스폿</li></ul></div>
       </div>
     </div>
     <div class="demo-title violet region-export-title">
@@ -1339,8 +1372,8 @@
       <h2>사양 요약</h2>
     </div>
     <div class="status">
-      <div class="stat"><div class="k">version</div><div class="v blue">SoundField 1.3.0</div><div class="s">standalone 검색 툴</div></div>
-      <div class="stat"><div class="k">platform</div><div class="v">Windows x64</div><div class="s">PyQt6 기반</div></div>
+      <div class="stat"><div class="k">version</div><div class="v blue">SoundField 2.1.0</div><div class="s">standalone 검색 툴</div></div>
+      <div class="stat"><div class="k">platform</div><div class="v">Windows x64</div><div class="s">Tauri 2 · Rust + React</div></div>
       <div class="stat"><div class="k">formats</div><div class="v aqua">WAV · MP3 · FLAC · AIFF</div><div class="s">재생·파형·메타 지원</div></div>
       <div class="stat"><div class="k">index</div><div class="v">SQLite · FTS</div><div class="s">로컬 저장 · 2단계 색인</div></div>
       <div class="stat"><div class="k">scale</div><div class="v">수 TB · 수백만 파일</div><div class="s">대용량 라이브러리 대상</div></div>
@@ -1360,7 +1393,7 @@
     <div class="foot__meta">
       Made by <b>YSG Audio</b> (You Seung Gyun)<br>
       contact : <a href="mailto:Samter96@naver.com">Samter96@naver.com</a><br>
-      SoundField v1.3.0 · Windows x64<br>
+      SoundField v2.1.0 · Windows x64<br>
       <span id="year"></span>
     </div>
   </div>
@@ -1464,7 +1497,7 @@
     ['#player .demo__side h3','Audition tools'],['#player .gcard:nth-child(1) figcaption','Auto segment detection ● live'],['#player .gcard:nth-child(2) figcaption','Playback history'],['#player .demo:nth-of-type(4) .demo__side h3','Spot to DAW'],
     ['#themes .theme-neutral h4','Neutral (Gray)'],['#themes .theme-neon h4','Neon (Dark navy)'],['#themes .theme-light h4','Light (Beige)'],
     ['#themes .theme-neutral .feat__tag','Default'],['#themes .theme-neutral + .theme-shot .figcap','Neutral theme'],['#themes .theme-neon + .theme-shot .figcap','Neon theme'],['#themes .theme-light + .theme-shot .figcap','Light theme'],
-    ['.hero__meta .chip:nth-child(3)','WAV · MP3 · FLAC · AIFF'],['.hero__meta .chip:nth-child(5)','multichannel binaural'],['#overview .idbar .chip:nth-child(2)','Version <b>1.3.0</b>'],
+    ['.hero__meta .chip:nth-child(3)','WAV · MP3 · FLAC · AIFF'],['.hero__meta .chip:nth-child(5)','multichannel binaural'],['#overview .idbar .chip:nth-child(2)','Version <b>2.1.0</b>'],
     ['.index-animation-title h3','Phase 1 makes search available first'],
     ['.search-scope-title h3','The header always shows the current search scope'],
     ['.search-precision-title h3','Broad search and exact search produce different results'],
@@ -1477,8 +1510,16 @@
     ['.result-layout-demo .demo__side h3','Column customization'],
     ['.duplicate-review-demo .demo__side h3','Duplicate review'],
     ['.region-export-demo .demo__side h3','Deliver only the needed region'],
-    ['.stat:nth-child(1) .s','Standalone search tool'],['.stat:nth-child(2) .s','Built with PyQt6'],['.stat:nth-child(3) .s','Playback, waveform, metadata'],['.stat:nth-child(4) .s','Local storage · two-stage index'],['.stat:nth-child(5) .v','Multi-TB · millions of files'],['.stat:nth-child(5) .s','Designed for large libraries'],['.stat:nth-child(6) .v','Read-only library'],['.stat:nth-child(6) .s','Never modifies source files'],
-    ['.dl__label','Download'],['.dl__opt--mac .dl__meta','In development']
+    ['.stat:nth-child(1) .s','Standalone search tool'],['.stat:nth-child(2) .s','Tauri 2 · Rust + React'],['.stat:nth-child(3) .s','Playback, waveform, metadata'],['.stat:nth-child(4) .s','Local storage · two-stage index'],['.stat:nth-child(5) .v','Multi-TB · millions of files'],['.stat:nth-child(5) .s','Designed for large libraries'],['.stat:nth-child(6) .v','Read-only library'],['.stat:nth-child(6) .s','Never modifies source files'],
+    ['.dl__label','Download'],['.dl__opt--mac .dl__meta','In development'],
+    ['.binaural-jump a:nth-child(4)','04 · Channel order'],
+    ['#binaural-order .bstory__copy h3','Tell apart two files that are both 5.1 but ordered differently'],
+    ['#binaural-order .choice-dialog__title','5.1 channel order check'],
+    ['#binaural-order .choice-dialog__reason','The file is 6-channel 5.1, but the order its channels are stored in cannot be confirmed from the header.'],
+    ['#binaural-order .choice-option:nth-child(1) .choice-option__listen','▶ AUDITION AS FILM ORDER'],
+    ['#binaural-order .choice-option:nth-child(2) .choice-option__listen','▶ AUDITION AS WAVE ORDER'],
+    ['#binaural-order .choice-status','Apply to every 6-channel file in this folder'],
+    ['#binaural-order .choice-reset','Reset to auto detection']
   ];
   var HTML=[
     ['.hero__title','Search <span class="hl">multi-TB sound</span><br>and audition it<br><span class="hl2">as waveform</span>'],
@@ -1524,14 +1565,14 @@
     ['.duplicate-review-demo .demo__side p:nth-child(3)','<b>Cleanup flow</b> - keep one copy and review the rest before acting.'],
     ['.duplicate-review-demo .demo__side .note','<b>Safe -</b> source files are not deleted; duplicates are shown only as a review list.'],
     ['#browser .demo:nth-of-type(3) .demo__side p:nth-child(2)','<b>Automatic duplicate detection</b> — identical files in multiple paths are grouped for review.'],['#browser .demo:nth-of-type(3) .demo__side p:nth-child(3)','<b>Cleanup flow</b> — keep one copy and review the rest before acting.'],['#browser .demo:nth-of-type(3) .demo__side .note','<b>Safe —</b> source files are not deleted; duplicates are shown only as a review list.'],
-    ['#player .section__lead','Select a result and the waveform is drawn immediately with playback. Zoom, region selection, and segment detection are built for fast auditioning.'],
+    ['#player .section__lead','Select a result and the waveform is drawn immediately with playback. Amplitude zoom, region selection, and segment detection are built for fast auditioning.'],
     ['.audition-title p','Selecting a result continues directly into playback, waveform view, and region checking inside the app, so you can judge the sound before opening a DAW.'],
-    ['#player .demo__side p:nth-child(2)','<b>Dedicated playback engine</b> — low-latency engine with fallback. WAV, MP3, FLAC, and AIFF supported.'],['#player .demo__side p:nth-child(3)','<b>Waveform display</b> — symmetric Nuendo/MediaBay-style waveform with amplitude and time zoom.'],['#player .demo__side p:nth-child(4)','<b>Region selection</b> — drag across the waveform to play or export only the range you need.'],['#player .demo__side p:nth-child(5)','<b>Segment detection</b> — automatically splits sound events based on silence.'],['#player .demo__side p:nth-child(6)','<b>Playback history</b> — reopen recent playback items from a slide-out drawer.'],
+    ['#player .demo__side p:nth-child(2)','<b>Dedicated playback engine</b> — low-latency engine with fallback. WAV, MP3, FLAC, and AIFF supported.'],['#player .demo__side p:nth-child(3)','<b>Waveform display</b> — symmetric Nuendo/MediaBay-style waveform. Only the vertical amplitude zooms; the horizontal time axis always fits the whole file on one screen.'],['#player .demo__side p:nth-child(4)','<b>Region selection</b> — drag across the waveform to play or export only the range you need.'],['#player .demo__side p:nth-child(5)','<b>Segment detection</b> — automatically splits sound events based on silence.'],['#player .demo__side p:nth-child(6)','<b>Playback history</b> — reopen recent playback items from a slide-out drawer.'],
     ['.segments-history-title p','Segment detection and playback history are shown together, so heard sounds and export candidates remain easy to track.'],
     ['#player .gcard:nth-child(1) .figcap','Auto segment detection <span class="live">? live</span>'],
     ['#player .gcard:nth-child(2) .figcap','Playback history'],
     ['#binaural .section__lead','SoundField does more than fold multichannel audio down to stereo. It <b style="color:var(--text)">identifies the channel layout and renders it through the real IEM spatial chain.</b> Speaker formats such as 5.1 and 7.1, plus AmbiX, FuMa, and higher-order Ambisonics, follow their correct paths so you can judge spatial placement on headphones before opening a DAW.'],
-    ['#binaural .bsummary:nth-child(1) .bsummary__v','<b>Three-to-eight-channel speaker formats</b> are encoded at their real azimuths. The LFE in 5.1 is excluded from the monitor chain as specified.'],
+    ['#binaural .bsummary:nth-child(1) .bsummary__v','<b>Three-to-nine-channel speaker formats</b> are encoded at their real azimuths, including the height channels of 7.0.2. The LFE in 5.1 is excluded from the monitor chain as specified.'],
     ['#binaural .bsummary:nth-child(2) .bsummary__v','<b>AmbiX keeps its native order and decodes directly.</b> FuMa is converted to the correct AmbiX channel order and W level.'],
     ['#binaural .bsummary:nth-child(3) .bsummary__v','Source files and the index remain untouched. When evidence is ambiguous, SoundField offers <b>A/B audition instead of forcing a conversion.</b>'],
     ['#binaural .detect-copy p','Evidence is combined in this order: <b>user choice → explicit file name → WAV channel mask → channel count.</b> A six-channel file has one supported standard layout and resolves directly to 5.1. Nine channels can mean 7.0.2 or second-order Ambisonics, so the app does not guess without evidence.'],
@@ -1542,15 +1583,20 @@
     ['#binaural .bproof:nth-child(3) .bproof__v','Matched against the same IEM chain in REAPER: <b>0-sample offset · correlation 0.999999999985.</b>'],
     ['#binaural > .note','<b>Installation policy —</b> IEM plug-ins are not bundled with the app. If they are missing, SoundField links to the official free download and safely keeps playback on the existing stereo path.'],
     ['#export .section__lead','Export a selected waveform range as a separate file or spot it directly onto a DAW timeline. Production and broadcast chunks are preserved so only the useful region is delivered without metadata loss.'],
-    ['#export .prose p:nth-child(1)','Region export slices the source audio <span class="kw">data chunk</span> by byte range, so it saves the selection <b style="color:var(--text)">without sample loss</b>.'],['#export .prose p:nth-child(2)','Chunks such as <span class="kw">bext</span>, <span class="kw">iXML</span>, and <span class="kw">cue</span> are preserved, so exported files retain source information.'],['#export .prose p:nth-child(3)','Detected segments or selected regions can also be dragged directly into an external DAW, placing only the needed region on the timeline.'],
-    ['#export .fact:nth-child(1) h4','Preserved chunks'],['#export .fact:nth-child(1) ul','<li><b>bext</b> — broadcast metadata</li><li><b>iXML</b> — production metadata</li><li><b>cue</b> — marker information</li>'],['#export .fact:nth-child(2) h4','Export method'],['#export .fact:nth-child(2) ul','<li>Select a region by dragging</li><li>Lossless slice regardless of format</li><li>Spot directly to a DAW timeline</li>'],
+    ['#export .prose p:nth-child(1)','WAV region export slices the source audio <span class="kw">data chunk</span> by byte range, so the selection is saved <b style="color:var(--text)">without sample loss</b> and without re-encoding. MP3, FLAC, and AIFF have no region slicing, so those files are delivered <b style="color:var(--text)">in full</b>.'],['#export .prose p:nth-child(2)','Chunks such as <span class="kw">bext</span>, <span class="kw">iXML</span>, and <span class="kw">cue</span> are preserved, so exported files retain source information.'],['#export .prose p:nth-child(3)','Detected segments or selected regions can also be dragged directly into an external DAW, placing only the needed region on the timeline.'],
+    ['#export .fact:nth-child(1) h4','Preserved chunks'],['#export .fact:nth-child(1) ul','<li><b>bext</b> — broadcast metadata</li><li><b>iXML</b> — production metadata</li><li><b>cue</b> — marker information</li>'],['#export .fact:nth-child(2) h4','Export method'],['#export .fact:nth-child(2) ul','<li>Select a region by dragging</li><li>Lossless WAV slice (other formats deliver the full file)</li><li>Spot directly to a DAW timeline</li>'],
     ['.region-export-title p','Instead of copying the whole source, export only the needed segment or selected region, or spot it directly onto the DAW timeline.'],
     ['.region-export-demo .demo__side p:nth-child(2)','<b>Region export</b> - create a separate file from the selected waveform range while preserving bext, iXML, cue, and related chunks.'],
     ['.region-export-demo .demo__side p:nth-child(3)','<b>Spot to DAW</b> - drag a segment header or selected region directly to the target DAW lane.'],
     ['.region-export-demo .demo__side .note','<b>Lossless -</b> the app delivers only the region instead of copying the full source.'],
     ['#export .demo__side h3','Deliver only the needed region'],['#export .demo__side p:nth-child(2)','<b>Region export</b> — create a separate file from the selected waveform range while preserving bext, iXML, cue, and related chunks.'],['#export .demo__side p:nth-child(3)','<b>Spot to DAW</b> — drag a segment header or selected region directly to the target DAW lane.'],['#export .demo__side .note','<b>Lossless —</b> the app delivers only the region instead of copying the full source.'],
     ['#themes .section__lead','Choose between neutral gray, dark navy, and light beige to match the working environment.'],['#themes .theme-neutral p','Neutral grayscale with little color interference. Calm and utilitarian, used as the default theme.'],['#themes .theme-neon p','Deep navy background with blue accents. A focused pro-audio tone.'],['#themes .theme-light p','Warm beige background with dark brown accents.'],
-    ['.foot__legal','<b>SoundField</b> — a large-scale sound library search, audition, and region export tool. This page is product introduction material; motion examples are composed to explain the tool behavior. Product and format names belong to their owners.']
+    ['.foot__legal','<b>SoundField</b> — a large-scale sound library search, audition, and region export tool. This page is product introduction material; motion examples are composed to explain the tool behavior. Product and format names belong to their owners.'],
+    ['#binaural-order .bstory__copy p','5.1 and 7.1 content circulates in two different channel <b>orders</b>. The film convention is L·C·R·Lb·Rb·LFE and the Windows convention is L·R·C·LFE·Lb·Rb, and the file header often cannot tell you which one you have. Pick the wrong order and <b>the centre pulls to one side while the LFE lands on a speaker position.</b> SoundField auditions both orders back to back, then saves your choice for that one file or applies it to <b>every file with the same channel count in that folder</b> at once.'],
+    ['.duplicate-review-demo .demo__side p:nth-child(4)','<b>Exclude from search</b> — keeps the shortest path in each group and drops the rest from search. Neither the files nor the index are deleted; the copies are only hidden from results.'],
+    ['.duplicate-review-demo .demo__side p:nth-child(5)','<b>Exclusion manager</b> — excluded items stay on their own list. Restore all of them or pick individual ones, and they reappear in search results immediately.'],
+    ['#player .demo__side p:nth-child(7)','<b>Varispeed playback</b> — 0.5x to 2.0x. Export a region while a speed is set and the file is rendered at that speed.'],
+    ['#export .prose p:nth-child(4)','Exporting while playback speed is not 1.0x renders a separate file at that speed (<span class=\'kw\'>name_0.45x.wav</span>). The different name makes the DAW <b style=\'color:var(--text)\'>treat it as separate material</b> from the 1.0x source.']
   ];
   var ATTR=[
     ['.railnav a[href="#overview"]','data-label','Overview'],['.railnav a[href="#index"]','data-label','Indexing'],['.railnav a[href="#search"]','data-label','Search'],['.railnav a[href="#browser"]','data-label','Browser'],['.railnav a[href="#player"]','data-label','Playback'],['.railnav a[href="#binaural"]','data-label','Binaural'],['.railnav a[href="#export"]','data-label','Export'],['.railnav a[href="#themes"]','data-label','Themes'],
@@ -1558,6 +1604,7 @@
     ['#binaural .binaural-demo','aria-label','Animated binaural monitoring signal flow'],
     ['#binaural .bstory:nth-child(3) .bvisual','aria-label','Animated AmbiX and FuMa A/B selection with per-file save'],
     ['#binaural .binaural-jump','aria-label','Binaural feature shortcuts'],
+    ['#binaural-order .bvisual','aria-label','Animated channel-order A/B comparison'],
     ['.langswitch','aria-label','Switch language'],['.media img[alt="SoundField 실제 메인 화면"]','alt','Actual SoundField main screen'],['.media img[alt="파형 플레이어 화면"]','alt','Waveform player screen'],['.media img[alt="재생 히스토리 드로어"]','alt','Playback history drawer']
   ];
   TXT.forEach(function(x){ rememberText(x[0]); });
@@ -1687,12 +1734,6 @@
     var pEl=document.getElementById('wvPeak'); if(pEl){ var db=lvl<=0.001?-60:20*Math.log10(lvl); pEl.textContent=(db<=-60?'-∞':db.toFixed(1)); }
   }
 
-  var HIER_LEVELS=[
-    {ko:'전체 라이브러리',en:'All libraries',path:'Y:/[Library]',col:'#5290d4'},
-    {ko:'SFX',en:'SFX',path:'Y:/[Library]/SFX',col:'#5dd0d8'},
-    {ko:'Weapon',en:'Weapon',path:'Y:/[Library]/SFX/Weapon',col:'#c89840'},
-    {ko:'Firearms',en:'Firearms',path:'Y:/[Library]/SFX/Weapon/Firearms',col:'#d05a5a'}
-  ];
   var HIER_ROWS=[
     {n:'IMPACT_Metal_Body_01.wav',path:['SFX','Weapon','Impact'],lvl:2},
     {n:'Rifle_Impact_Dirt_Close.wav',path:['SFX','Weapon','Firearms'],lvl:3},
@@ -1807,71 +1848,6 @@
     ctx.fillStyle=C.wave; ctx.font=uiFont(9,'bold'); ctx.textAlign='left';
     fitText(ctx,L('검색 결과도 라이브러리 맥락 유지','Results keep library context'),pad+22,lowerY+lowerH-16,w-pad*2-44);
   }
-  function drawHierarchy(st,now){
-    var ctx=st.ctx,w=st.w,h=st.h; if(w<20||h<20)return; if(isMobileCanvas(w)){ drawHierarchyMobile(st,now); return; } ctx.clearRect(0,0,w,h);
-    var pad=16, period=8800, ph=(now%period)/period, step=Math.floor(ph*4)%4, local=(ph*4)%1;
-    var next=(step+1)%4, travel=ease(clamp((local-0.58)/0.24,0,1)), active=travel>0.01?next:step;
-    var moving=local>=0.58&&local<0.82, levels=HIER_LEVELS, lv=levels[active], col=lv.col;
-    var leftW=Math.min(320,Math.max(230,w*.30)), gap=18, rightX=pad+leftW+gap, rightW=w-rightX-pad;
-    var headH=42, headY=pad, treeY=headY+headH+12, rowH=32, i;
-    ctx.fillStyle='rgba(90,140,196,.06)'; rr(ctx,pad,headY,leftW,headH,9); ctx.fill();
-    ctx.strokeStyle='rgba(90,140,196,.20)'; ctx.lineWidth=1; rr(ctx,pad,headY,leftW,headH,9); ctx.stroke();
-    ctx.fillStyle=col; ctx.fillRect(pad,headY,4,headH);
-    ctx.fillStyle=C.mut; ctx.font=uiFont(10); ctx.textBaseline='top'; ctx.textAlign='left';
-    ctx.fillText(L('검색 범위','Search scope'), pad+14, headY+8);
-    ctx.fillStyle=C.text; ctx.font=uiFont(13,'bold'); ctx.textBaseline='bottom';
-    fitText(ctx,lv.path,pad+14,headY+34,leftW-28);
-    for(i=0;i<levels.length;i++){
-      var y=treeY+i*rowH, isA=i===active;
-      ctx.fillStyle=isA?'rgba(90,140,196,.14)':'rgba(90,140,196,.05)'; rr(ctx,pad,y,leftW,rowH-5,7); ctx.fill();
-      if(isA){ ctx.strokeStyle=levels[i].col; ctx.lineWidth=1.3; rr(ctx,pad+.5,y+.5,leftW-1,rowH-6,7); ctx.stroke(); }
-      ctx.fillStyle=levels[i].col; ctx.globalAlpha=isA?1:.55; ctx.beginPath(); ctx.arc(pad+18+i*8,y+rowH/2-2,4.2,0,7); ctx.fill(); ctx.globalAlpha=1;
-      ctx.strokeStyle='rgba(90,140,196,.18)'; ctx.beginPath(); ctx.moveTo(pad+18+i*8,y+rowH/2+3); ctx.lineTo(pad+18+i*8,y+rowH+3); ctx.stroke();
-      ctx.fillStyle=isA?C.text:C.mut; ctx.font=uiFont(12,isA?'bold':''); ctx.textBaseline='middle'; ctx.textAlign='left';
-      ctx.fillText(currentLang==='en'?levels[i].en:levels[i].ko, pad+34+i*8, y+rowH/2-2);
-    }
-    if(moving){
-      var tx=pad+34+next*8, ty=treeY+next*rowH+rowH/2, p2=travel;
-      var sx=pad+leftW-18, sy=treeY+step*rowH+rowH/2, cxp=sx+(tx-sx)*p2, cyp=sy+(ty-sy)*p2-Math.sin(p2*Math.PI)*16;
-      ctx.fillStyle=C.text; ctx.beginPath(); ctx.moveTo(cxp,cyp); ctx.lineTo(cxp+11,cyp+4); ctx.lineTo(cxp+5,cyp+6); ctx.lineTo(cxp+3,cyp+11); ctx.closePath(); ctx.fill();
-      ctx.strokeStyle=levels[next].col; ctx.globalAlpha=.55*(1-p2); ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(tx,ty,9+p2*12,0,7); ctx.stroke(); ctx.globalAlpha=1;
-    }
-    ctx.fillStyle='rgba(90,140,196,.06)'; rr(ctx,rightX,headY,rightW,headH,9); ctx.fill();
-    ctx.strokeStyle='rgba(90,140,196,.20)'; ctx.lineWidth=1; rr(ctx,rightX,headY,rightW,headH,9); ctx.stroke();
-    ctx.fillStyle=col; rr(ctx,rightX+10,headY+10,Math.max(80,rightW*.30),22,11); ctx.fill();
-    ctx.fillStyle='#0a0d13'; ctx.font=uiFont(11,'bold'); ctx.textBaseline='middle'; ctx.textAlign='left';
-    fitText(ctx,(currentLang==='en'?lv.en:lv.ko)+' scope',rightX+22,headY+21,Math.max(50,rightW*.30-24));
-    ctx.fillStyle=C.text; ctx.font=uiFont(14); ctx.textBaseline='middle'; ctx.textAlign='left';
-    var qx=rightX+Math.max(102,rightW*.34); ctx.fillText('impact', qx, headY+21);
-    if((Math.floor(now/420)%2)===0){ ctx.fillStyle=C.acc; ctx.fillRect(qx+ctx.measureText('impact').width+4,headY+13,1.5,16); }
-    var visible=HIER_ROWS.filter(function(r){ return active===0 ? true : r.lvl>=active; });
-    ctx.fillStyle=C.mut2; ctx.font=uiFont(10); ctx.textAlign='right'; ctx.fillText(visible.length+' / '+HIER_ROWS.length, rightX+rightW-12, headY+21);
-    var tableY=treeY, tableH=h-tableY-pad-28, resultH=Math.min(30,tableH/HIER_ROWS.length);
-    ctx.fillStyle=C.mut2; ctx.font=uiFont(10); ctx.textAlign='left'; ctx.textBaseline='bottom';
-    ctx.fillText(L('결과 안에서 라이브러리 계층까지 같이 표시','Results keep full library hierarchy'), rightX, tableY-5);
-    for(var r=0;r<HIER_ROWS.length;r++){
-      var row=HIER_ROWS[r], show=active===0?true:row.lvl>=active, ry=tableY+r*resultH;
-      ctx.globalAlpha=show?1:.18;
-      ctx.fillStyle=show?'rgba(90,140,196,.075)':'rgba(90,140,196,.025)'; rr(ctx,rightX,ry,rightW,resultH-5,6); ctx.fill();
-      if(show){ ctx.fillStyle=levels[Math.min(row.lvl,3)].col; ctx.fillRect(rightX,ry,3,resultH-5); }
-      ctx.fillStyle=show?C.text:C.mut2; ctx.font='12px '+MONO; ctx.textBaseline='middle'; ctx.textAlign='left';
-      fitText(ctx,row.n,rightX+12,ry+resultH/2,Math.max(120,rightW*.42));
-      var bx=rightX+Math.max(150,rightW*.46), by=ry+resultH/2-9;
-      for(var j=0;j<row.path.length;j++){
-        var label=row.path[j], bw2=Math.min(74,ctx.measureText(label).width+16);
-        ctx.fillStyle='rgba(10,13,19,.42)'; rr(ctx,bx,by,bw2,18,9); ctx.fill();
-        ctx.strokeStyle=levels[Math.min(j+1,3)].col; ctx.lineWidth=1; rr(ctx,bx+.5,by+.5,bw2-1,17,9); ctx.stroke();
-        ctx.fillStyle=show?C.mut:C.mut2; ctx.font=uiFont(9); ctx.textBaseline='middle'; ctx.textAlign='center'; fitText(ctx,label,bx+8,by+9,bw2-16);
-        bx+=bw2+5; if(bx>rightX+rightW-42)break;
-      }
-      ctx.globalAlpha=1;
-    }
-    var msg=L('하위 탭으로 내려갈수록 헤더 색이 현재 검색 경로를 따라갑니다','Header color follows the active library path as you go deeper');
-    ctx.fillStyle='rgba(200,152,64,.12)'; rr(ctx,pad,h-pad-24,w-pad*2,24,8); ctx.fill();
-    ctx.strokeStyle='rgba(200,152,64,.35)'; ctx.lineWidth=1; rr(ctx,pad,h-pad-24,w-pad*2,24,8); ctx.stroke();
-    ctx.fillStyle=C.amber; ctx.font=uiFont(11,'bold'); ctx.textAlign='left'; ctx.textBaseline='middle'; fitText(ctx,msg,pad+12,h-pad-12,w-pad*2-24);
-  }
-
   function drawHierarchy(st,now){
     var ctx=st.ctx,w=st.w,h=st.h; if(w<20||h<20)return; if(isMobileCanvas(w)){ drawHierarchyMobile(st,now); return; } ctx.clearRect(0,0,w,h);
     var pad=14, period=9200, ph=(now%period)/period;
