@@ -3,6 +3,7 @@
 # machine paths and are only useful on the authoring PC.
 __pycache__/
 brand/PROGRESS.md
+brand/RENEWAL_PLAN.md
 brand/explore*
 brand/brand.html
 brand/preview.html
