@@ -586,6 +586,9 @@
   .tile code{
     font-family:ui-monospace, "Cascadia Mono", Consolas, monospace;
     font-size:.9em; background:var(--tint-2); padding:1px 6px; border-radius:5px;
+    /* ⚠ 긴 파일명(att_auditor_exceptions.json 등)이 줄바꿈되지 않으면
+       그 최소폭이 타일 → 그리드 → 문서로 전파돼 320px 에서 가로 스크롤이 생긴다. */
+    overflow-wrap:anywhere;
   }
 
   /* ── Key Features (강조색 면 + 라인 아이콘 3×3) ──────────────────
