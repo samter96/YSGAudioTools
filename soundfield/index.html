@@ -262,101 +262,109 @@
      ⚠ 박스에 **버전 번호를 넣지 말 것** (사용자 지시 2026-09-09).
        버전이 올라가는 순간 이 그림이 거짓이 된다.
      움직임 ② — 아주 느린 부유 + 포인터 기울기. */
-  /* ── 제품 사진의 공간 (배경) ────────────────────────────────────
-     박스를 어딘가에 올려놓은 것처럼 보이게 하는 배경이다. 사진이 아니라
-     그라디언트와 SVG 선으로 만든 방이다.
+  /* ── 제품 사진의 공간 ───────────────────────────────────────────
+     박스를 테이블에 올려놓은 사진처럼 보이게 만든 장면이다. 사진이 아니다.
 
-     구성:  뒷벽(창광 + 보케)  →  수평선  →  테이블(원근 결선)
-            →  퍼지는 그림자  →  접지 그림자  →  바닥 반사  →  박스  →  비네트
+     핵심: 바닥을 `rotateX(90deg)` 로 **박스 밑변을 힌지로** 눕힌다.
+     그러면 박스와 바닥이 같은 3D 공간에 있게 되고, 나뭇결·그림자·반사가
+     모두 같은 원근으로 수렴한다. 앞선 판은 바닥이 2D 사각형이라 아무리
+     칠해도 "뒤에 배경이 깔린 박스" 로만 보였다.
 
-     ⚠ 배경 요소는 3D 사슬 밖에 두어야 한다. `.pkg__stage` 나 `.box` 에
-       `filter` 를 걸면 원근이 죽어 박스가 납작해진다 (2026-09-09 실패 기록). */
+     쌓임:  벽(흐림) → 바닥면(나뭇결·안개·그림자·반사) → 박스 → 비네트
+
+     ⚠ `.pkg__stage` 와 `.box` 에 `filter` 를 걸지 말 것 — 3D 가 평탄화되어
+       바닥과 박스가 다시 어긋난다 (2026-09-09 실패 기록). */
   .pkg{
-    /* ⚠ 프레임 높이를 `aspect-ratio`(=폭 기준)로 두지 말 것.
-       박스 크기는 `vw` 기준이라 둘이 따로 움직이고, 어떤 폭에서는 박스가
-       프레임보다 커져 잘린다 (390px 에서 윗변 -2%, 1000px 에서 -16% 였다).
-       그래서 프레임 높이·아래 여백을 **박스 높이에서** 계산한다.
-       비율 1.613 / 0.403 은 박스가 위 13% · 아래 75% 에 앉는 값이다. */
     --bw: clamp(128px, 17.5vw, 198px);
     --bh: calc(var(--bw) * 1.3);
     --bd: calc(var(--bw) * .27);
-    --horizon: 54%;          /* 테이블 뒷변 위치 */
     position:relative;
-    height:calc(var(--bh) * 1.613);
+    height:calc(var(--bh) * 1.72);
     display:flex; align-items:flex-end; justify-content:center;
-    padding-bottom:calc(var(--bh) * .403);
-    perspective:1800px; perspective-origin:54% 38%;
+    padding-bottom:calc(var(--bh) * .30);
+    /* 원근 원점의 세로 위치가 곧 **지평선** 이 된다 (여기서는 프레임의 34%) */
+    perspective:1500px; perspective-origin:52% 34%;
     border-radius:var(--r); overflow:hidden; isolation:isolate;
-    /* 뒷벽 — 왼쪽 위에서 들어오는 빛 */
-    background:
-      radial-gradient(88% 70% at 18% -6%, #ffffff 0%, rgba(255,255,255,0) 62%),
-      radial-gradient(70% 56% at 88% 8%, #f2f5fc 0%, rgba(242,245,252,0) 66%),
-      linear-gradient(178deg, #eef1f8 0%, #e6eaf4 40%, #dfe4f0 100%);
+    background:linear-gradient(178deg, #e7ecf6 0%, #dfe5f1 100%);
   }
-  /* 창광 보케 — 흐린 광원 두 점. 사진 같은 깊이를 만든다 */
-  .env__bokeh{position:absolute; inset:0; z-index:0; pointer-events:none}
-  .env__bokeh i{
-    position:absolute; border-radius:50%; filter:blur(18px);
+
+  /* 벽 — 창에서 들어오는 빛. 흐리게 둬서 피사계 심도를 만든다 */
+  .env__wall{
+    position:absolute; left:-6%; right:-6%; top:-6%; height:56%; z-index:0;
+    filter:blur(7px);
+    background:
+      radial-gradient(46% 88% at 16% 4%,  rgba(255,255,255,.98), rgba(255,255,255,0) 70%),
+      radial-gradient(30% 62% at 40% -6%, rgba(255,252,244,.85), rgba(255,252,244,0) 72%),
+      radial-gradient(34% 70% at 88% 6%,  rgba(228,236,250,.9),  rgba(228,236,250,0) 72%),
+      linear-gradient(178deg, #eef2fa 0%, #e3e9f4 62%, #dbe2ee 100%);
+  }
+  /* 창광 보케 — 흐린 광원. 사진의 깊이감을 만드는 값싼 장치다 */
+  .env__wall i{
+    position:absolute; border-radius:50%; filter:blur(14px);
     background:radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,0) 70%);
   }
-  .env__bokeh i:nth-child(1){width:16%; aspect-ratio:1; left:9%;  top:7%;  opacity:.9}
-  .env__bokeh i:nth-child(2){width:10%; aspect-ratio:1; left:26%; top:3%;  opacity:.7}
-  .env__bokeh i:nth-child(3){width:7%;  aspect-ratio:1; right:14%; top:11%; opacity:.55}
+  .env__wall i:nth-child(1){width:15%; aspect-ratio:1; left:8%;  top:10%; opacity:.95}
+  .env__wall i:nth-child(2){width:9%;  aspect-ratio:1; left:25%; top:4%;  opacity:.75}
+  .env__wall i:nth-child(3){width:6%;  aspect-ratio:1; right:16%; top:14%; opacity:.6}
 
-  /* 테이블 — 수평선 아래 전부. 결선은 SVG 로 그린다 */
-  .env__table{
-    position:absolute; left:0; right:0; bottom:0; top:var(--horizon); z-index:0;
-    background:
-      linear-gradient(180deg, #dcd6cc 0%, #d3ccc0 22%, #c9c1b4 100%);
+  .pkg__stage{position:relative; z-index:1; transform-style:preserve-3d}
+
+  /* ── 바닥면 ──────────────────────────────────────────────────────
+     박스 밑변에서 힌지로 눕는다. `transform-origin` 을 바꾸지 말 것 —
+     힌지가 밑변에서 벗어나면 박스가 바닥을 뚫거나 떠 보인다. */
+  .floor{
+    position:absolute; left:50%; bottom:0; width:900%; height:900%;
+    transform-origin:50% 100%;
+    transform:translateX(-50%) rotateX(90deg);
+    transform-style:preserve-3d;
+    background:linear-gradient(0deg, #c8b79c 0%, #d6c7ae 34%, #cdbfa8 70%, #c2b5a0 100%);
   }
-  /* 테이블 위 광택 — 창 쪽에서 번지는 반사 */
-  .env__table:before{
-    content:""; position:absolute; inset:0;
-    background:
-      radial-gradient(60% 120% at 16% 0%, rgba(255,255,255,.72), rgba(255,255,255,0) 62%),
-      radial-gradient(46% 90% at 82% 6%, rgba(255,255,255,.34), rgba(255,255,255,0) 66%);
+  .floor__wood{position:absolute; inset:0; overflow:hidden}
+  .floor__wood svg{position:absolute; inset:0; width:100%; height:100%}
+  /* 원경 안개 — 멀어질수록 벽 색으로 빠진다. 심도의 절반은 이 그라디언트다 */
+  .floor__haze{
+    position:absolute; inset:0;
+    background:linear-gradient(0deg,
+      rgba(226,232,243,0) 0%, rgba(226,232,243,.14) 30%,
+      rgba(228,234,244,.7) 56%, #e3e9f4 78%);
   }
-  .env__table svg{position:absolute; inset:0; width:100%; height:100%}
-  /* 수평선 — 이 한 줄이 "놓여 있다" 를 만든다 */
-  .env__edge{
-    position:absolute; left:0; right:0; top:var(--horizon); height:1px; z-index:0;
-    background:linear-gradient(90deg,
-      rgba(150,142,128,0), rgba(150,142,128,.75) 18%,
-      rgba(150,142,128,.75) 82%, rgba(150,142,128,0));
-    box-shadow:0 2px 10px rgba(120,112,98,.28);
+  /* 창 쪽에서 바닥에 떨어지는 빛 웅덩이 */
+  .floor__light{
+    position:absolute; left:-10%; top:-6%; width:70%; height:36%;
+    background:radial-gradient(closest-side, rgba(255,255,255,.7), rgba(255,255,255,0));
+    filter:blur(12px);
   }
+  /* 방향성 그림자 — 바닥에 누워 박스 오른쪽 뒤로 늘어난다 */
+  /* ⚠ 광원이 **왼쪽 위**(벽의 창광)이므로 그림자는 오른쪽 뒤로 늘어난다.
+     처음에 왼쪽으로 눕혔더니 빛과 그림자가 같은 쪽에 있어 어색했다. */
+  .floor__shadow{
+    position:absolute; left:50%; bottom:-1%; width:30%; height:19%;
+    transform:translateX(-34%) skewX(26deg);
+    background:radial-gradient(closest-side, rgba(58,46,32,.62), rgba(58,46,32,0));
+    filter:blur(9px);
+  }
+  /* 접지 — 밑변에 딱 붙는 좁고 진한 선. 이게 있어야 "닿아 있다" 가 된다 */
+  .floor__contact{
+    position:absolute; left:50%; bottom:0; width:19%; height:3.2%;
+    transform:translateX(-50%);
+    background:radial-gradient(closest-side, rgba(38,30,20,.8), rgba(38,30,20,0));
+    filter:blur(3px);
+  }
+  /* 반사 — 바닥에 누운 채 멀어지며 사라진다 */
+  .floor__refl{
+    position:absolute; left:50%; bottom:1%; width:19%; height:26%;
+    transform:translateX(-50%);
+    background:linear-gradient(0deg,
+      rgba(30,42,92,.4) 0%, rgba(60,44,110,.16) 42%, rgba(60,44,110,0) 78%);
+    filter:blur(7px);
+  }
+
   /* 가장자리 비네트 — 사진처럼 눌러 준다 */
   .env__vig{
     position:absolute; inset:0; z-index:3; pointer-events:none;
-    background:radial-gradient(78% 68% at 50% 44%,
-      rgba(0,0,0,0) 52%, rgba(38,42,54,.13) 100%);
-  }
-
-  /* ⚠ 이 요소에 `filter` 나 `-webkit-box-reflect` 를 걸지 말 것.
-     둘 다 3D 렌더링 맥락을 평탄화해서 `.pkg` 의 원근이 `.box` 까지 전달되지
-     않는다 — 박스가 종이처럼 납작해진다 (실제로 당했다, 2026-09-09). */
-  .pkg__stage{position:relative; z-index:2; transform-style:preserve-3d}
-
-  /* 퍼지는 그림자 — 테이블 위로 넓게 */
-  .pkg__cast{
-    position:absolute; left:6%; right:4%; bottom:11%; height:20%;
-    background:radial-gradient(50% 100% at 42% 34%, rgba(74,66,52,.34), transparent 72%);
-    filter:blur(20px); z-index:1;
-  }
-  /* 접지 그림자 — 박스 밑변에 좁고 진하게 */
-  .pkg__contact{
-    position:absolute; left:26%; right:24%; bottom:19%; height:4.5%;
-    background:radial-gradient(56% 100% at 46% 60%, rgba(46,40,30,.62), transparent 76%);
-    filter:blur(7px); z-index:1;
-  }
-  /* 바닥 반사 — 앞면 색이 테이블에 되비친 띠.
-     `-webkit-box-reflect` 는 3D 를 평탄화하므로 쓰지 않고 따로 깐다. */
-  .pkg__mirror{
-    position:absolute; left:50%; bottom:12%; width:30%; height:9%;
-    transform:translateX(-52%) skewX(-14deg);
-    background:linear-gradient(180deg,
-      rgba(60,80,150,.42), rgba(90,70,150,.16) 45%, rgba(90,70,150,0) 100%);
-    filter:blur(6px); border-radius:0 0 8px 8px; z-index:1;
+    background:
+      radial-gradient(80% 66% at 50% 42%, rgba(0,0,0,0) 54%, rgba(40,42,52,.15) 100%),
+      linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 22%);
   }
 
   .box{
@@ -751,30 +759,30 @@
 
       <div class="pitch">
         <div class="pkg" aria-hidden="true">
-          <div class="env__bokeh"><i></i><i></i><i></i></div>
-          <div class="env__table">
-            <!-- 테이블 결선. 아래로 갈수록 간격이 벌어져 원근처럼 보인다.
-                 균일 간격으로 두면 격자무늬 벽지가 된다. -->
-            <svg viewBox="0 0 400 180" preserveAspectRatio="none">
-              <g stroke="#8d8574" stroke-width="1" opacity=".16">
-                <path d="M0 3h400"/><path d="M0 8h400"/><path d="M0 15h400"/>
-                <path d="M0 24h400"/><path d="M0 36h400"/><path d="M0 51h400"/>
-                <path d="M0 70h400"/><path d="M0 93h400"/><path d="M0 120h400"/>
-                <path d="M0 152h400"/>
-              </g>
-              <!-- 나뭇결 얼룩 몇 개 -->
-              <g fill="#9a917e" opacity=".1">
-                <ellipse cx="86" cy="58" rx="120" ry="7"/>
-                <ellipse cx="292" cy="104" rx="150" ry="9"/>
-                <ellipse cx="180" cy="146" rx="180" ry="11"/>
-              </g>
-            </svg>
-          </div>
-          <div class="env__edge"></div>
-          <div class="pkg__cast"></div>
-          <div class="pkg__mirror"></div>
-          <div class="pkg__contact"></div>
+          <div class="env__wall" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="pkg__stage">
+            <div class="floor">
+              <div class="floor__wood">
+                <!-- 나뭇결. 난류로 결을 만들어 가로로 길게 늘였다 — 직선 몇 개보다
+                     훨씬 자연스럽다. 원근은 바닥면의 rotateX 가 알아서 준다. -->
+                <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+                  <defs>
+                    <filter id="sfWood" x="0" y="0" width="100%" height="100%">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012"
+                                    numOctaves="3" seed="6"/>
+                      <feColorMatrix type="matrix"
+                        values="0 0 0 0 .42  0 0 0 0 .33  0 0 0 0 .22  .5 .3 .2 0 0"/>
+                    </filter>
+                  </defs>
+                  <rect width="300" height="300" filter="url(#sfWood)" opacity=".72"/>
+                </svg>
+              </div>
+              <div class="floor__light"></div>
+              <div class="floor__haze"></div>
+              <div class="floor__refl"></div>
+              <div class="floor__shadow"></div>
+              <div class="floor__contact"></div>
+            </div>
             <div class="box" id="box">
               <div class="box__f box__top"></div>
               <div class="box__f box__side">
