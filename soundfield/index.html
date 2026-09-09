@@ -252,71 +252,151 @@
   }
   .pitch__copy p{margin:0; color:var(--ink-2); font-size:16.5px; line-height:1.76}
 
-  /* ── 제품 박스 렌더 (CSS 3D — 사진이 아니다) ──────────────────
-     레퍼런스의 "박스 제품 사진" 느낌을 코드로 만든 것이다. 촬영물이 아니므로
-     제품을 잘못 표현할 위험이 없고, 문구를 바꾸면 그림도 같이 바뀐다.
+  /* ── 제품 패키지 렌더 (CSS 3D + SVG 아트워크) ──────────────────
+     실물 소프트웨어 박스를 스튜디오에서 찍은 것처럼 보이게 만든 것이다.
+     사진이 아니라 코드다 — 제품을 잘못 표현할 위험이 없고 문구를 고치면 그림도 바뀐다.
+
+     구조: 앞면 · 오른쪽 측면 · 윗면 세 장을 3D 로 세우고, 앞면에는 SVG 필터로
+     만든 유체 아트워크를 깐다. 아래로 반사와 접지 그림자를 둔다.
+
+     ⚠ 박스에 **버전 번호를 넣지 말 것** (사용자 지시 2026-09-09).
+       버전이 올라가는 순간 이 그림이 거짓이 된다.
      움직임 ② — 아주 느린 부유 + 포인터 기울기. */
-  .boxscene{
-    position:relative; aspect-ratio:4/3; display:grid; place-items:center;
-    perspective:1400px; perspective-origin:60% 40%;
+  .pkg{
+    position:relative; aspect-ratio:4/3.15; display:grid; place-items:center;
+    perspective:1800px; perspective-origin:54% 38%;
+    border-radius:var(--r); overflow:hidden; isolation:isolate;
+    background:
+      radial-gradient(112% 84% at 24% 6%, #ffffff, transparent 58%),
+      radial-gradient(84% 66% at 84% 20%, #eaeef9, transparent 60%),
+      linear-gradient(178deg, #f8fafd 0%, #edf0f8 58%, #e2e7f2 100%);
   }
-  .boxscene__floor{
-    position:absolute; left:6%; right:6%; bottom:12%; height:34%;
-    background:linear-gradient(180deg, rgba(27,34,51,.13), transparent 72%);
-    filter:blur(26px); border-radius:50%;
+  /* 바닥 — 박스가 무언가 위에 놓인 느낌을 만드는 옅은 면 */
+  .pkg:after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:34%;
+    background:linear-gradient(180deg, rgba(205,213,233,0), rgba(196,205,228,.6));
+    z-index:0;
   }
+  /* ⚠ 이 요소에 `filter` 나 `-webkit-box-reflect` 를 걸지 말 것.
+     둘 다 3D 렌더링 맥락을 평탄화해서 `.pkg` 의 원근이 `.box` 까지 전달되지
+     않는다 — 박스가 종이처럼 납작해진다 (실제로 당했다, 2026-09-09).
+     그림자와 반사는 아래 `.pkg__contact` · `.pkg__mirror` 로 따로 그린다. */
+  .pkg__stage{position:relative; z-index:1; transform-style:preserve-3d}
+  /* 접지 그림자 — 박스 바로 아래에 좁고 진하게 */
+  .pkg__contact{
+    position:absolute; left:12%; right:12%; bottom:17%; height:7%;
+    background:radial-gradient(58% 100% at 47% 50%, rgba(23,30,48,.5), transparent 74%);
+    filter:blur(11px); z-index:0;
+  }
+  /* 넓게 퍼지는 바닥 그림자 */
+  .pkg__cast{
+    position:absolute; left:4%; right:2%; bottom:9%; height:22%;
+    background:radial-gradient(52% 100% at 44% 40%, rgba(27,34,51,.24), transparent 70%);
+    filter:blur(22px); z-index:0;
+  }
+  /* 바닥 반사 — 앞면 색을 흐리게 되비춘 띠. `-webkit-box-reflect` 는 3D 를
+     평탄화하므로 쓰지 않고, 같은 아트워크를 뒤집어 얇게 깐다. */
+  .pkg__mirror{
+    position:absolute; left:50%; bottom:14%; width:34%; height:16%;
+    transform:translateX(-46%) scaleY(-1) skewX(-16deg);
+    background:linear-gradient(180deg, rgba(52,74,150,.5), rgba(52,74,150,0) 78%);
+    filter:blur(7px); border-radius:6px; z-index:0; opacity:.7;
+  }
+
   .box{
-    position:relative; width:min(62%, 300px); aspect-ratio:.72;
+    --bw: clamp(146px, 20.5vw, 232px);
+    --bh: calc(var(--bw) * 1.3);
+    --bd: calc(var(--bw) * 0.27);
+    position:relative; width:var(--bw); height:var(--bh);
     transform-style:preserve-3d;
-    transform:rotateX(6deg) rotateY(-27deg) translateZ(0);
-    animation:hover 7s ease-in-out infinite alternate;
-    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+    transform:rotateX(3deg) rotateY(-30deg);
+    animation:hover 9s ease-in-out infinite alternate;
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
   }
   @keyframes hover{
-    0%{transform:rotateX(6deg) rotateY(-27deg) translateY(0)}
-    100%{transform:rotateX(4deg) rotateY(-23deg) translateY(-10px)}
+    0%{transform:rotateX(3deg) rotateY(-30deg) translateY(0)}
+    100%{transform:rotateX(2deg) rotateY(-26deg) translateY(-8px)}
   }
-  .box__face{position:absolute; inset:0; border-radius:4px; overflow:hidden}
+  .box__f{position:absolute; top:0; left:0; overflow:hidden; backface-visibility:hidden}
+
   .box__front{
-    background:
-      radial-gradient(120% 90% at 18% 6%, rgba(255,255,255,.24), transparent 55%),
-      linear-gradient(154deg, #1c2a5e 0%, #14204a 42%, #0d1730 100%);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);
+    width:var(--bw); height:100%; transform:translateZ(calc(var(--bd) / 2));
+    background:#080d1c;
     display:flex; flex-direction:column; justify-content:space-between;
-    padding:11% 10%;
+    padding:8.5% 8%;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),
+               inset -14px 0 26px -14px rgba(0,0,0,.55);
   }
-  .box__spine{
-    position:absolute; inset:0 auto 0 0; width:16%;
-    transform-origin:left center; transform:rotateY(90deg);
-    background:linear-gradient(154deg, #0d1730, #060b18);
-    display:grid; place-items:center;
+  /* 앞면 아트워크 — SVG 필터로 만든 유체. 글자 뒤에 깔린다 */
+  .box__art{position:absolute; inset:0; width:100%; height:100%; z-index:0}
+  /* 비닐 포장 광택 — 사선 하이라이트 한 줄 */
+  .box__gloss{
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(112deg,
+      rgba(255,255,255,0) 26%, rgba(255,255,255,.16) 38%,
+      rgba(255,255,255,.03) 46%, rgba(255,255,255,0) 60%);
   }
-  .box__spine span{
-    writing-mode:vertical-rl; color:rgba(255,255,255,.62);
-    font-size:9px; font-weight:600; letter-spacing:.3em; text-transform:uppercase;
+  .box__front > *{position:relative; z-index:2}
+
+  .box__brandline{
+    display:flex; align-items:center; gap:6px;
+    color:rgba(255,255,255,.9);
   }
+  .box__brandline img{width:15%; min-width:16px}
+  .box__brandline span{
+    font-size:clamp(6px, .78vw, 8.5px); font-weight:800; letter-spacing:.18em;
+    text-transform:uppercase; color:rgba(255,255,255,.72);
+  }
+  .box__title{
+    color:#fff; font-size:clamp(19px, 2.7vw, 33px); font-weight:800;
+    letter-spacing:-.035em; line-height:1.02;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .box__title em{
+    display:block; font-style:normal; margin-top:.5em;
+    font-size:.3em; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+    color:rgba(255,255,255,.74);
+  }
+  .box__foot{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:8px;
+  }
+  .box__foot small{
+    font-size:clamp(5.5px, .72vw, 8px); font-weight:600; letter-spacing:.14em;
+    text-transform:uppercase; color:rgba(255,255,255,.52); line-height:1.5;
+  }
+  /* 바코드 — 실물 패키지의 그 자리. 정보가 아니라 형식이다 */
+  .box__bars{
+    display:flex; align-items:flex-end; gap:1px; height:clamp(12px,1.6vw,20px);
+    padding:2px; background:rgba(255,255,255,.9); border-radius:1px;
+  }
+  .box__bars i{width:1px; background:#0b1226; height:100%}
+  .box__bars i:nth-child(3n){width:2px}
+  .box__bars i:nth-child(4n){height:76%}
+
+  .box__side{
+    width:var(--bd); height:100%;
+    left:calc(var(--bw) - var(--bd) / 2); transform:rotateY(90deg);
+    background:linear-gradient(100deg, #101935 0%, #070c1b 100%);
+    box-shadow:inset 1px 0 0 rgba(255,255,255,.12);
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:space-between; padding:9% 0 8%;
+  }
+  .box__side b{
+    writing-mode:vertical-rl; color:#fff; font-weight:800;
+    font-size:clamp(7px, .95vw, 11px); letter-spacing:.02em;
+  }
+  .box__side em{
+    writing-mode:vertical-rl; font-style:normal; color:rgba(255,255,255,.5);
+    font-size:clamp(5px, .66vw, 7.5px); font-weight:600; letter-spacing:.24em;
+    text-transform:uppercase;
+  }
+  .box__side img{width:52%; opacity:.9}
+
   .box__top{
-    position:absolute; left:0; right:0; top:0; height:16%;
-    transform-origin:center top; transform:rotateX(-90deg);
-    background:linear-gradient(180deg, #24326a, #1a2650);
-  }
-  .box__glow{
-    position:absolute; inset:auto -12% -6% -12%; height:46%;
-    background:conic-gradient(from 200deg at 50% 100%,
-      rgba(18,181,201,.55), rgba(44,107,224,.5), rgba(120,86,255,.45), rgba(18,181,201,.55));
-    filter:blur(20px); opacity:.85;
-  }
-  .box__mark{width:30%; opacity:.95}
-  .box__name{
-    color:#fff; font-size:clamp(15px, 2.1vw, 25px); font-weight:800;
-    letter-spacing:-.03em; line-height:1.1;
-  }
-  .box__name em{display:block; font-style:normal; font-size:.44em; font-weight:600;
-    letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.6);
-    margin-top:.5em}
-  .box__meta{
-    color:rgba(255,255,255,.5); font-size:9.5px; font-weight:600;
-    letter-spacing:.16em; text-transform:uppercase;
+    width:var(--bw); height:var(--bd); top:calc(var(--bd) / -2);
+    transform:rotateX(90deg);
+    background:linear-gradient(180deg, #1b2648 0%, #0e1731 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
   }
 
   /* ── 지원 플랫폼 로고 ──────────────────────────────────────────
@@ -393,6 +473,44 @@
   .tile code{
     font-family:ui-monospace, "Cascadia Mono", Consolas, monospace;
     font-size:.9em; background:var(--tint-2); padding:1px 6px; border-radius:5px;
+  }
+
+  /* ── Key Features (강조색 면 + 라인 아이콘 3×3) ──────────────────
+     기능 전체를 한눈에 훑는 판. 지면 색을 반전시켜 페이지 중간에 리듬을 만든다.
+     ⚠ 아이콘은 직접 그린 라인 도형이다. 아이콘 폰트를 들이지 말 것. */
+  .keys{
+    /* ⚠ 이 그라디언트를 더 밝게 올리지 말 것. 처음에 밝은 청록(#1b8fb8)까지
+       올렸다가 흰 본문이 2.86:1 로 떨어졌다 — 읽히지 않는다.
+       지금 세 정지점의 최악값도 본문 5.86 · 제목 7.03 · 눈썹 4.51 로 AA 위다.
+       시작색은 브랜드의 Depth Indigo 다. */
+    background:linear-gradient(158deg, #1b2a6b 0%, #24409c 48%, #176079 100%);
+    color:#fff; border-block:0;
+  }
+  .keys .eyebrow{color:rgba(255,255,255,.72)}
+  .keys .eyebrow:before{background:rgba(255,255,255,.7)}
+  .keys .h2{color:#fff}
+  .keys__lead{
+    color:rgba(255,255,255,.88); max-width:52ch; margin:18px 0 0;
+    font-size:clamp(15px,1.25vw,17.5px); line-height:1.7;
+  }
+  .keys__grid{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:clamp(30px,4vw,58px) clamp(24px,3vw,48px);
+    margin-top:clamp(44px,5vw,72px);
+  }
+  .key{text-align:center}
+  .key svg{
+    width:clamp(56px,5vw,72px); height:clamp(56px,5vw,72px); margin:0 auto 18px;
+    stroke:#fff; fill:none; stroke-width:1.3;
+    stroke-linecap:round; stroke-linejoin:round;
+  }
+  .key h3{
+    font-size:clamp(15px,1.3vw,17px); font-weight:800; letter-spacing:-.02em;
+    margin-bottom:9px;
+  }
+  .key p{
+    margin:0; color:rgba(255,255,255,.88); font-size:clamp(13.5px,1.1vw,14.5px);
+    line-height:1.65; max-width:30ch; margin-inline:auto;
   }
 
   /* ── 신호 흐름 (움직임 ③ — 순서가 정보다) ───────────────────── */
@@ -501,13 +619,15 @@
   /* ── 좁은 화면 ───────────────────────────────────────────── */
   @media (max-width: 1000px){
     .pitch{grid-template-columns:1fr}
-    .boxscene{aspect-ratio:16/10; max-width:460px; margin-inline:auto}
+    .pkg{aspect-ratio:16/11; max-width:520px; margin-inline:auto}
     .tiles, .rules{grid-template-columns:repeat(2,1fr)}
+    .keys__grid{grid-template-columns:repeat(2,1fr)}
     .stat{grid-template-columns:1fr}
     .navlinks{display:none}
   }
   @media (max-width: 640px){
     .tiles, .rules{grid-template-columns:1fr}
+    .keys__grid{grid-template-columns:1fr; gap:34px}
     .tile--wide{grid-column:span 1}
     .specs div{grid-template-columns:1fr; gap:5px}
     .hero__head{max-width:none}
@@ -559,16 +679,92 @@
       </p>
 
       <div class="pitch">
-        <div class="boxscene" aria-hidden="true">
-          <div class="boxscene__floor"></div>
-          <div class="box" id="box">
-            <div class="box__glow"></div>
-            <div class="box__top"></div>
-            <div class="box__spine"><span>Sound Library Search</span></div>
-            <div class="box__face box__front">
-              <img class="box__mark" src="../assets/ysg-mark-color.svg" alt="">
-              <div class="box__name">SoundField<em>v2.1</em></div>
-              <div class="box__meta">Windows x64 · standalone</div>
+        <div class="pkg" aria-hidden="true">
+          <div class="pkg__cast"></div>
+          <div class="pkg__mirror"></div>
+          <div class="pkg__contact"></div>
+          <div class="pkg__stage">
+            <div class="box" id="box">
+              <div class="box__f box__top"></div>
+              <div class="box__f box__side">
+                <b>SoundField</b>
+                <em>Sound library search</em>
+                <img src="../assets/ysg-mark-color.svg" alt="">
+              </div>
+              <div class="box__f box__front">
+                <!-- 앞면 아트워크: feTurbulence 로 원색 덩어리를 밀어 유체처럼 만든다.
+                     이미지 파일이 아니라 필터 결과라 어느 크기에서도 선명하다. -->
+                <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
+                  <defs>
+                    <!-- 굵은 흐름: 원색 덩어리를 저주파 난류로 크게 밀어 유체 형태를 만든다 -->
+                    <filter id="sfFlow" x="-30%" y="-30%" width="160%" height="160%"
+                            color-interpolation-filters="sRGB">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009"
+                                    numOctaves="4" seed="11" result="n"/>
+                      <feDisplacementMap in="SourceGraphic" in2="n" scale="170"
+                                         xChannelSelector="R" yChannelSelector="G"/>
+                      <feGaussianBlur stdDeviation="9"/>
+                    </filter>
+                    <!-- 가는 결: 같은 색을 고주파로 밀어 실오라기를 얹는다.
+                         이 층이 없으면 그냥 번진 덩어리로 보인다 (처음에 그랬다) -->
+                    <filter id="sfWisp" x="-30%" y="-30%" width="160%" height="160%"
+                            color-interpolation-filters="sRGB">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.016 0.03"
+                                    numOctaves="5" seed="4" result="w"/>
+                      <feDisplacementMap in="SourceGraphic" in2="w" scale="64"
+                                         xChannelSelector="R" yChannelSelector="B"/>
+                      <feGaussianBlur stdDeviation="3.2"/>
+                    </filter>
+                    <linearGradient id="sfScrim" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#05080f" stop-opacity="0"/>
+                      <stop offset="52%" stop-color="#05080f" stop-opacity=".18"/>
+                      <stop offset="100%" stop-color="#05080f" stop-opacity=".92"/>
+                    </linearGradient>
+                    <radialGradient id="sfVig" cx="48%" cy="38%" r="76%">
+                      <stop offset="52%" stop-color="#000" stop-opacity="0"/>
+                      <stop offset="100%" stop-color="#04070f" stop-opacity=".8"/>
+                    </radialGradient>
+                  </defs>
+
+                  <rect width="300" height="390" fill="#060a16"/>
+
+                  <g filter="url(#sfFlow)">
+                    <ellipse cx="120" cy="126" rx="112" ry="140" fill="#1d2b96"/>
+                    <ellipse cx="205" cy="212" rx="96" ry="118" fill="#2c6be0"/>
+                    <ellipse cx="96"  cy="252" rx="86"  ry="104" fill="#7a3ce0"/>
+                    <ellipse cx="220" cy="104" rx="70"  ry="82"  fill="#12b5c9"/>
+                    <ellipse cx="146" cy="330" rx="76"  ry="66"  fill="#c9457f"/>
+                    <ellipse cx="74"  cy="80"  rx="50"  ry="54"  fill="#34e0e8"/>
+                    <ellipse cx="246" cy="300" rx="40"  ry="44"  fill="#ffb454"/>
+                  </g>
+
+                  <g filter="url(#sfWisp)" opacity=".38">
+                    <ellipse cx="150" cy="150" rx="96" ry="120" fill="none"
+                             stroke="#8fe8f2" stroke-width="9"/>
+                    <ellipse cx="170" cy="250" rx="74" ry="92" fill="none"
+                             stroke="#b79cff" stroke-width="7"/>
+                    <ellipse cx="110" cy="200" rx="58" ry="70" fill="none"
+                             stroke="#ffd9a3" stroke-width="4"/>
+                  </g>
+
+                  <rect width="300" height="390" fill="url(#sfVig)"/>
+                  <rect width="300" height="390" fill="url(#sfScrim)"/>
+                </svg>
+                <div class="box__gloss"></div>
+
+                <div class="box__brandline">
+                  <img src="../assets/ysg-mark-color.svg" alt="">
+                  <span>YSG Audio Tools</span>
+                </div>
+                <div class="box__title">SoundField<em>Search &middot; Audition &middot; Export</em></div>
+                <div class="box__foot">
+                  <small>Windows x64<br>standalone</small>
+                  <div class="box__bars">
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -647,6 +843,66 @@
           <span class="num">03</span>
           <h3 data-en="Safe to interrupt">중단 안전</h3>
           <p data-en="Cancel indexing at any point and what finished stays. The next run picks up where it stopped.">인덱싱은 언제든 취소할 수 있고 끝난 진행분은 남습니다. 다시 실행하면 멈춘 지점부터 이어집니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Key Features — 기능 전체를 한눈에 ─────────────────────── -->
+  <section id="keys" class="keys">
+    <div class="wrap">
+      <div class="rise">
+        <span class="eyebrow" data-en="Key features">주요 기능</span>
+        <h2 class="h2" data-en="Everything it does, at a glance">한눈에 보는 기능</h2>
+        <p class="keys__lead" data-en="Nine things the tool does. Each one is opened up further down the page.">
+          이 툴이 하는 일 아홉 가지입니다. 각각은 아래에서 더 자세히 풀어 두었습니다.
+        </p>
+      </div>
+      <div class="keys__grid">
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="17" cy="17" r="11"/><path d="M25 25l9 9"/><path d="M11 15h12M11 19h8M11 23h5"/></svg>
+          <h3 data-en="Instant search">즉시 검색</h3>
+          <p data-en="Build the index once and results refresh almost as fast as you type.">색인을 한 번 만들어 두면 타이핑과 거의 동시에 결과가 갱신됩니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="8" width="26" height="7" rx="2"/><rect x="7" y="18" width="26" height="7" rx="2"/><rect x="7" y="28" width="17" height="7" rx="2"/><path d="M28 31.5h5"/></svg>
+          <h3 data-en="Every field">전 필드 검색</h3>
+          <p data-en="Twelve fields at once, from name and path to title, description and keywords.">파일명·경로부터 제목·설명·키워드까지 12개 필드를 한 번에 훑습니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="10" cy="11" r="4"/><circle cx="10" cy="29" r="4"/><circle cx="30" cy="20" r="4"/><path d="M14 12.5l12 6M14 27.5l12-6"/></svg>
+          <h3 data-en="Stacked conditions">조건 조합</h3>
+          <p data-en="Stack rows with AND, OR and NOT; a UCS thesaurus widens the net.">AND · OR · NOT 으로 쌓고, UCS 동의어로 범위를 넓힙니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 12h28M11 20h18M17 28h6"/><circle cx="24" cy="12" r="3"/><circle cx="16" cy="20" r="3"/><circle cx="20" cy="28" r="3"/></svg>
+          <h3 data-en="Property filters">속성 필터</h3>
+          <p data-en="Narrow instantly by duration, sample rate and channel count.">길이·샘플레이트·채널 수로 후보를 곧바로 좁힙니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 20h3M11 12v16M17 7v26M23 14v12M29 10v20M35 17v6"/></svg>
+          <h3 data-en="Waveform audition">파형 오디션</h3>
+          <p data-en="Pick a result and it draws and plays in place. Only amplitude zooms.">고르면 그 자리에서 파형이 그려지고 재생됩니다. 세로만 확대됩니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 20h5M15 20h4M25 20h4M35 20h1"/><path d="M11 12v16M21 9v22M31 13v14"/><path d="M9 33h6M19 33h6M29 33h6" opacity=".55"/></svg>
+          <h3 data-en="Segment detection">세그먼트 감지</h3>
+          <p data-en="Silence splits a long take into blocks you can skim.">무음을 기준으로 소리 덩어리를 자동으로 나눠 훑습니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="21" r="7"/><path d="M9 21a11 11 0 0 1 22 0"/><path d="M9 21v5a2.5 2.5 0 0 0 5 0v-5M31 21v5a2.5 2.5 0 0 1-5 0v-5"/><path d="M20 7v3M31.6 9.4l-2.1 2.1M8.4 9.4l2.1 2.1"/></svg>
+          <h3 data-en="Multichannel binaural">멀티채널 바이노럴</h3>
+          <p data-en="5.1 through higher-order Ambisonics, rendered to headphones via the IEM chain.">5.1부터 고차 Ambisonics까지 IEM 체인을 거쳐 헤드폰으로 확인합니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 11v18M32 11v18"/><path d="M8 20h11M25 20h7"/><path d="M19 15l6 5-6 5z"/></svg>
+          <h3 data-en="Region export">구간 내보내기</h3>
+          <p data-en="Cut only the picked region; bext, iXML and cue chunks carry over.">고른 구간만 잘라내고 bext·iXML·cue 청크는 그대로 옮깁니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="17" width="24" height="16" rx="3"/><path d="M14 17v-4a6 6 0 0 1 12 0v4"/><path d="M20 23v4"/></svg>
+          <h3 data-en="Library untouched">라이브러리는 그대로</h3>
+          <p data-en="Nothing is written to the originals. The index is local and survives a cancel.">원본에 쓰지 않습니다. 색인은 로컬에 있고 중단해도 진행분이 남습니다.</p>
         </div>
       </div>
     </div>
@@ -999,7 +1255,7 @@
   /* 제품 박스 — 포인터를 따라 살짝 기운다 (터치·감소모드에서는 끔) */
   var box = document.getElementById('box');
   if(box && !reduce && window.matchMedia('(hover:hover)').matches){
-    var scene = box.parentNode;
+    var scene = box.closest('.pkg');
     scene.addEventListener('pointermove', function(ev){
       var r = scene.getBoundingClientRect();
       var dx = (ev.clientX - r.left) / r.width - .5;
