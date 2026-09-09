@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="SoundField">
+<!-- SoundField 제품 마크.
+     SoundField 앱 아이콘(src-tauri/icons/icon.ico)의 막대 기하를 256px 원본에서
+     실측해 24 칸으로 옮긴 것이다 — 폭 14.5 / 간격 23 / 높이 35·66·101·118 대칭.
+     ⚠ 좌표를 눈대중으로 고치지 말 것. 앱 아이콘과 어긋나면 같은 제품으로 안 보인다.
+     색은 currentColor 다 — 박스에서는 흰색, 밝은 지면에서는 브랜드 블루로 쓴다. -->
+<g fill="currentColor">
+  <rect x="4.86"  y="10.36" width="1.36" height="3.28"  rx=".68"/>
+  <rect x="7.02"  y="8.90"  width="1.36" height="6.19"  rx=".68"/>
+  <rect x="9.17"  y="7.27"  width="1.36" height="9.47"  rx=".68"/>
+  <rect x="11.33" y="6.47"  width="1.36" height="11.06" rx=".68"/>
+  <rect x="13.48" y="7.27"  width="1.36" height="9.47"  rx=".68"/>
+  <rect x="15.64" y="8.90"  width="1.36" height="6.19"  rx=".68"/>
+  <rect x="17.79" y="10.36" width="1.36" height="3.28"  rx=".68"/>
+</g>
+</svg>

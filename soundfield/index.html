@@ -409,6 +409,12 @@
     font-size:clamp(6px, .78vw, 8.5px); font-weight:800; letter-spacing:.18em;
     text-transform:uppercase; color:rgba(255,255,255,.72);
   }
+  /* 제품 로고 락업 — 마크 + 제품명. 브랜드 줄(YSG)은 위에 따로 있다 */
+  .box__lockup{display:flex; flex-direction:column; gap:.45em}
+  /* ⚠ `align-self` 를 빼면 flex 가 세로로 늘려서 마크가 찌그러진다
+     (실측 48x57 로 나왔다). viewBox 가 정사각이므로 비율을 못 박는다. */
+  .box__pmark{width:34%; aspect-ratio:1; height:auto; align-self:flex-start;
+    opacity:.96; filter:drop-shadow(0 1px 6px rgba(0,0,0,.45))}
   .box__title{
     color:#fff; font-size:clamp(19px, 2.7vw, 33px); font-weight:800;
     letter-spacing:-.035em; line-height:1.02;
@@ -855,7 +861,23 @@
                   <img src="../assets/ysg-mark-color.svg" alt="">
                   <span>YSG Audio Tools</span>
                 </div>
-                <div class="box__title">SoundField<em>Search &middot; Audition &middot; Export</em></div>
+                <div class="box__lockup">
+                  <!-- SoundField 제품 마크 — 앱 아이콘의 막대 기하를 그대로 옮긴 것.
+                       `assets/soundfield-mark.svg` 와 같은 좌표다. 박스에서는 흰색으로
+                       인쇄된 것처럼 쓴다. 브랜드(YSG)는 위 줄, 제품은 이 락업이다. -->
+                  <svg class="box__pmark" viewBox="0 0 24 24" aria-hidden="true">
+                    <g fill="#fff">
+                      <rect x="4.86"  y="10.36" width="1.36" height="3.28"  rx=".68"/>
+                      <rect x="7.02"  y="8.90"  width="1.36" height="6.19"  rx=".68"/>
+                      <rect x="9.17"  y="7.27"  width="1.36" height="9.47"  rx=".68"/>
+                      <rect x="11.33" y="6.47"  width="1.36" height="11.06" rx=".68"/>
+                      <rect x="13.48" y="7.27"  width="1.36" height="9.47"  rx=".68"/>
+                      <rect x="15.64" y="8.90"  width="1.36" height="6.19"  rx=".68"/>
+                      <rect x="17.79" y="10.36" width="1.36" height="3.28"  rx=".68"/>
+                    </g>
+                  </svg>
+                  <div class="box__title">SoundField<em>Search &middot; Audition &middot; Export</em></div>
+                </div>
                 <div class="box__foot">
                   <small>Windows x64<br>standalone</small>
                   <div class="box__bars">
