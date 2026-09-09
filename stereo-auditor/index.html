@@ -3,115 +3,429 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Stereo Auditor | 스테레오 채널 분석 도구</title>
-<meta name="description" content="오디오 파일의 모노·듀얼 모노·니어 모노·스테레오 채널 관계와 구간별 스테레오 강도를 고해상도 웨이브폼으로 확인하는 Windows 독립 실행형 분석 도구.">
+<title>Stereo Auditor — 스테레오 채널 판정 도구</title>
+<meta name="description" content="오디오 파일 하나를 드롭하면 채널 관계를 판정하고, 고해상도 L/R 웨이브폼 위에 구간별 스테레오 강도와 지속 위상 위험 구간을 표시하는 Windows 독립 실행형 검수 도구.">
 <link rel="icon" href="../assets/favicon-ysg.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../assets/ysg-favicon.svg">
 <link rel="apple-touch-icon" href="../assets/favicon-ysg.png">
+<!-- 공용 스타일시트·스크립트. 페이지마다 복사하지 말 것. -->
+<link rel="stylesheet" href="../assets/ysg.css">
 <style>
+  /* Stereo Auditor 키컬러 — 시안틸 → 그린.
+     실측: 흰글자/key 4.55:1 · key/흰바탕 4.55:1 · 패널 최악 7.18:1.
+     ⚠ 기존 페이지의 강조색(#55d5ef)은 다른 세 툴과 거의 같은 시안이라 구분이
+       안 됐다. 그래서 유지하지 않았다 (결정 기록: brand/RENEWAL_PLAN.md). */
   :root{
-    --ink:#0a0d13;--ink-1:#0f131b;--ink-2:#141922;--ink-3:#1c2331;
-    --line:rgba(90,140,196,.14);--line-2:rgba(90,140,196,.28);--grid:rgba(90,140,196,.052);
-    --text:#dbe3ec;--muted:#8a99ab;--muted-2:#5a6879;
-    --accent:#6a86ff;--wave:#55d5ef;--violet:#a869ff;--amber:#eeb34f;--ok:#62c7a1;
-    --mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",ui-monospace,Menlo,monospace;
-    --sans:"Segoe UI","Malgun Gothic",-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica,Arial,sans-serif;
-    --maxw:1760px;--pad:clamp(14px,2.2vw,34px)
+    --key:      #0c8290;
+    --key-2:    #238054;
+    --key-grad: #14806f;
+    --keys-1:   #0b3f52;
+    --keys-2:   #12606e;
+    --keys-3:   #166049;
   }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-  body{margin:0;color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.65;background:radial-gradient(1200px 700px at 82% -8%,rgba(106,134,255,.09),transparent 60%),radial-gradient(900px 620px at 6% 2%,rgba(85,213,239,.055),transparent 58%),var(--ink);overflow-x:hidden}
-  body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(1400px 900px at 50% 0%,#000 30%,transparent 92%)}
-  a{color:inherit}::selection{background:rgba(85,213,239,.28);color:#fff}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad);position:relative;z-index:1}
-  .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:linear-gradient(var(--ink),rgba(10,13,19,.72));backdrop-filter:blur(10px)}
-  .topbar__in{max-width:var(--maxw);margin:0 auto;padding:11px var(--pad);display:flex;align-items:center;gap:18px}
-  .ysig{display:inline-flex;align-items:center;gap:8px;padding:0 10px 0 6px;border:1px solid rgba(85,213,239,.2);border-radius:999px;background:linear-gradient(90deg,rgba(85,213,239,.1),rgba(106,134,255,.04));font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-decoration:none;height:30px}
-  .ysig__mark{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 24px}
-  /* 컬러 풀버전 마크 — currentColor 를 쓰지 않아 페이지별 시안색을 따르지 않고
-     브랜드 색으로 고정된다. */
-  .ysig__mark img{width:100%;height:100%;display:block}
-  .ysig__mark svg{width:100%;height:100%;display:block}
-  .brand{display:flex;align-items:center;gap:10px;margin-right:auto;text-decoration:none;min-width:0}.brand__mark{width:28px;height:28px;border:1px solid rgba(106,134,255,.3);border-radius:8px;display:grid;place-items:center;background:rgba(106,134,255,.08);color:var(--wave);font-family:var(--mono);font-size:10px;font-weight:800}.brand__name{font-family:var(--mono);font-size:15px;font-weight:700;white-space:nowrap}.brand__name b{color:var(--accent)}.brand__v{font-family:var(--mono);font-size:11px;color:var(--muted-2);border:1px solid var(--line-2);border-radius:999px;padding:1px 8px}
-  .nav{display:flex;gap:4px}.nav a{padding:6px 10px;border-radius:7px;color:var(--muted);font-family:var(--mono);font-size:12px;text-decoration:none}.nav a:hover{color:var(--text);background:var(--ink-3)}
-  .langswitch{width:68px;height:30px;border:1px solid var(--line-2);border-radius:999px;background:rgba(15,19,27,.86);color:var(--muted);font-family:var(--mono);font-size:11px;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;padding:0;cursor:pointer}.langswitch:before{content:"";position:absolute;top:3px;left:3px;width:30px;height:22px;border-radius:999px;background:rgba(85,213,239,.18);border:1px solid rgba(85,213,239,.62);transition:transform .22s}.langswitch span{position:relative;z-index:1;text-align:center}body.lang-en .langswitch:before{transform:translateX(30px)}body.lang-en .langswitch .en,body:not(.lang-en) .langswitch .ko{color:var(--text)}
-  .gh{width:30px;height:30px;display:inline-grid;place-items:center;border:1px solid rgba(85,213,239,.4);border-radius:999px;background:rgba(15,19,27,.86);text-decoration:none}.gh svg{width:17px;height:17px;fill:currentColor}
-  .rail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:35;display:flex;flex-direction:column;gap:10px;padding:12px 8px;border:1px solid var(--line);border-radius:999px;background:rgba(10,13,19,.56);backdrop-filter:blur(10px)}.rail__thumb{position:absolute;left:50%;top:12px;width:18px;height:18px;border-radius:50%;transform:translateX(-50%) translateY(var(--rail-y,0px));border:1px solid rgba(85,213,239,.78);background:rgba(85,213,239,.18);box-shadow:0 0 18px rgba(85,213,239,.24);transition:transform .34s}.rail a{width:18px;height:18px;display:grid;place-items:center;position:relative;z-index:1}.rail a:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--muted-2)}.rail a.active:before,.rail a:hover:before{background:var(--wave);transform:scale(1.35)}
-  .hero{min-height:calc(100vh - 52px);display:flex;align-items:center;padding:56px 0 34px}.hero__grid{display:grid;grid-template-columns:minmax(370px,.84fr) minmax(560px,1.36fr);gap:clamp(28px,4vw,70px);align-items:center;width:100%}.kicker,.eyebrow{display:inline-flex;gap:9px;align-items:center;color:var(--wave);font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.kicker:before{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
-  h1,h2,h3{margin:0;word-break:keep-all}h1{margin:18px 0;max-width:760px;color:#f1f6fb;font-size:clamp(2.1rem,4.3vw,4.35rem);line-height:1.04;font-weight:760}h1 .hl{color:var(--accent)}h1 .hl2{color:var(--wave)}.hero__sub{max-width:650px;margin:0 0 26px;color:#aebccd;font-size:clamp(1rem,1.25vw,1.18rem);line-height:1.75}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 26px}.btn{min-height:40px;display:inline-flex;align-items:center;padding:0 17px;border:1px solid var(--line-2);border-radius:999px;background:rgba(20,25,34,.78);font-family:var(--mono);font-size:12px;font-weight:700;text-decoration:none}.btn--primary{border-color:rgba(85,213,239,.62);background:linear-gradient(180deg,rgba(85,213,239,.24),rgba(106,134,255,.16))}.btn--muted{color:var(--muted);cursor:default}.btn:hover:not(.btn--muted){border-color:var(--wave);transform:translateY(-1px)}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--line);border-radius:999px;background:rgba(20,25,34,.55);color:var(--muted);padding:0 10px;font-family:var(--mono);font-size:12px;height:30px;display:inline-flex;align-items:center}
-  .appframe{position:relative;border:1px solid var(--line-2);border-radius:14px;background:linear-gradient(180deg,rgba(28,35,49,.92),rgba(15,19,27,.94));box-shadow:0 38px 90px -52px #000,inset 0 1px rgba(255,255,255,.04);overflow:hidden}.appbar{height:42px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--muted-2)}.appbar i{width:7px;height:7px;border-radius:50%;background:var(--accent)}.appbar i:nth-child(2){background:var(--wave)}.appbar i:nth-child(3){background:var(--violet)}
-  .capture{position:relative;aspect-ratio:16/10;overflow:hidden;background:radial-gradient(circle at 70% 35%,rgba(106,134,255,.09),transparent 38%),#090b0f}.capture:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:44px 44px}.demo{position:absolute;inset:0;font-family:var(--mono);isolation:isolate}.demo__stage{position:absolute;inset:6% 4.5% 7%;overflow:hidden;border:1px solid rgba(90,140,196,.2);border-radius:10px;background:rgba(7,9,14,.82);box-shadow:inset 0 1px rgba(255,255,255,.025)}.demo__stage:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.8%,rgba(93,118,151,.1) 50%,transparent 50.2%),linear-gradient(rgba(93,118,151,.075) 1px,transparent 1px);background-size:100% 100%,100% 25%;pointer-events:none}.demo__top{position:absolute;z-index:8;top:0;right:0;left:0;height:34px;display:flex;align-items:center;padding:0 12px;border-bottom:1px solid var(--line);background:rgba(13,16,23,.94);color:var(--muted-2);font-size:9px;letter-spacing:.04em}.demo__top b{color:#b9c6d5;font-size:10px}.demo__top span{margin-left:auto}.demo__drop{position:absolute;z-index:7;inset:34px 0 0;display:grid;place-items:center;background:radial-gradient(circle,rgba(85,213,239,.07),transparent 48%);animation:demoDropLayer 12s ease-in-out infinite}.demo__target{width:58%;height:48%;display:grid;place-items:center;border:1px dashed rgba(85,213,239,.38);border-radius:10px;background:rgba(15,19,27,.7);color:#8595a8;font-size:10px;letter-spacing:.03em;animation:targetAccept 12s ease-in-out infinite}.demo__target:before{content:"+";width:30px;height:30px;display:grid;place-items:center;margin:0 auto 7px;border:1px solid rgba(85,213,239,.35);border-radius:50%;color:var(--wave);font-size:18px}.demo__file{position:absolute;z-index:9;top:2%;left:50%;width:154px;padding:10px 12px;border:1px solid rgba(106,134,255,.5);border-radius:8px;background:linear-gradient(145deg,#1b2230,#10151e);box-shadow:0 16px 36px rgba(0,0,0,.45);color:#d4dce7;font-size:9px;transform:translate(-50%,-130%);animation:fileDrop 12s cubic-bezier(.2,.8,.25,1) infinite}.demo__file b{display:block;margin-bottom:2px;color:#f0f5fa;font-size:10px}.demo__file em{font-style:normal;color:var(--wave)}
-  .demo__analysis{position:absolute;z-index:6;inset:34px 0 0;display:grid;place-items:center;opacity:0;animation:analysisLayer 12s ease-in-out infinite}.demo__analysisbox{width:52%;text-align:center;color:#aebccc;font-size:10px}.demo__spinner{position:relative;width:48px;height:48px;margin:0 auto 15px;border:1px solid rgba(85,213,239,.18);border-radius:50%}.demo__spinner:before,.demo__spinner:after{content:"";position:absolute;border-radius:50%}.demo__spinner:before{inset:5px;border:2px solid transparent;border-top-color:var(--wave);border-right-color:var(--accent);animation:spin 1s linear infinite}.demo__spinner:after{inset:17px;background:var(--wave);box-shadow:0 0 18px rgba(85,213,239,.6)}.demo__progress{height:3px;margin-top:12px;overflow:hidden;border-radius:999px;background:#1c2431}.demo__progress i{display:block;width:100%;height:100%;transform-origin:left;background:linear-gradient(90deg,var(--wave),var(--accent),var(--violet));animation:analysisProgress 12s linear infinite}
-  .demo__result{position:absolute;z-index:5;inset:34px 0 0;display:grid;grid-template-columns:minmax(0,1fr) 122px;opacity:0;animation:resultLayer 12s ease-in-out infinite}.demo__main{min-width:0;padding:13px 10px 27px}.demo__wavehead{height:20px;display:flex;align-items:center;color:var(--muted-2);font-size:8px}.demo__wavehead b{color:#aebdcd;font-weight:600}.demo__wavehead span{margin-left:auto}.demo__viewport{position:relative;height:calc(100% - 20px);overflow:hidden;border:1px solid rgba(90,140,196,.12);border-radius:6px;background:#080b10}.demo__viewport:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(94,112,139,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(94,112,139,.08) 1px,transparent 1px);background-size:100% 50%,12.5% 100%}.demo__waveworld{position:absolute;inset:8px 0 17px;transform-origin:72% 50%;animation:waveZoom 12s cubic-bezier(.65,0,.3,1) infinite;will-change:transform}.demo__waveworld svg{display:block;width:100%;height:100%;filter:drop-shadow(0 0 5px rgba(85,213,239,.12))}.demo__waveworld path{fill:url(#demoWaveGradient)}.demo__playhead{position:absolute;z-index:3;top:0;bottom:0;left:62%;width:1px;background:rgba(224,235,247,.8);box-shadow:0 0 8px rgba(255,255,255,.24);animation:playheadMove 12s ease-in-out infinite}.demo__timeline{position:absolute;z-index:3;right:0;bottom:0;left:0;height:16px;border-top:1px solid rgba(90,140,196,.12);background:#0b0e14;color:#596778;font-size:7px}.demo__timeline span{position:absolute;top:3px}.demo__timeline span:nth-child(1){left:2%}.demo__timeline span:nth-child(2){left:48%}.demo__timeline span:nth-child(3){right:2%}.demo__phase{position:absolute;z-index:4;right:2%;bottom:3px;left:2%;height:4px;border-radius:2px;background:rgba(98,199,161,.35)}.demo__phase i{position:absolute;left:69%;width:13%;height:100%;border-radius:2px;background:var(--amber);box-shadow:0 0 8px rgba(238,179,79,.4);animation:phaseFocus 12s ease-in-out infinite}.demo__tip{position:absolute;z-index:6;right:7%;bottom:25px;width:142px;padding:8px 9px;border:1px solid rgba(238,179,79,.42);border-radius:7px;background:rgba(19,17,14,.95);box-shadow:0 10px 28px rgba(0,0,0,.46);color:#8e99a8;font-size:7px;opacity:0;transform:translateY(5px);animation:tipReveal 12s ease-in-out infinite}.demo__tip b{display:block;margin-bottom:2px;color:#f1c772;font-size:9px}.demo__side{padding:13px 10px;border-left:1px solid var(--line);background:rgba(11,14,20,.9)}.demo__verdict{padding:10px;border:1px solid rgba(168,105,255,.35);border-radius:7px;background:linear-gradient(135deg,rgba(106,134,255,.12),rgba(168,105,255,.08));transform:translateY(8px);opacity:0;animation:verdictPop 12s ease-in-out infinite}.demo__verdict small{display:block;color:#68778a;font-size:7px;letter-spacing:.08em}.demo__verdict strong{display:block;margin-top:2px;color:#e8edf5;font-family:var(--sans);font-size:18px}.demo__score{margin-top:4px;color:#b7c2d0;font-size:8px}.demo__score b{color:var(--violet);font-size:14px}.demo__meter{height:3px;margin-top:7px;border-radius:3px;background:#23293a}.demo__meter i{display:block;width:74%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--wave),var(--accent),var(--violet));transform-origin:left;animation:meterGrow 12s ease-in-out infinite}.demo__metrics{margin-top:8px;display:grid;gap:5px}.demo__metric{display:flex;justify-content:space-between;padding-bottom:4px;border-bottom:1px solid rgba(90,140,196,.1);color:#637184;font-size:7px}.demo__metric b{color:#b6c2d1;font-size:8px}.demo__step{position:absolute;z-index:10;left:50%;bottom:2.8%;display:flex;gap:5px;transform:translateX(-50%)}.demo__step i{width:18px;height:2px;border-radius:2px;background:#27303e}.demo__step i:nth-child(1){animation:stepOne 12s linear infinite}.demo__step i:nth-child(2){animation:stepTwo 12s linear infinite}.demo__step i:nth-child(3){animation:stepThree 12s linear infinite}
-  section.content{padding:82px 0;border-top:1px solid var(--line)}.section__head{display:grid;grid-template-columns:1fr .8fr;gap:40px;align-items:end;margin-bottom:38px}.section__head h2{margin-top:8px;color:#eff5fa;font-size:clamp(1.8rem,3vw,3rem);line-height:1.08}.lead{margin:0;color:var(--muted);font-size:1rem}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{min-height:210px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--ink-1);transition:.2s}.card:hover{transform:translateY(-3px);border-color:rgba(85,213,239,.34);background:linear-gradient(180deg,rgba(28,35,49,.86),rgba(15,19,27,.82))}.card__num{color:var(--wave);font-family:var(--mono);font-size:12px;font-weight:700}.card h3{margin:10px 0 8px;font-size:1.1rem}.card p{margin:0;color:var(--muted);font-size:.96rem}
-  .wave-panel{border:1px solid var(--line-2);border-radius:14px;background:linear-gradient(180deg,var(--ink-2),var(--ink-1));padding:20px;overflow:hidden;box-shadow:0 30px 80px -40px #000}.wave-head{display:flex;justify-content:space-between;color:var(--muted-2);font-family:var(--mono);font-size:11px}.wave-area{position:relative;height:260px;margin-top:16px;border:1px solid var(--line);border-radius:9px;background:#090b0f;overflow:hidden}.wave-area:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:100% 65px,12.5% 100%}.wave-svg{position:absolute;inset:14px;width:calc(100% - 28px);height:calc(100% - 44px)}.wave-svg path{fill:url(#waveGradient);opacity:.86}.phase-track{position:absolute;right:14px;bottom:10px;left:14px;height:7px;border:1px solid rgba(98,199,161,.25);border-radius:3px;background:rgba(98,199,161,.22)}.phase-track i{position:absolute;left:72%;width:11%;height:100%;border:1px solid rgba(238,179,79,.68);border-radius:2px;background:rgba(238,179,79,.72);box-shadow:0 0 10px rgba(238,179,79,.22)}
-  .verdict-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.verdict{padding:16px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(15,19,27,.76)}.verdict b{display:block;color:var(--text);font-size:.92rem}.verdict span{display:block;margin-top:6px;color:var(--muted-2);font-size:.78rem}.verdict.active{border-color:rgba(168,105,255,.48);background:rgba(168,105,255,.08)}
-  .workflow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;counter-reset:step}.step{min-height:180px;padding:22px;border:1px solid var(--line);border-radius:12px;background:rgba(15,19,27,.76)}.step:before{counter-increment:step;content:counter(step,decimal-leading-zero);display:block;margin-bottom:28px;color:var(--wave);font-family:var(--mono);font-size:12px;font-weight:700}.step h3{font-size:1.05rem}.step p{margin:8px 0 0;color:var(--muted);font-size:.94rem}.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.spec{padding:18px;border:1px solid var(--line);border-radius:11px;background:var(--ink-1)}.spec b{display:block;color:var(--wave);font-family:var(--mono);font-size:12px}.spec span{display:block;margin-top:7px;color:var(--muted);font-size:.92rem}.footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted-2);font-family:var(--mono);font-size:12px}.reveal{opacity:0;transform:translateY(16px);transition:opacity .65s,transform .65s}.reveal.in{opacity:1;transform:none}
-  .capture{display:grid;place-items:center}.capture-image{position:absolute;z-index:2;inset:0;width:100%;height:100%;object-fit:contain;background:#090b0f;opacity:0;transition:opacity .35s ease}.capture.screenshot-loaded .capture-image{opacity:1}.capture.screenshot-loaded .capture-slot{display:none}.capture-slot{position:relative;display:block;width:min(76%,650px);padding:42px 24px;border:1px dashed rgba(85,213,239,.28);border-radius:12px;text-align:center;background:rgba(15,19,27,.62)}.capture-slot strong{display:block;color:#bdc9d9;font-family:var(--mono);font-size:13px}.capture-slot span{display:block;margin-top:8px;color:var(--muted-2);font-family:var(--mono);font-size:11px}.capture-wave{height:58px;margin:22px auto 0;max-width:480px;display:flex;align-items:center;gap:3px;opacity:.72}.capture-wave i{flex:1;height:var(--h);border-radius:2px;background:linear-gradient(180deg,var(--wave),var(--accent),var(--violet));animation:wavePulse 2.7s ease-in-out infinite;animation-delay:var(--d)}
-  .demo{z-index:5}.wave-area.demo-host{height:clamp(370px,36vw,520px)}.demo-host>.wave-svg,.demo-host>.phase-track{display:none}
-  .release-row{display:flex;align-items:center;gap:18px;margin-top:22px;padding:18px;border:1px solid rgba(85,213,239,.25);border-radius:12px;background:linear-gradient(90deg,rgba(85,213,239,.08),rgba(106,134,255,.06))}.release-row .btn{flex:0 0 auto}.release-note{min-width:0;color:var(--muted);font-size:.82rem}.release-note b{display:block;color:var(--text);font-family:var(--mono);font-size:.86rem}.release-note code{display:block;margin-top:3px;color:var(--muted-2);font-family:var(--mono);font-size:.68rem;overflow-wrap:anywhere}
-  @keyframes wavePulse{0%,100%{transform:scaleY(.62);opacity:.45}50%{transform:scaleY(1);opacity:1}}
-  @keyframes fileDrop{0%,3%{transform:translate(-50%,-130%);opacity:0}6%{opacity:1}14%,18%{transform:translate(-50%,165%);opacity:1}22%,100%{transform:translate(-50%,165%);opacity:0}}
-  @keyframes targetAccept{0%,10%,100%{border-color:rgba(85,213,239,.3);box-shadow:none}14%,19%{border-color:rgba(85,213,239,.8);box-shadow:0 0 34px rgba(85,213,239,.15),inset 0 0 24px rgba(85,213,239,.05)}}
-  @keyframes demoDropLayer{0%,19%{opacity:1}23%,96%{opacity:0}100%{opacity:1}}
-  @keyframes analysisLayer{0%,18%{opacity:0}22%,36%{opacity:1}40%,100%{opacity:0}}
-  @keyframes analysisProgress{0%,20%{transform:scaleX(0)}36%{transform:scaleX(1)}37%,100%{transform:scaleX(1)}}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes resultLayer{0%,35%{opacity:0}40%,94%{opacity:1}98%,100%{opacity:0}}
-  @keyframes verdictPop{0%,37%{opacity:0;transform:translateY(8px)}42%,94%{opacity:1;transform:none}98%,100%{opacity:0}}
-  @keyframes meterGrow{0%,39%{transform:scaleX(0)}47%,100%{transform:scaleX(1)}}
-  @keyframes playheadMove{0%,39%{left:4%}58%{left:69%}62%,82%{left:55%}92%,100%{left:83%}}
-  @keyframes waveZoom{0%,55%{transform:scaleX(1) translateX(0)}64%,82%{transform:scaleX(2.45) translateX(-8%)}89%,100%{transform:scaleX(1) translateX(0)}}
-  @keyframes phaseFocus{0%,57%{opacity:.8;transform:scaleX(1)}65%,84%{opacity:1;transform:scaleX(1.45);box-shadow:0 0 12px rgba(238,179,79,.75)}92%,100%{opacity:.8;transform:scaleX(1)}}
-  @keyframes tipReveal{0%,64%{opacity:0;transform:translateY(5px)}69%,84%{opacity:1;transform:none}90%,100%{opacity:0;transform:translateY(5px)}}
-  @keyframes stepOne{0%,19%{background:var(--wave)}20%,100%{background:#27303e}}@keyframes stepTwo{0%,19%{background:#27303e}20%,38%{background:var(--accent)}39%,100%{background:#27303e}}@keyframes stepThree{0%,38%{background:#27303e}39%,94%{background:var(--violet)}95%,100%{background:#27303e}}
-  @media(max-width:1100px){.nav,.rail{display:none}.hero{min-height:auto}.hero__grid,.section__head{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.verdict-grid{grid-template-columns:repeat(4,1fr)}}
-  @media(max-width:720px){:root{--pad:8px}.topbar__in{gap:8px;flex-wrap:wrap}.brand{order:3;flex:1 0 100%}.brand__v{display:none}.langswitch{margin-left:auto;height:28px}.hero{padding-top:40px}.hero__grid{grid-template-columns:minmax(0,1fr)}h1{font-size:clamp(2rem,10vw,2.55rem)}.cards,.workflow,.specs,.verdict-grid{grid-template-columns:1fr}.capture-slot{width:88%;padding:28px 14px}.wave-area{height:220px}section.content{padding:62px 0}
-}
-  @media(max-width:720px){.release-row{align-items:stretch;flex-direction:column}.release-row .btn{justify-content:center}}
-  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
-
-  /* ── 좁은 화면 알약 높이 통일 (2026-09-09) ────────────────────────────────
-     YSG 배지 · 언어토글 · GitHub 버튼 · 칩을 한 높이로 맞춘다. 데스크톱은 30px,
-     여기서는 28px 이다. 사용자 지적: "페이지 배지들이 서로 정렬이 안맞아".
-     ⚠ 이 블록은 **스타일 맨 끝**에 둬야 한다. 같은 specificity 는 나중 규칙이
-       이기는데, 일부 페이지의 기본 `.chip` 규칙이 미디어쿼리 뒤에 있어서
-       앞쪽에 두면 덮이지 않는다 (400px 폭 실측에서 chip 만 30px 로 남았다). */
-  @media (max-width: 720px){
-    .ysglogo, .ysig, .langswitch, .chip{ height:28px }
-    .ghicon, .ghbtn, .gh{ width:28px; height:28px }
-    .ysglogo__mark, .ysig__mark{ width:22px; height:22px; flex:0 0 22px }
-    .langswitch:before, .langswitch::before{ height:20px }
+  /* 판정 종류 표 — 이 툴에만 있는 부품 */
+  .verdicts{margin-top:44px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+  .verdict{
+    display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:baseline;
+    padding:20px 24px; background:#fff; border:1px solid var(--line);
+    border-radius:var(--r); box-shadow:var(--shadow);
   }
+  .verdict b{
+    font-size:14px; font-weight:800; letter-spacing:-.02em; white-space:nowrap;
+    color:var(--ink);
+  }
+  .verdict span{font-size:14px; color:var(--ink-2)}
+  @media (max-width:760px){ .verdicts{grid-template-columns:1fr} }
+  /* 스테레오 강도 색띠 — 색이 곧 정보라서 페이지에서 한 번 보여준다 */
+  .strength{
+    margin-top:26px; border:1px solid var(--line); border-radius:var(--r);
+    overflow:hidden; background:#fff; box-shadow:var(--shadow);
+  }
+  .strength__bar{
+    height:34px;
+    background:linear-gradient(90deg, #6b7f92 0%, #0c8290 42%, #2f7fb8 68%, #7a51c8 100%);
+  }
+  .strength__legend{
+    display:flex; justify-content:space-between; gap:12px; padding:11px 16px;
+    font-size:12px; font-weight:600; color:var(--ink-3); letter-spacing:.04em;
+  }
+  .devnote{
+    display:inline-flex; align-items:center; gap:9px; margin-top:22px;
+    padding:9px 16px; border-radius:999px;
+    border:1px solid rgba(12,130,144,.32); background:rgba(12,130,144,.07);
+    font-size:13.5px; font-weight:600; color:var(--key);
+  }
+  .devnote b{font-weight:800}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar__in">
-  <a class="ysig" href="../index.html" aria-label="YSG Audio Tools"><span class="ysig__mark" aria-hidden="true"><img src="../assets/ysg-mark-color.svg" alt="" /></span><span>YSG<span style="color:var(--wave)">.AUDIO</span></span></a>
-  <a class="brand" href="#top"><span class="brand__mark">L/R</span><span class="brand__name">Stereo <b>Auditor</b></span><span class="brand__v">V1.0.0</span></a>
-  <nav class="nav" aria-label="페이지 섹션"><a href="#map" data-en="Waveform">웨이브폼</a><a href="#verdicts" data-en="Verdicts">판정</a><a href="#workflow" data-en="Workflow">워크플로우</a><a href="#download" data-en="Specs">사양</a></nav>
-  <button class="langswitch" type="button" aria-label="언어 전환" aria-pressed="false"><span class="ko">KO</span><span class="en">EN</span></button>
-  <a class="gh" href="https://github.com/samter96/YSGAudioTools" target="_blank" rel="noreferrer" aria-label="GitHub repository"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/></svg></a>
-</div></header>
-<nav class="rail" aria-label="빠른 이동"><span class="rail__thumb" aria-hidden="true"></span><a href="#top"></a><a href="#map"></a><a href="#verdicts"></a><a href="#workflow"></a><a href="#download"></a></nav>
+
+<header class="topbar">
+  <div class="topbar__in">
+    <a class="ysglogo" href="../index.html" aria-label="YSG Audio Tools">
+      <span class="ysglogo__mark" aria-hidden="true"><img src="../assets/ysg-mark-color.svg" alt="" /></span>
+      <span>YSG<b>.AUDIO</b></span>
+    </a>
+    <a class="brand" href="#top">
+      <span class="brand__name">Stereo Auditor</span>
+      <span class="brand__v" data-en="v1.0.0 · early build">v1.0.0 · 얼리 빌드</span>
+    </a>
+    <nav class="navlinks" aria-label="페이지 섹션">
+      <a href="#overview" data-en="Overview">개요</a>
+      <a href="#verdicts" data-en="Verdicts">판정</a>
+      <a href="#features" data-en="Features">기능</a>
+      <a href="#spec" data-en="Spec">사양</a>
+    </nav>
+    <button class="langswitch" type="button" aria-label="언어 전환" aria-pressed="false"><span class="ko">KO</span><span class="en">EN</span></button>
+    <a class="ghicon" href="https://github.com/samter96/YSGAudioTools" target="_blank" rel="noreferrer" aria-label="GitHub repository">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/></svg>
+    </a>
+  </div>
+</header>
+
 <main id="top">
-  <section class="hero"><div class="wrap hero__grid">
-    <div><div class="kicker" data-en="Standalone Channel Inspection">Standalone Channel Inspection</div><h1 data-en="See whether stereo is <span class=&quot;hl&quot;>really stereo</span><br>and <span class=&quot;hl2&quot;>where it lives</span>">스테레오가 <span class="hl">정말 스테레오인지</span><br><span class="hl2">어디에서 얼마나 다른지</span></h1><p class="hero__sub" data-en="Drop in one audio file. Stereo Auditor classifies the channel relationship, maps stereo strength directly onto a high-resolution L/R waveform, and points to sustained phase-risk regions without modifying the source.">오디오 파일 하나를 드롭하면 채널 관계를 판정하고, 고해상도 L/R 웨이브폼 위에 구간별 스테레오 강도를 색으로 표시합니다. 지속되는 위상 위험 구간도 원본 변경 없이 확인할 수 있습니다.</p><div class="actions"><a class="btn btn--primary" href="#download" data-en="Build Status">빌드 상태</a><a class="btn" href="#map" data-en="View Features">기능 보기</a><span class="btn btn--muted" data-en="Download coming soon">다운로드 준비 중</span></div><div class="chips"><span class="chip">Windows Standalone</span><span class="chip">Local-only Analysis</span><span class="chip">KO / EN</span><span class="chip">Source Untouched</span></div></div>
-    <div class="appframe"><div class="appbar"><i></i><i></i><i></i><span>Stereo Auditor · Product Capture</span></div><div class="capture"><div class="capture-slot"><strong data-en="MAIN PRODUCT CAPTURE SLOT">메인 제품 캡처 영역</strong><span>assets/stereo-auditor-main.png · 16:10</span><div class="capture-wave" aria-hidden="true"><i style="--h:20%;--d:-.2s"></i><i style="--h:45%;--d:-.4s"></i><i style="--h:80%;--d:-.7s"></i><i style="--h:34%;--d:-.1s"></i><i style="--h:68%;--d:-.8s"></i><i style="--h:28%;--d:-.5s"></i><i style="--h:90%;--d:-.3s"></i><i style="--h:42%;--d:-.9s"></i><i style="--h:72%;--d:-.6s"></i><i style="--h:25%;--d:-.15s"></i><i style="--h:58%;--d:-.75s"></i><i style="--h:32%;--d:-.45s"></i></div></div></div></div>
-  </div></section>
-  <section class="content reveal" id="map"><div class="wrap"><div class="section__head"><div><div class="eyebrow" data-en="Stereo Strength Map">Stereo Strength Map</div><h2 data-en="The waveform remains audio first">파형은 실제 오디오답게, 정보는 색으로</h2></div><p class="lead" data-en="Left and right stay separated as real amplitude envelopes. Color adds a second layer: restrained gray-blue for mono-like regions, cyan through violet as independent stereo information grows.">좌우 채널을 실제 진폭 엔벌로프로 분리해 보여주고, 모노에 가까운 구간은 절제된 회청색으로, 독립적인 스테레오 정보가 강해질수록 청록에서 보라로 변화시킵니다.</p></div><div class="wave-panel"><div class="wave-head"><span>L / R WAVEFORM</span><span>MONO · CYAN · BLUE · VIOLET</span></div><div class="wave-area"><svg class="wave-svg" viewBox="0 0 1200 220" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="waveGradient"><stop offset="0" stop-color="#727b8c"/><stop offset=".25" stop-color="#55d5ef"/><stop offset=".58" stop-color="#6a86ff"/><stop offset="1" stop-color="#a869ff"/></linearGradient></defs><path d="M0 48 C75 45 95 24 150 44 S250 73 305 35 S410 24 470 51 S580 70 640 31 S760 20 820 56 S945 75 1010 33 S1120 30 1200 48 L1200 69 C1120 72 1060 57 1010 80 S900 92 820 66 S710 82 640 73 S530 47 470 78 S360 83 305 58 S205 77 150 68 S70 72 0 65 Z"/><path d="M0 155 C75 150 110 134 160 151 S260 176 320 142 S420 130 485 158 S585 180 650 137 S760 126 830 163 S950 179 1018 143 S1125 136 1200 154 L1200 174 C1120 176 1070 163 1018 186 S900 193 830 172 S720 184 650 177 S550 156 485 187 S375 192 320 165 S210 187 160 174 S65 179 0 172 Z"/></svg><div class="phase-track"><i></i></div></div></div></div></section>
-  <section class="content reveal" id="verdicts"><div class="wrap"><div class="section__head"><div><div class="eyebrow" data-en="Classification">Classification</div><h2 data-en="A verdict that describes the channel relationship">파일 구조가 아니라 채널 관계를 판정</h2></div><p class="lead" data-en="Two channels do not automatically mean meaningful stereo. The result distinguishes exact duplicates, microscopic differences, level-only panning, one-sided content, and independent stereo information.">2채널이라는 이유만으로 스테레오라고 부르지 않습니다. 완전 복제, 미세한 차이, 레벨 차이뿐인 패닝, 한쪽 채널, 독립적인 공간 정보를 구분합니다.</p></div><div class="verdict-grid"><div class="verdict active"><b data-en="Stereo">스테레오</b><span data-en="independent L/R info">독립 L/R 정보</span></div><div class="verdict"><b data-en="Dual Mono">듀얼 모노</b><span data-en="sample-identical">샘플 완전 동일</span></div><div class="verdict"><b data-en="Near Mono">니어 모노</b><span data-en="difference is negligible">차이가 미미함</span></div><div class="verdict"><b data-en="Panned Mono">패닝된 모노</b><span data-en="level difference only">레벨 차이 중심</span></div><div class="verdict"><b data-en="Native Mono">네이티브 모노</b><span data-en="one-channel file">1채널 파일</span></div><div class="verdict"><b data-en="One-sided">한쪽 채널</b><span data-en="signal on one side">한쪽만 활성</span></div><div class="verdict"><b data-en="Silence">무음</b><span data-en="no active signal">활성 신호 없음</span></div></div></div></section>
-  <section class="content reveal"><div class="wrap"><div class="section__head"><div><div class="eyebrow" data-en="Focused Inspection">Focused Inspection</div><h2 data-en="Zoom into detail without losing context">확대해도 디테일과 시간축을 함께 유지</h2></div><p class="lead" data-en="High-resolution envelope data is kept separate from classification data, preserving playback responsiveness while showing detailed peaks at up to 32x zoom. The phase track follows the visible time range and separates normal from sustained risk regions.">고해상도 엔벌로프와 판정 데이터를 분리해 재생 반응성을 유지하면서 최대 32배 확대에서 세부 피크를 보여줍니다. 위상 트랙도 보이는 시간 범위를 따라가며 정상과 지속 위험 구간을 구분합니다.</p></div><div class="cards"><article class="card"><div class="card__num">ZOOM · 32X</div><h3 data-en="High-resolution envelope">고해상도 엔벌로프</h3><p data-en="The full view stays light; zooming uses preserved waveform detail instead of stretching a low-resolution thumbnail.">전체 보기에서는 가볍게 축약하고, 확대 시 저해상도 이미지를 늘리는 대신 보존된 파형 데이터를 사용합니다.</p></article><article class="card"><div class="card__num">PHASE · SUSTAINED</div><h3 data-en="Meaningful phase-risk regions">의미 있는 위상 위험 구간</h3><p data-en="Low-level tails and spikes under 100 ms are excluded. Normal regions remain visible, while sustained risk is overlaid in amber.">저레벨 꼬리와 100ms 미만의 순간 신호는 제외하고, 정상 구간 위에 지속 위험만 주황색으로 표시합니다.</p></article><article class="card"><div class="card__num">HOVER · DETAIL</div><h3 data-en="Inspect the exact moment">구간 수치를 바로 확인</h3><p data-en="Hover a waveform or phase region to inspect time, stereo strength, Side/Mid, L/R correlation, and the reason for the flag.">웨이브폼과 위험 구간에 마우스를 올려 시간, 스테레오 강도, Side/Mid, L/R 상관도와 판정 이유를 확인합니다.</p></article></div></div></section>
-  <section class="content reveal" id="workflow"><div class="wrap"><div class="section__head"><div><div class="eyebrow" data-en="Workflow">Workflow</div><h2 data-en="Drop, audit, inspect">드롭하고, 판정하고, 필요한 곳만 확대</h2></div><p class="lead" data-en="No session setup, routing, or upload. Stereo Auditor is designed as a single-purpose desktop utility for checking one file at a time.">세션 구성이나 라우팅, 업로드 없이 파일 하나를 빠르게 검수하는 단일 목적 데스크톱 유틸리티입니다.</p></div><div class="workflow"><article class="step"><h3 data-en="Drop an audio file">오디오 파일 드롭</h3><p data-en="Drop onto the start screen or replace the current file directly over the waveform region.">시작 화면에 드롭하거나 현재 웨이브폼 영역에 새 파일을 바로 드롭합니다.</p></article><article class="step"><h3 data-en="Read the channel verdict">채널 판정 확인</h3><p data-en="Review classification, stereo strength, active stereo time, Side/Mid, correlation, and channel balance.">분류, 스테레오 강도, 활성 시간, Side/Mid, 상관도와 채널 밸런스를 확인합니다.</p></article><article class="step"><h3 data-en="Play and zoom">재생하며 확대</h3><p data-en="Seek, play, zoom, and pan through the waveform. The original file remains untouched throughout.">파형을 탐색·재생·확대·이동하며 확인합니다. 원본 파일은 끝까지 변경되지 않습니다.</p></article></div></div></section>
-  <section class="content reveal" id="download"><div class="wrap"><div class="section__head"><div><div class="eyebrow" data-en="Build & Specs">Build & Specs</div><h2 data-en="A focused Windows standalone">가볍고 명확한 Windows 독립 실행형</h2></div><p class="lead" data-en="The product is currently in an early build. A public download will be linked here when the release package is ready.">현재 얼리 빌드 단계이며, 공개 배포 패키지가 준비되면 이 영역에 다운로드 링크를 연결합니다.</p></div><div class="specs"><div class="spec"><b>PLATFORM</b><span>Windows · Standalone</span></div><div class="spec"><b>PRIVACY</b><span data-en="100% local analysis">100% 로컬 분석</span></div><div class="spec"><b>INPUT</b><span>WAV · AIFF · FLAC · MP3 · M4A · AAC · OGG</span></div><div class="spec"><b>STATUS</b><span data-en="Early build · download pending">얼리 빌드 · 배포 준비 중</span></div></div></div></section>
+
+  <!-- ── 히어로 ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="wrap">
+      <div class="hero__head">
+        <span class="eyebrow" data-en="Standalone channel inspection">독립 실행형 채널 검수</span>
+        <h1 class="display" data-en='Is it really stereo,<br><span class="grad">and where</span>'>스테레오가 정말 스테레오인지,<br><span class="grad">어디에서 얼마나</span></h1>
+      </div>
+      <p class="hero__sub" data-en="Drop one audio file and it works out the channel relationship, then paints per-region stereo strength as colour over a high-resolution L/R waveform. Sustained phase risk shows up too - and the original file is never touched.">
+        오디오 파일 하나를 드롭하면 채널 관계를 판정하고, 고해상도 L/R 웨이브폼 위에
+        구간별 스테레오 강도를 색으로 표시합니다. 지속되는 위상 위험 구간도 함께 보이며,
+        원본 파일은 끝까지 변경되지 않습니다.
+      </p>
+
+      <div class="pitch">
+        <div class="pkg" aria-hidden="true">
+          <div class="env__wall"><i></i><i></i><i></i></div>
+          <div class="pkg__stage">
+            <div class="floor">
+              <div class="floor__wood">
+                <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+                  <defs>
+                    <filter id="saWood" x="0" y="0" width="100%" height="100%">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012" numOctaves="3" seed="6"/>
+                      <feColorMatrix type="matrix" values="0 0 0 0 .42  0 0 0 0 .33  0 0 0 0 .22  .5 .3 .2 0 0"/>
+                    </filter>
+                  </defs>
+                  <rect width="300" height="300" filter="url(#saWood)" opacity=".72"/>
+                </svg>
+              </div>
+              <div class="floor__light"></div>
+              <div class="floor__haze"></div>
+              <div class="floor__refl"></div>
+              <div class="floor__shadow"></div>
+              <div class="floor__contact"></div>
+            </div>
+            <div class="box" id="box">
+              <div class="box__f box__top"></div>
+              <div class="box__f box__side">
+                <b>Stereo Auditor</b>
+                <em>Channel inspection</em>
+                <img src="../assets/ysg-mark-color.svg" alt="">
+              </div>
+              <div class="box__f box__front">
+                <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
+                  <defs>
+                    <filter id="saFlow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="4" seed="27" result="n"/>
+                      <feDisplacementMap in="SourceGraphic" in2="n" scale="170" xChannelSelector="R" yChannelSelector="G"/>
+                      <feGaussianBlur stdDeviation="9"/>
+                    </filter>
+                    <filter id="saWisp" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.016 0.03" numOctaves="5" seed="3" result="w"/>
+                      <feDisplacementMap in="SourceGraphic" in2="w" scale="64" xChannelSelector="R" yChannelSelector="B"/>
+                      <feGaussianBlur stdDeviation="3.2"/>
+                    </filter>
+                    <linearGradient id="saScrim" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#040d10" stop-opacity="0"/>
+                      <stop offset="52%" stop-color="#040d10" stop-opacity=".18"/>
+                      <stop offset="100%" stop-color="#040d10" stop-opacity=".92"/>
+                    </linearGradient>
+                    <radialGradient id="saVig" cx="48%" cy="38%" r="76%">
+                      <stop offset="52%" stop-color="#000" stop-opacity="0"/>
+                      <stop offset="100%" stop-color="#040c10" stop-opacity=".8"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="300" height="390" fill="#05131a"/>
+                  <g filter="url(#saFlow)">
+                    <ellipse cx="120" cy="126" rx="112" ry="140" fill="#0a5a72"/>
+                    <ellipse cx="205" cy="212" rx="96"  ry="118" fill="#0c8290"/>
+                    <ellipse cx="96"  cy="252" rx="86"  ry="104" fill="#1f8f6a"/>
+                    <ellipse cx="220" cy="104" rx="70"  ry="82"  fill="#2f7fb8"/>
+                    <ellipse cx="146" cy="330" rx="76"  ry="66"  fill="#6d9b2f"/>
+                    <ellipse cx="74"  cy="80"  rx="50"  ry="54"  fill="#3ecfd8"/>
+                    <ellipse cx="246" cy="300" rx="40"  ry="44"  fill="#a7d84e"/>
+                  </g>
+                  <g filter="url(#saWisp)" opacity=".38">
+                    <ellipse cx="150" cy="150" rx="96" ry="120" fill="none" stroke="#9ef0f4" stroke-width="9"/>
+                    <ellipse cx="170" cy="250" rx="74" ry="92"  fill="none" stroke="#b6f0c8" stroke-width="7"/>
+                    <ellipse cx="110" cy="200" rx="58" ry="70"  fill="none" stroke="#d6f2a8" stroke-width="4"/>
+                  </g>
+                  <rect width="300" height="390" fill="url(#saVig)"/>
+                  <rect width="300" height="390" fill="url(#saScrim)"/>
+                </svg>
+                <div class="box__gloss"></div>
+
+                <div class="box__brandline">
+                  <img src="../assets/ysg-mark-color.svg" alt="">
+                  <span>YSG Audio Tools</span>
+                </div>
+                <div class="box__lockup">
+                  <!-- 제품 마크 — 기존 페이지의 `L/R` 텍스트 마크를 그대로 옮긴 것.
+                       새로 디자인하지 않았다. -->
+                  <svg class="box__pmark" viewBox="0 0 30 20" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="saPmarkGrad" x1="0" y1="1" x2="1" y2="0">
+                        <stop offset="0" stop-color="#9ef0f4"/>
+                        <stop offset=".55" stop-color="#b6f0c8"/>
+                        <stop offset="1" stop-color="#d6f2a8"/>
+                      </linearGradient>
+                    </defs>
+                    <text x="15" y="15.4" text-anchor="middle" fill="url(#saPmarkGrad)"
+                          font-family="Pretendard, sans-serif" font-size="15" font-weight="800"
+                          letter-spacing="-.5">L/R</text>
+                  </svg>
+                  <span class="box__pname">Stereo Auditor</span>
+                </div>
+                <div class="box__tag">Channel &middot; phase &middot; balance</div>
+                <div class="box__foot">
+                  <small>Windows x64<br>standalone</small>
+                  <div class="box__bars">
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="env__vig"></div>
+        </div>
+
+        <div class="pitch__copy">
+          <p data-en="A single-purpose desktop utility for checking one file quickly - no session to set up, no routing, no upload. Analysis stays on the machine.">
+            세션 구성이나 라우팅, 업로드 없이 파일 하나를 빠르게 검수하는 단일 목적
+            데스크톱 유틸리티입니다. 분석은 전부 이 컴퓨터 안에서 끝납니다.
+          </p>
+
+          <div class="plats">
+            <span class="plat">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#00adef" d="M0 3.45 9.75 2.1v9.4H0z"/><path fill="#00adef" d="M11.1 1.92 24 0v11.4H11.1z"/>
+                <path fill="#00adef" d="M0 12.9h9.75v9.4L0 20.94z"/><path fill="#00adef" d="M11.1 12.9H24V24l-12.9-1.92z"/>
+              </svg>
+              <span data-en="Windows standalone">Windows 독립 실행형</span>
+            </span>
+            <span class="plat"><span data-en="100% local analysis">100% 로컬 분석</span></span>
+          </div>
+
+          <p class="devnote" data-en="<b>Download coming.</b> Early build, release package in progress."><b>내려받기 준비 중입니다.</b> 얼리 빌드 단계이고 배포 패키지를 만들고 있습니다.</p>
+
+          <div class="btnrow">
+            <a class="btn btn--primary" href="#features" data-en="See the features">기능 보기</a>
+            <a class="btn" href="#spec" data-en="Spec">사양</a>
+          </div>
+        </div>
+      </div>
+
+      <figure class="shot shot--hero loaded" data-shot>
+        <img src="assets/stereo-auditor-main.png" class="loaded" alt="Stereo Auditor 전체 화면">
+        <div class="shot__ph">
+          <b>assets/stereo-auditor-main.png</b>
+          <em>16:10 · PNG</em>
+        </div>
+        <figcaption data-en="Stereo Auditor - L/R waveform and verdict">Stereo Auditor · L/R 웨이브폼과 판정</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── 개요 ──────────────────────────────────────────────── -->
+  <section id="overview" class="band">
+    <div class="wrap">
+      <div class="rise">
+        <span class="eyebrow" data-en="What it is">어떤 도구인가</span>
+        <h2 class="h2" data-en="Drop, judge, zoom where it matters">드롭하고, 판정하고, 필요한 곳만 확대</h2>
+        <p class="lead" data-en="Three steps and nothing else: drop a file, read the verdict, then play and zoom into the part you care about.">
+          세 단계로 끝납니다. 파일을 드롭하고, 판정을 읽고, 궁금한 구간만 재생하며 확대합니다.
+        </p>
+      </div>
+      <div class="rules">
+        <div class="rule rise">
+          <span class="num">01</span>
+          <h3 data-en="Drop the file">오디오 파일 드롭</h3>
+          <p data-en="Drop onto the start screen, or straight onto the current waveform to replace it.">시작 화면에 드롭하거나, 현재 웨이브폼 영역에 새 파일을 바로 드롭합니다.</p>
+        </div>
+        <div class="rule rise">
+          <span class="num">02</span>
+          <h3 data-en="Read the verdict">채널 판정 확인</h3>
+          <p data-en="Classification, stereo strength, active time, Side/Mid, correlation and channel balance.">분류, 스테레오 강도, 활성 시간, Side/Mid, 상관도, 채널 밸런스를 확인합니다.</p>
+        </div>
+        <div class="rule rise">
+          <span class="num">03</span>
+          <h3 data-en="Play and zoom">재생하며 확대</h3>
+          <p data-en="Navigate, play, zoom and pan the waveform. The source file stays untouched throughout.">파형을 탐색·재생·확대·이동하며 확인합니다. 원본 파일은 끝까지 변경되지 않습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Key Features ───────────────────────────────────────── -->
+  <section id="keys" class="keys">
+    <div class="wrap">
+      <div class="rise">
+        <span class="eyebrow" data-en="Key features">주요 기능</span>
+        <h2 class="h2" data-en="Everything it does, at a glance">한눈에 보는 기능</h2>
+        <p class="keys__lead" data-en="Nine things the tool does. Each one is opened up further down the page.">
+          이 툴이 하는 일 아홉 가지입니다. 각각은 아래에서 더 자세히 풀어 두었습니다.
+        </p>
+      </div>
+      <div class="keys__grid">
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 14h4M12 8v12M20 4v20M28 9v11M36 14h-4" opacity=".9"/><path d="M4 26h4M12 22v10M20 20v14M28 23v9M36 26h-4" opacity=".45"/></svg>
+          <h3 data-en="L/R waveform">L/R 웨이브폼</h3>
+          <p data-en="Left and right are drawn as separate real amplitude envelopes, not a summed blob.">좌우 채널을 합치지 않고 실제 진폭 엔벌로프로 분리해 보여줍니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="16" width="30" height="8" rx="4"/><path d="M13 16v8M21 16v8M29 16v8" opacity=".5"/></svg>
+          <h3 data-en="Strength as colour">색으로 읽는 강도</h3>
+          <p data-en="Near-mono regions stay a restrained grey-blue; the more independent the stereo information, the further it moves through cyan to violet.">모노에 가까운 구간은 절제된 회청색, 독립적인 스테레오 정보가 강해질수록 청록에서 보라로 갑니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="14" cy="20" r="8"/><circle cx="26" cy="20" r="8"/><path d="M20 13v14" opacity=".4"/></svg>
+          <h3 data-en="Channel relationship">채널 관계 판정</h3>
+          <p data-en="Two channels is not a reason to call something stereo. Duplicates, tiny differences, level-only panning and genuine spatial information are told apart.">2채널이라는 이유만으로 스테레오라고 부르지 않습니다. 복제, 미세한 차이, 레벨 차이뿐인 패닝, 진짜 공간 정보를 구분합니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 20h6M28 20h6"/><path d="M14 12v16M20 8v24M26 14v12"/><path d="M6 32h28" opacity=".35"/></svg>
+          <h3 data-en="Zoom to 32x">32배 확대</h3>
+          <p data-en="High-resolution envelope and verdict data are kept apart, so playback stays responsive while detail peaks show at full zoom.">고해상도 엔벌로프와 판정 데이터를 분리해, 재생 반응성을 유지하면서 세부 피크를 보여줍니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 20c4-9 8-9 12 0s8 9 12 0 4-9 6-4" /><path d="M5 30h30" opacity=".3"/></svg>
+          <h3 data-en="Real envelope on zoom">확대해도 실제 파형</h3>
+          <p data-en="Overview thins the data lightly; zooming uses the preserved waveform rather than stretching a low-resolution image.">전체 보기에서는 가볍게 축약하고, 확대할 때는 저해상도 이미지를 늘리는 대신 보존된 파형 데이터를 씁니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 22h9l3-8 4 14 3-6h11"/><rect x="14" y="8" width="12" height="24" rx="2" opacity=".35"/></svg>
+          <h3 data-en="Sustained phase risk">지속 위상 위험</h3>
+          <p data-en="Low-level tails and transients under 100ms are excluded; only sustained risk is marked in orange over the normal regions.">저레벨 꼬리와 100ms 미만의 순간 신호는 제외하고, 정상 구간 위에 지속 위험만 주황색으로 표시합니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="10" width="28" height="14" rx="3"/><path d="M20 24v6"/><circle cx="20" cy="32" r="2"/><path d="M11 17h6M23 17h6" opacity=".55"/></svg>
+          <h3 data-en="Numbers on hover">구간 수치 확인</h3>
+          <p data-en="Hover a region to read time, stereo strength, Side/Mid, L/R correlation and the reason behind the verdict.">구간에 마우스를 올려 시간, 스테레오 강도, Side/Mid, L/R 상관도와 판정 이유를 확인합니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="17" width="24" height="16" rx="3"/><path d="M14 17v-4a6 6 0 0 1 12 0v4"/><path d="M20 23v4"/></svg>
+          <h3 data-en="Source untouched">원본 그대로</h3>
+          <p data-en="Nothing is written back. The file you dropped is the file you keep.">원본에 아무것도 쓰지 않습니다. 드롭한 파일이 그대로 남습니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 6v20"/><path d="M13 19l7 7 7-7"/><path d="M8 32h24" opacity=".5"/></svg>
+          <h3 data-en="Seven input formats">일곱 가지 입력</h3>
+          <p data-en="WAV, AIFF, FLAC, MP3, M4A, AAC and OGG.">WAV · AIFF · FLAC · MP3 · M4A · AAC · OGG.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 대표 기능: 판정 ─────────────────────────────────────── -->
+  <section id="verdicts">
+    <div class="wrap">
+      <div class="rise">
+        <span class="eyebrow" data-en="Featured">대표 기능</span>
+        <h2 class="h2" data-en='It judges the channel relationship,<br><span class="grad">not the file structure</span>'>파일 구조가 아니라<br><span class="grad">채널 관계를 판정</span></h2>
+        <p class="lead" data-en="A file with two channels can be a true stereo recording, a byte-identical duplicate, or a mono source panned by level alone. Those are different problems, so they get different verdicts.">
+          2채널 파일은 진짜 스테레오 녹음일 수도, 바이트가 똑같은 복제일 수도, 레벨만 다르게
+          패닝한 모노일 수도 있습니다. 서로 다른 문제이므로 판정도 다르게 나옵니다.
+        </p>
+      </div>
+
+      <div class="verdicts">
+        <div class="verdict rise"><b data-en="Stereo">스테레오</b><span data-en="Independent L/R information">독립적인 L/R 정보</span></div>
+        <div class="verdict rise"><b data-en="Dual mono">듀얼 모노</b><span data-en="Samples are identical">샘플이 완전히 동일</span></div>
+        <div class="verdict rise"><b data-en="Near mono">니어 모노</b><span data-en="Difference is negligible">차이가 미미함</span></div>
+        <div class="verdict rise"><b data-en="Panned mono">패닝된 모노</b><span data-en="Level difference only">레벨 차이 중심</span></div>
+        <div class="verdict rise"><b data-en="Native mono">네이티브 모노</b><span data-en="A one-channel file">1채널 파일</span></div>
+        <div class="verdict rise"><b data-en="Single channel">한쪽 채널</b><span data-en="Only one side is active">한쪽만 활성</span></div>
+        <div class="verdict rise"><b data-en="Silence">무음</b><span data-en="No active signal">활성 신호 없음</span></div>
+        <div class="verdict rise"><b data-en="Phase risk">위상 위험</b><span data-en="Sustained cancellation, marked in orange">지속되는 상쇄, 주황색 표시</span></div>
+      </div>
+
+      <div class="strength rise">
+        <div class="strength__bar"></div>
+        <div class="strength__legend">
+          <span data-en="mono">모노</span>
+          <span data-en="stereo information increasing">스테레오 정보 증가</span>
+          <span data-en="fully independent">완전 독립</span>
+        </div>
+      </div>
+
+      <div class="tiles">
+        <div class="tile tile--wide rise">
+          <h3 data-en="Waveform like real audio, information as colour">파형은 실제 오디오답게, 정보는 색으로</h3>
+          <p data-en="The waveform stays readable as audio - the colour carries the verdict. That way a glance across the whole file already tells you where the stereo lives.">파형은 오디오로 읽히게 두고 판정은 색이 나릅니다. 그래서 파일 전체를 한 번 훑는 것만으로 스테레오가 어디에 있는지 보입니다.</p>
+          <figure class="shot" data-shot>
+            <img data-src="assets/v2/strength.png" alt="스테레오 강도 색 표시">
+            <div class="shot__ph">
+              <b>assets/v2/strength.png</b>
+              <span data-en="A file whose stereo strength changes across it - mono passage next to a wide one.">강도가 구간마다 바뀌는 파일 — 모노 구간과 넓은 구간이 함께 보이게</span>
+              <em>1400 × 620 · PNG</em>
+            </div>
+            <figcaption data-en="Stereo strength map">스테레오 강도 표시</figcaption>
+          </figure>
+        </div>
+        <div class="tile rise">
+          <h3 data-en="Phase track follows the view">위상 트랙이 화면을 따라온다</h3>
+          <p data-en="The phase track follows the visible time range and separates normal regions from sustained risk.">위상 트랙도 보이는 시간 범위를 따라가며 정상 구간과 지속 위험 구간을 구분합니다.</p>
+          <figure class="shot" data-shot>
+            <img data-src="assets/v2/phase.png" alt="위상 위험 구간">
+            <div class="shot__ph">
+              <b>assets/v2/phase.png</b>
+              <span data-en="Zoomed in on a sustained phase risk region.">지속 위험 구간을 확대한 상태</span>
+              <em>1200 × 420 · PNG</em>
+            </div>
+            <figcaption data-en="Phase risk">위상 위험</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 사양 ──────────────────────────────────────────────── -->
+  <section id="spec" class="band">
+    <div class="wrap">
+      <div class="rise">
+        <span class="eyebrow" data-en="Spec">사양</span>
+        <h2 class="h2" data-en="Light and clear, a Windows standalone">가볍고 명확한 Windows 독립 실행형</h2>
+      </div>
+      <div class="specs rise">
+        <div><b>platform</b><span data-en="Windows · standalone">Windows · 독립 실행형</span></div>
+        <div><b>privacy</b><span data-en="100% local analysis - nothing is uploaded">100% 로컬 분석 · 업로드 없음</span></div>
+        <div><b>input</b><span>WAV · AIFF · FLAC · MP3 · M4A · AAC · OGG</span></div>
+        <div><b>zoom</b><span data-en="Up to 32x, on the preserved envelope">최대 32배 · 보존된 엔벌로프 기준</span></div>
+        <div><b>verdicts</b><span data-en="7 classifications + sustained phase risk">판정 7종 + 지속 위상 위험</span></div>
+        <div><b>source</b><span data-en="Read-only - the file is never modified">읽기 전용 · 파일 수정 없음</span></div>
+        <div><b>status</b><span data-en="Early build · release package in progress">얼리 빌드 · 배포 준비 중</span></div>
+      </div>
+    </div>
+  </section>
+
 </main>
-<footer class="footer"><div class="wrap">YSG Audio Tools · Stereo Auditor · <a href="mailto:Samter96@naver.com">Samter96@naver.com</a></div></footer>
-<script>
-var releasePath='downloads/Stereo-Auditor-v1.0.0-Windows-x64-Setup.exe?v=inno',heroActions=document.querySelector('.hero .actions'),heroDownload=heroActions.querySelector('.btn--primary'),heroMeta=heroActions.querySelector('.btn--muted');heroDownload.href=releasePath;heroDownload.setAttribute('download','Stereo-Auditor-v1.0.0-Windows-x64-Setup.exe');heroDownload.innerHTML='v1.0.0 다운로드';heroDownload.setAttribute('data-en','Download v1.0.0');heroMeta.innerHTML='Windows x64 · 3.96 MB';heroMeta.setAttribute('data-en','Windows x64 · 3.96 MB');var releaseSection=document.querySelector('#download'),releaseLead=releaseSection.querySelector('.lead'),releaseStatus=releaseSection.querySelector('.spec:last-child span');releaseLead.innerHTML='Stereo Auditor v1.0.0 정식 Windows 설치 패키지입니다. 분석은 모두 로컬에서 처리되며 원본 파일은 변경되지 않습니다.';releaseLead.setAttribute('data-en','Stereo Auditor v1.0.0 is available as a Windows installer. All analysis stays local and the source file remains untouched.');releaseStatus.innerHTML='V1.0.0 · 다운로드 가능';releaseStatus.setAttribute('data-en','V1.0.0 · Available');releaseSection.querySelector('.specs').insertAdjacentHTML('afterend','<div class="release-row"><a class="btn btn--primary" href="'+releasePath+'" download="Stereo-Auditor-v1.0.0-Windows-x64-Setup.exe" data-en="Download for Windows">Windows용 다운로드</a><div class="release-note"><b>V1.0.0 · Windows x64 · 3.96 MB · Inno Setup</b><span data-en="Unsigned installer · Windows SmartScreen may appear">미서명 설치 파일 · Windows SmartScreen 안내가 표시될 수 있습니다</span><code>SHA-256 · BC225F0AD877E3345BD0A93FE0404C2B2EE934FF16F522F43BD26769AE534DC3</code></div></div>');
-var captureFrame=document.querySelector('.capture'),captureImage=document.createElement('img');captureImage.className='capture-image';captureImage.alt='Stereo Auditor 메인 분석 화면';captureImage.src='assets/stereo-auditor-main.png';captureImage.onload=function(){captureFrame.classList.add('screenshot-loaded')};captureImage.onerror=function(){captureImage.remove()};captureFrame.prepend(captureImage);
-document.querySelector('.capture').insertAdjacentHTML('afterbegin', `<div class="demo" aria-label="오디오 드롭부터 판정과 위상 위험 확인까지 보여주는 제품 데모"><div class="demo__stage"><div class="demo__top"><b>Stereo Auditor</b><span>LOCAL ANALYSIS · SOURCE UNTOUCHED</span></div><div class="demo__drop"><div class="demo__target"><span data-en="DROP AUDIO TO AUDIT">오디오 파일을 드롭하세요</span></div></div><div class="demo__file"><b>YSGlab_Master.wav</b><em>WAV · 24-bit · 48 kHz</em></div><div class="demo__analysis"><div class="demo__analysisbox"><div class="demo__spinner"></div><b data-en="ANALYZING CHANNEL RELATIONSHIP">채널 관계 분석 중</b><div class="demo__progress"><i></i></div></div></div><div class="demo__result"><div class="demo__main"><div class="demo__wavehead"><b>L / R STEREO MAP</b><span>00:13.632 · 32X</span></div><div class="demo__viewport"><div class="demo__waveworld"><svg viewBox="0 0 900 260" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="demoWaveGradient"><stop offset="0" stop-color="#737f91"/><stop offset=".28" stop-color="#55d5ef"/><stop offset=".63" stop-color="#6a86ff"/><stop offset="1" stop-color="#a869ff"/></linearGradient></defs><path d="M0 57 C45 55 57 45 78 58 S105 78 126 40 S157 26 179 68 S217 91 239 37 S274 24 300 66 S339 86 365 35 S402 23 430 70 S466 87 492 33 S529 25 557 67 S595 89 621 38 S658 24 687 64 S724 85 751 34 S787 28 816 65 S863 74 900 55 L900 110 C864 113 841 91 816 106 S777 127 751 93 S715 84 687 111 S650 126 621 96 S583 82 557 112 S518 126 492 91 S455 82 430 111 S390 128 365 93 S328 82 300 113 S263 124 239 95 S202 80 179 115 S143 128 126 92 S96 87 78 108 S39 111 0 109Z"/><path d="M0 177 C42 174 60 166 80 180 S110 204 132 158 S166 145 190 193 S225 214 249 158 S286 143 313 192 S351 209 378 154 S415 145 443 196 S480 213 507 153 S545 148 573 190 S610 212 637 157 S676 144 704 190 S743 209 770 154 S808 150 837 191 S872 199 900 177 L900 230 C870 232 850 212 837 226 S794 245 770 213 S731 205 704 234 S664 244 637 215 S599 202 573 235 S533 245 507 211 S468 201 443 235 S404 246 378 213 S339 203 313 236 S274 244 249 215 S214 202 190 237 S150 245 132 210 S99 204 80 227 S40 232 0 229Z"/></svg></div><div class="demo__playhead"></div><div class="demo__tip"><b data-en="SUSTAINED PHASE RISK">지속 위상 위험</b><span data-en="0.42 s · active signal · inspect at 32x">0.42초 · 유효 신호 · 32배 확대 확인</span></div><div class="demo__timeline"><span>00:00</span><span>00:06.8</span><span>00:13.6</span><div class="demo__phase"><i></i></div></div></div></div><aside class="demo__side"><div class="demo__verdict"><small>CHANNEL VERDICT</small><strong data-en="STEREO">스테레오</strong><div class="demo__score"><b>74</b> / 100</div><div class="demo__meter"><i></i></div></div><div class="demo__metrics"><div class="demo__metric"><span>SIDE / MID</span><b>-12.3 dB</b></div><div class="demo__metric"><span>L/R CORR.</span><b>0.888</b></div><div class="demo__metric"><span>BALANCE</span><b>-0.0 dB</b></div><div class="demo__metric"><span>PHASE RISK</span><b>0.2%</b></div></div></aside></div></div><div class="demo__step" aria-hidden="true"><i></i><i></i><i></i></div></div>`);
-var demoHost=document.querySelector('#map .wave-area'),productDemo=document.querySelector('.demo');if(demoHost&&productDemo){demoHost.classList.add('demo-host');demoHost.appendChild(productDemo)}
-"use strict";(function(){var reduce=false;try{reduce=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}var reveals=document.querySelectorAll('.reveal');if(reduce||!('IntersectionObserver'in window)){reveals.forEach(function(el){el.classList.add('in')})}else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -8% 0px'});reveals.forEach(function(el){io.observe(el)})}var btn=document.querySelector('.langswitch'),en=false,ko=new WeakMap();function lang(v){document.querySelectorAll('[data-en]').forEach(function(el){if(!ko.has(el))ko.set(el,el.innerHTML);el.innerHTML=v?el.getAttribute('data-en'):ko.get(el)});document.body.classList.toggle('lang-en',v);document.documentElement.lang=v?'en':'ko';btn&&btn.setAttribute('aria-pressed',v?'true':'false')}btn&&btn.addEventListener('click',function(){en=!en;lang(en)});var links=[].slice.call(document.querySelectorAll('.rail a')),thumb=document.querySelector('.rail__thumb'),sections=links.map(function(a){return document.querySelector(a.getAttribute('href'))});function rail(){var best=0,dist=1e9;sections.forEach(function(s,i){if(!s)return;var d=Math.abs(s.getBoundingClientRect().top-innerHeight*.38);if(d<dist){dist=d;best=i}});links.forEach(function(a,i){a.classList.toggle('active',i===best)});if(thumb)thumb.style.setProperty('--rail-y',(best*28)+'px')}addEventListener('scroll',rail,{passive:true});rail()})();
-</script>
+
+<footer class="footer">
+  <div class="wrap">
+    <p data-en="Made by YSG Audio Tools (You Seung Gyun) · contact: Samter96@naver.com">Made by YSG Audio Tools (You Seung Gyun) · 문의 : Samter96@naver.com</p>
+    <p data-en="Windows is a trademark of Microsoft. Format names are trademarks of their respective owners.">Windows는 Microsoft의 상표입니다. 기재된 포맷 명칭은 각 소유자의 상표입니다.</p>
+    <p data-en="Typeface: Pretendard (SIL OFL 1.1)">글꼴 : Pretendard (SIL OFL 1.1)</p>
+    <p id="year"></p>
+  </div>
+</footer>
+
+<script src="../assets/ysg.js"></script>
 </body>
 </html>
