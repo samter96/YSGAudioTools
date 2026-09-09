@@ -173,6 +173,19 @@
     .ysglogo__mark, .ysig__mark{ width:22px; height:22px; flex:0 0 22px }
     .langswitch:before, .langswitch::before{ height:20px }
   }
+
+  /* 풀네임이 좁은 화면에서 두 줄로 접히던 문제 (2026-09-09).
+     `.brand` 는 flex 아이템이라 내용보다 좁게 줄어들어서, 글자 크기만 줄여도
+     360px 에서 여전히 접혔다 — nowrap 을 함께 줘야 한 줄로 남는다.
+     320px 에서는 그래도 자리가 모자라 배지의 `YSG.AUDIO` 글자를 감추고 마크만 남긴다
+     (실측: 320·360 둘 다 한 줄 51px, 가로 넘침 없음). */
+  @media (max-width: 400px){
+    .brand{ white-space:nowrap; font-size:12px }
+  }
+  @media (max-width: 340px){
+    .ysglogo span:last-child{ display:none }
+    .ysglogo{ padding:0 6px }
+  }
 </style>
 </head>
 <body>
