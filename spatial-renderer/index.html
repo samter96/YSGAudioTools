@@ -27,15 +27,8 @@
        실측 기준 18px 이면 이름 115 + 마크·간격 25 = 140 으로 들어간다. */
     --lock-size: clamp(12px, 1.6vw, 18px);
   }
-  /* 다크 지면도 바이올렛으로 물들인다 — 다른 다크 페이지와 같은 남색이
-     아니라 이 페이지만의 검정이 되도록 (2026-09-10). */
-  body.theme-dark{
-    --paper:  #130b1f;
-    --tint:   #190f28;
-    --tint-2: #201530;
-    --line:   #302247;
-    --line-2: #453163;
-  }
+  /* 다크 지면(바이올렛)은 ysg.css 의 body.theme-dark 기본값을 그대로
+     쓴다 — 이 페이지 색이 곧 공유 기본값이다. */
   /* 아직 배포 전이라 내려받기가 없다. 그 사실을 눈에 띄게 알리는 띠. */
   .devnote{
     display:inline-flex; align-items:center; gap:9px; margin-top:22px;
