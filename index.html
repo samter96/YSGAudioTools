@@ -254,18 +254,97 @@
         <div class="heromark" aria-hidden="true">
           <div class="heromark__rings"></div>
           <div class="heromark__glow"></div>
-          <svg class="heromark__glyph" viewBox="0 0 24 24">
+          <!-- 고화질 재작업 (2026-09-10) — 실제 기계처럼 보이도록 허브·리벳·
+               나사머리 캡을 새로 그리고, 각 날개에 SVG 스펙큘러 라이팅
+               필터(hmBevel)로 진짜 금속처럼 가장자리가 빛을 받게 했다.
+               좌표는 원본 로고(0-24)를 ×10 한 것 — 실루엣은 그대로 유지. -->
+          <svg class="heromark__glyph" viewBox="0 0 240 240">
             <defs>
-              <linearGradient id="hmDown" gradientUnits="userSpaceOnUse" x1="12" y1="9.78" x2="12" y2="19.68"><stop offset="0" stop-color="#34E0E8"/><stop offset="1" stop-color="#2C6BE0"/></linearGradient>
-              <linearGradient id="hmUpleft" gradientUnits="userSpaceOnUse" x1="12" y1="9.78" x2="3.43" y2="4.83"><stop offset="0" stop-color="#2C6BE0"/><stop offset="1" stop-color="#1B2A6B"/></linearGradient>
-              <linearGradient id="hmUpright" gradientUnits="userSpaceOnUse" x1="12" y1="9.78" x2="20.57" y2="4.83"><stop offset="0" stop-color="#34E0E8"/><stop offset="1" stop-color="#2C6BE0"/></linearGradient>
+              <linearGradient id="hmMetalDown" gradientUnits="userSpaceOnUse" x1="120" y1="105" x2="120" y2="188">
+                <stop offset="0" stop-color="#081326"/>
+                <stop offset=".24" stop-color="#1b3f7a"/>
+                <stop offset=".5" stop-color="#2c6be0"/>
+                <stop offset=".72" stop-color="#7fe0ee"/>
+                <stop offset="1" stop-color="#eafeff"/>
+              </linearGradient>
+              <linearGradient id="hmMetalUpleft" gradientUnits="userSpaceOnUse" x1="112" y1="92" x2="40" y2="52">
+                <stop offset="0" stop-color="#081326"/>
+                <stop offset=".24" stop-color="#173064"/>
+                <stop offset=".5" stop-color="#2c6be0"/>
+                <stop offset=".76" stop-color="#5ecbe6"/>
+                <stop offset="1" stop-color="#dffbff"/>
+              </linearGradient>
+              <linearGradient id="hmMetalUpright" gradientUnits="userSpaceOnUse" x1="128" y1="92" x2="200" y2="52">
+                <stop offset="0" stop-color="#081326"/>
+                <stop offset=".24" stop-color="#173064"/>
+                <stop offset=".5" stop-color="#2c6be0"/>
+                <stop offset=".76" stop-color="#5ecbe6"/>
+                <stop offset="1" stop-color="#dffbff"/>
+              </linearGradient>
+              <radialGradient id="hmHubGrad" cx=".36" cy=".28" r=".85">
+                <stop offset="0" stop-color="#e8f8ff"/>
+                <stop offset=".35" stop-color="#5b8fe8"/>
+                <stop offset=".72" stop-color="#1c3f8f"/>
+                <stop offset="1" stop-color="#050b18"/>
+              </radialGradient>
+              <radialGradient id="hmCapGrad" cx=".34" cy=".26" r=".9">
+                <stop offset="0" stop-color="#fff3da"/>
+                <stop offset=".42" stop-color="#ffcf7d"/>
+                <stop offset="1" stop-color="#a85a17"/>
+              </radialGradient>
+              <radialGradient id="hmRivetGrad" cx=".34" cy=".26" r=".95">
+                <stop offset="0" stop-color="#f4fbff"/>
+                <stop offset=".5" stop-color="#8fb3e6"/>
+                <stop offset="1" stop-color="#0f2040"/>
+              </radialGradient>
               <radialGradient id="hmCoreGrad" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#34E0E8" stop-opacity="0.95"/><stop offset="0.55" stop-color="#34E0E8" stop-opacity="0.35"/><stop offset="1" stop-color="#34E0E8" stop-opacity="0"/></radialGradient>
+              <!-- 금속 베벨 — SourceAlpha 를 높이맵 삼아 진짜 조명(fePointLight)이
+                   가장자리에 반사되게 한다. 손으로 하이라이트를 그리는 대신
+                   물리적으로 빛나 보인다. 광원은 다른 페이지 박스 렌더와 같은
+                   방향(왼쪽 위)으로 맞췄다. -->
+              <filter id="hmBevel" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="hmB"/>
+                <feSpecularLighting in="hmB" surfaceScale="5" specularConstant=".9" specularExponent="18" lighting-color="#f2fdff" result="hmS">
+                  <fePointLight x="-40" y="-90" z="170"/>
+                </feSpecularLighting>
+                <feComposite in="hmS" in2="SourceAlpha" operator="in" result="hmSIn"/>
+                <feComposite in="SourceGraphic" in2="hmSIn" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+              </filter>
             </defs>
-            <circle class="hm-core" cx="12" cy="9.785" r="7.4" fill="url(#hmCoreGrad)"/>
-            <path class="hm-blade hm-blade--a" d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="url(#hmDown)" stroke="#34E0E8" stroke-opacity="0.42" stroke-width=".38" stroke-linejoin="round"/>
-            <path class="hm-blade hm-blade--b" d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="url(#hmUpleft)" stroke="#34E0E8" stroke-opacity="0.42" stroke-width=".38" stroke-linejoin="round"/>
-            <path class="hm-blade hm-blade--c" d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="url(#hmUpright)" stroke="#34E0E8" stroke-opacity="0.42" stroke-width=".38" stroke-linejoin="round"/>
-            <circle cx="12" cy="9.785" r=".72" fill="#FFB454"/>
+
+            <circle class="hm-core" cx="120" cy="98" r="74" fill="url(#hmCoreGrad)"/>
+
+            <!-- 날개 3장 — 채움 그라디언트 + 중심 스파인 하이라이트 + 베벨 필터 -->
+            <g class="hm-blade hm-blade--a" filter="url(#hmBevel)">
+              <path d="M94,97.85 L114,196.85 L126,196.85 L146,97.85 Z" fill="url(#hmMetalDown)" stroke="#08132a" stroke-width="1.6" stroke-opacity=".55" stroke-linejoin="round"/>
+              <path d="M120,122 L120,181" stroke="#eafeff" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+            </g>
+            <g class="hm-blade hm-blade--b" filter="url(#hmBevel)">
+              <path d="M133,75.33 L37.26,43.15 L31.26,53.54 L107,120.36 Z" fill="url(#hmMetalUpleft)" stroke="#08132a" stroke-width="1.6" stroke-opacity=".55" stroke-linejoin="round"/>
+              <path d="M102,87 L45,55" stroke="#eafeff" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>
+            </g>
+            <g class="hm-blade hm-blade--c" filter="url(#hmBevel)">
+              <path d="M107,75.33 L202.74,43.15 L208.74,53.54 L133,120.36 Z" fill="url(#hmMetalUpright)" stroke="#08132a" stroke-width="1.6" stroke-opacity=".55" stroke-linejoin="round"/>
+              <path d="M138,87 L195,55" stroke="#eafeff" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>
+            </g>
+
+            <!-- 허브 — 세 날개가 실제로 물려 있는 몸체 -->
+            <g filter="url(#hmBevel)">
+              <circle cx="120" cy="98" r="34" fill="url(#hmHubGrad)" stroke="#050b18" stroke-width="1.8" stroke-opacity=".6"/>
+              <circle cx="120" cy="98" r="34" fill="none" stroke="#dff7ff" stroke-width="1" stroke-opacity=".35"/>
+            </g>
+
+            <!-- 리벳 3개 — 날개가 허브에 박히는 자리 -->
+            <circle cx="120" cy="132" r="6.4" fill="url(#hmRivetGrad)" stroke="#050b18" stroke-width=".9" stroke-opacity=".55"/>
+            <circle cx="90.6" cy="81" r="6.4" fill="url(#hmRivetGrad)" stroke="#050b18" stroke-width=".9" stroke-opacity=".55"/>
+            <circle cx="149.4" cy="81" r="6.4" fill="url(#hmRivetGrad)" stroke="#050b18" stroke-width=".9" stroke-opacity=".55"/>
+
+            <!-- 중앙 캡 — 십자 나사머리 + 호박색 인디케이터 -->
+            <g class="hm-cap">
+              <circle cx="120" cy="98" r="16" fill="url(#hmCapGrad)" stroke="#5c2f0e" stroke-width="1.3" stroke-opacity=".6"/>
+              <path d="M111,98 h18 M120,89 v18" stroke="#5c2f0e" stroke-width="2.4" stroke-linecap="round" stroke-opacity=".55"/>
+              <circle cx="115.5" cy="93.5" r="3.2" fill="#fff6e2" opacity=".85"/>
+            </g>
           </svg>
           <div class="heromark__orbit">
             <i style="--c:#6b3ce0; --dur:15s; --delay:0s; --r:150px"></i>
