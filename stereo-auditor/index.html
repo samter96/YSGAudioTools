@@ -37,6 +37,16 @@
     --line:   #184c52;
     --line-2: #266b72;
   }
+  .product-photo{
+    margin:0; width:100%; aspect-ratio:1; align-self:center;
+    border-radius:var(--r); overflow:hidden; background:#061112;
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 34px 72px -38px rgba(5,54,52,.74), 0 0 0 1px rgba(255,255,255,.04);
+  }
+  .product-photo img{display:block; width:100%; height:100%; object-fit:cover}
+  @media (max-width:1000px){
+    .product-photo{max-width:500px; margin-inline:auto}
+  }
   /* 판정 종류 표 — 이 툴에만 있는 부품 */
   .verdicts{margin-top:44px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
   .verdict{
@@ -114,112 +124,9 @@
       </p>
 
       <div class="pitch">
-        <div class="pkg" aria-hidden="true">
-          <div class="env__wall"><i></i><i></i><i></i></div>
-          <div class="pkg__stage">
-            <div class="floor">
-              <div class="floor__wood">
-                <svg viewBox="0 0 300 300" preserveAspectRatio="none">
-                  <defs>
-                    <filter id="saWood" x="0" y="0" width="100%" height="100%">
-                      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012" numOctaves="3" seed="6"/>
-                      <feColorMatrix type="matrix" values="0 0 0 0 .42  0 0 0 0 .33  0 0 0 0 .22  .5 .3 .2 0 0"/>
-                    </filter>
-                  </defs>
-                  <rect width="300" height="300" filter="url(#saWood)" opacity=".72"/>
-                </svg>
-              </div>
-              <div class="floor__light"></div>
-              <div class="floor__haze"></div>
-              <div class="floor__refl"></div>
-              <div class="floor__shadow"></div>
-              <div class="floor__contact"></div>
-            </div>
-            <div class="box" id="box">
-              <div class="box__f box__top"></div>
-              <div class="box__f box__side">
-                <b>Stereo Auditor</b>
-                <em>Channel inspection</em>
-                <img src="../assets/ysg-mark-color.svg" alt="">
-              </div>
-              <div class="box__f box__front">
-                <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                  <defs>
-                    <filter id="saFlow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
-                      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="4" seed="27" result="n"/>
-                      <feDisplacementMap in="SourceGraphic" in2="n" scale="170" xChannelSelector="R" yChannelSelector="G"/>
-                      <feGaussianBlur stdDeviation="9"/>
-                    </filter>
-                    <filter id="saWisp" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
-                      <feTurbulence type="fractalNoise" baseFrequency="0.016 0.03" numOctaves="5" seed="3" result="w"/>
-                      <feDisplacementMap in="SourceGraphic" in2="w" scale="64" xChannelSelector="R" yChannelSelector="B"/>
-                      <feGaussianBlur stdDeviation="3.2"/>
-                    </filter>
-                    <linearGradient id="saScrim" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="#040d10" stop-opacity="0"/>
-                      <stop offset="52%" stop-color="#040d10" stop-opacity=".18"/>
-                      <stop offset="100%" stop-color="#040d10" stop-opacity=".92"/>
-                    </linearGradient>
-                    <radialGradient id="saVig" cx="48%" cy="38%" r="76%">
-                      <stop offset="52%" stop-color="#000" stop-opacity="0"/>
-                      <stop offset="100%" stop-color="#040c10" stop-opacity=".8"/>
-                    </radialGradient>
-                  </defs>
-                  <rect width="300" height="390" fill="#05131a"/>
-                  <g filter="url(#saFlow)">
-                    <ellipse cx="120" cy="126" rx="112" ry="140" fill="#0a5a72"/>
-                    <ellipse cx="205" cy="212" rx="96"  ry="118" fill="#0c8290"/>
-                    <ellipse cx="96"  cy="252" rx="86"  ry="104" fill="#1f8f6a"/>
-                    <ellipse cx="220" cy="104" rx="70"  ry="82"  fill="#2f7fb8"/>
-                    <ellipse cx="146" cy="330" rx="76"  ry="66"  fill="#6d9b2f"/>
-                    <ellipse cx="74"  cy="80"  rx="50"  ry="54"  fill="#3ecfd8"/>
-                    <ellipse cx="246" cy="300" rx="40"  ry="44"  fill="#a7d84e"/>
-                  </g>
-                  <g filter="url(#saWisp)" opacity=".38">
-                    <ellipse cx="150" cy="150" rx="96" ry="120" fill="none" stroke="#9ef0f4" stroke-width="9"/>
-                    <ellipse cx="170" cy="250" rx="74" ry="92"  fill="none" stroke="#b6f0c8" stroke-width="7"/>
-                    <ellipse cx="110" cy="200" rx="58" ry="70"  fill="none" stroke="#d6f2a8" stroke-width="4"/>
-                  </g>
-                  <rect width="300" height="390" fill="url(#saVig)"/>
-                  <rect width="300" height="390" fill="url(#saScrim)"/>
-                </svg>
-                <div class="box__gloss"></div>
-
-                <div class="box__brandline">
-                  <img src="../assets/ysg-mark-color.svg" alt="">
-                  <span>YSG Audio Tools</span>
-                </div>
-                <div class="box__lockup">
-                  <!-- 제품 마크 — 기존 페이지의 `L/R` 텍스트 마크를 그대로 옮긴 것.
-                       새로 디자인하지 않았다. -->
-                  <svg class="box__pmark" viewBox="0 0 30 20" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="saPmarkGrad" x1="0" y1="1" x2="1" y2="0">
-                        <stop offset="0" stop-color="#9ef0f4"/>
-                        <stop offset=".55" stop-color="#b6f0c8"/>
-                        <stop offset="1" stop-color="#d6f2a8"/>
-                      </linearGradient>
-                    </defs>
-                    <text x="15" y="15.4" text-anchor="middle" fill="url(#saPmarkGrad)"
-                          font-family="Pretendard, sans-serif" font-size="15" font-weight="800"
-                          letter-spacing="-.5">L/R</text>
-                  </svg>
-                  <span class="box__pname">Stereo Auditor</span>
-                </div>
-                <div class="box__tag">Channel &middot; phase &middot; balance</div>
-                <div class="box__foot">
-                  <small>Windows x64<br>standalone</small>
-                  <div class="box__bars">
-                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="env__vig"></div>
-        </div>
-
+        <figure class="product-photo" aria-label="Stereo Auditor 제품 이미지">
+          <img src="assets/v2/product-box.png" alt="Stereo Auditor 제품 이미지">
+        </figure>
         <div class="pitch__copy">
           <p data-en="A single-purpose desktop utility for checking one file quickly - no session to set up, no routing, no upload. Analysis stays on the machine.">
             세션 구성이나 라우팅, 업로드 없이 파일 하나를 빠르게 검수하는 단일 목적
