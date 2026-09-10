@@ -129,10 +129,10 @@
         <span class="eyebrow" data-en="Wwise project audit">Wwise 프로젝트 검수</span>
         <h1 class="display" data-en='Find sounds where positioning<br><span class="grad">and attenuation disagree</span>'>포지셔닝과 감쇠 설정이<br><span class="grad">어긋난 사운드를 찾는다</span></h1>
       </div>
-      <p class="hero__sub" data-en="It walks the Actor-Mixer Hierarchy over WAAPI and pulls out both mistakes in one pass - objects that are 3D with no attenuation, and objects that are 2D with attenuation attached. The project is only read; nothing is written.">
-        Wwise 프로젝트의 Actor-Mixer Hierarchy를 WAAPI로 훑어, 3D인데 감쇠가 없는
-        오브젝트와 2D인데 감쇠가 걸린 오브젝트를 한 번에 뽑아냅니다.
-        프로젝트는 읽기만 하고 아무것도 쓰지 않습니다.
+      <p class="hero__sub" data-en="An object left 3D with no attenuation, or 2D with attenuation still attached, rarely shows up until something sounds wrong. One pass over the hierarchy pulls out exactly those two cases. The project is only read - nothing is written.">
+3D로 놓고 감쇠를 안 걸었거나, 2D인데 감쇠가 남아 있는 오브젝트는
+        소리가 이상해질 때까지 잘 드러나지 않습니다. 계층 전체를 한 번에 훑어
+        그 두 가지만 뽑아냅니다. 프로젝트는 읽기만 합니다.
       </p>
 
       <div class="pitch">
@@ -556,8 +556,6 @@
 <footer class="footer">
   <div class="wrap">
     <p data-en="Made by YSG Audio Tools (You Seung Gyun) · contact: Samter96@naver.com">Made by YSG Audio Tools (You Seung Gyun) · 문의 : Samter96@naver.com</p>
-    <p data-en="This page is introductory material; the screens shown are illustrative. Wwise and WAAPI are trademarks of Audiokinetic.">이 페이지는 툴 소개용 자료이며, 실린 화면은 기능 설명을 위한 예시입니다. Wwise와 WAAPI는 Audiokinetic의 상표입니다.</p>
-    <p data-en="Typeface: Pretendard (SIL OFL 1.1)">글꼴 : Pretendard (SIL OFL 1.1)</p>
     <p id="year"></p>
   </div>
 </footer>

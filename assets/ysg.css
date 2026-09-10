@@ -299,138 +299,162 @@
     /* 원근 원점의 세로 위치가 곧 **지평선** 이 된다 (여기서는 프레임의 34%) */
     perspective:1500px; perspective-origin:52% 34%;
     border-radius:var(--r); overflow:hidden; isolation:isolate;
-    background:linear-gradient(168deg, #eef1f6 0%, #dcdfe6 58%, #cdd1d9 100%);
+    background:linear-gradient(168deg, #eef1f6 0%, #e2e5ec 56%, #d6dae2 100%);
   }
 
-  /* 벽 — 창에서 들어오는 빛. 흐리게 둬서 피사계 심도를 만든다 */
+  /* ── 뒤족 방 ─────────────────────────────────────
+     플랫한 회상 그라디언트만으로는 "배경색" 으로만 읽힌다. 참고 사진처럼
+     찬장·창문·창 밖 풍경이 **형태로** 보여야 심도가 생긴다.
+
+     페이지 마크업의 `<i>` 3개를 그대로 쓴다 (예전엔 보케 점이었다):
+       i:1 = 왜쪽 찬장   i:2 = 오른쪽 창문(+창 밖 도시)   i:3 = 화분
+     플림은 부모에 한 번만 건다 — 자식까지 함계 플려진다.
+     ⚠ 플림을 키우면 형태가 사라지며 다시 "배경색" 이 된다. 10px 가 상한선이다. */
   .env__wall{
-    position:absolute; left:-6%; right:-6%; top:-6%; height:56%; z-index:0;
+    position:absolute; left:-7%; right:-7%; top:-7%; height:60%; z-index:0;
     filter:blur(7px);
     background:
-      /* 창살 — 세로 3칸. 창 영역(좌상단) 안에서만 보이도록 마스크 대신
-         그라디언트 자체를 창 크기로 잘라 배치한다 */
+      radial-gradient(70% 40% at 40% -10%, rgba(255,255,255,.85), rgba(255,255,255,0) 72%),
+      radial-gradient(40% 90% at 100% 40%, rgba(178,184,196,.42), rgba(178,184,196,0) 80%),
+      linear-gradient(172deg, #eef1f6 0%, #e4e8ef 60%, #d9dde6 100%);
+  }
+  .env__wall i{position:absolute; display:block}
+
+  /* 왜쪽 찬장 — 선반 칸과 책등이 보인다 */
+  .env__wall i:nth-child(1){
+    left:1%; top:3%; width:26%; height:94%;
+    border-radius:2px;
+    background:
+      repeating-linear-gradient(180deg,
+        rgba(255,238,210,.5) 0 3%, rgba(52,38,26,.42) 3% 7.5%,
+        rgba(0,0,0,0) 7.5% 21%, rgba(28,18,10,.34) 21% 25%),
       repeating-linear-gradient(90deg,
-        rgba(150,146,138,.30) 0 2px, rgba(255,255,255,0) 2px 33.3%) no-repeat 2% 2% / 40% 62%,
-      linear-gradient(90deg, rgba(150,146,138,.26) 0 2px, rgba(0,0,0,0) 2px)
-        no-repeat 2% 2% / 40% 62%,
-      /* 창에서 쏟아지는 빛 */
-      radial-gradient(44% 86% at 15% 2%,  rgba(255,255,255,1),    rgba(255,255,255,0) 72%),
-      radial-gradient(30% 62% at 38% -8%, rgba(255,250,236,.9),   rgba(255,250,236,0) 74%),
-      /* 창 반대쪽 벽 — 빛이 안 닿아 차갑고 어둡다. 이 대비가 '방' 을 만든다 */
-      radial-gradient(56% 92% at 99% 26%, rgba(150,157,172,.78),  rgba(150,157,172,0) 78%),
-      linear-gradient(172deg, #f2f4f8 0%, #dfe2e9 56%, #cbcfd8 100%);
+        rgba(122,86,64,.85) 0 14%, rgba(78,92,110,.85) 14% 24%,
+        rgba(150,126,96,.85) 24% 32%, rgba(96,74,58,.85) 32% 46%,
+        rgba(66,80,98,.85) 46% 54%, rgba(138,112,86,.85) 54% 66%,
+        rgba(88,68,52,.85) 66% 78%, rgba(112,124,140,.85) 78% 88%,
+        rgba(126,96,70,.85) 88% 100%),
+      linear-gradient(180deg, #7c6449 0%, #6b553d 100%);
   }
-  /* 창광 보케 — 흐린 광원. 사진의 깊이감을 만드는 값싼 장치다 */
-  .env__wall i{
-    position:absolute; border-radius:50%; filter:blur(14px);
-    background:radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,0) 70%);
+
+  /* 오른쪽 창문 — 창살과 창 밖 도시 */
+  .env__wall i:nth-child(2){
+    right:2%; top:5%; width:43%; height:78%;
+    box-shadow:0 0 0 5px rgba(112,118,132,.62);
+    background:
+      linear-gradient(90deg, rgba(88,94,108,0) 0 31%, rgba(88,94,108,.9) 31% 35%,
+        rgba(88,94,108,0) 35% 64%, rgba(88,94,108,.9) 64% 68%, rgba(88,94,108,0) 68%),
+      linear-gradient(180deg, rgba(88,94,108,0) 0 43%, rgba(88,94,108,.9) 43% 48%,
+        rgba(88,94,108,0) 48%),
+      repeating-linear-gradient(90deg,
+        rgba(132,146,166,0) 0 6%, rgba(132,146,166,.8) 6% 20%,
+        rgba(132,146,166,0) 20% 27%, rgba(150,163,182,.7) 27% 38%,
+        rgba(132,146,166,0) 38% 46%) no-repeat 0 40% / 100% 60%,
+      repeating-linear-gradient(90deg,
+        rgba(158,170,188,0) 0 10%, rgba(158,170,188,.7) 10% 30%,
+        rgba(158,170,188,0) 30% 40%) no-repeat 0 60% / 100% 40%,
+      linear-gradient(180deg, #b9d2ea 0%, #d7e6f4 46%, #eef4fa 100%);
   }
-  .env__wall i:nth-child(1){width:15%; aspect-ratio:1; left:8%;  top:10%; opacity:.95}
-  .env__wall i:nth-child(2){width:9%;  aspect-ratio:1; left:25%; top:4%;  opacity:.75}
-  .env__wall i:nth-child(3){width:6%;  aspect-ratio:1; right:16%; top:14%; opacity:.6}
+
+  /* 화분 — 찬장과 창 사이 */
+  .env__wall i:nth-child(3){
+    left:29%; bottom:2%; width:12%; height:36%;
+    border-radius:46% 46% 22% 22% / 60% 60% 18% 18%;
+    background:linear-gradient(170deg, #5c7a55 0%, #3f5c3c 62%, #33482f 100%);
+  }
 
   .pkg__stage{position:relative; z-index:1; transform-style:preserve-3d}
 
-  /* ── 바닥면 ──────────────────────────────────────────────────────
-     박스 밑변에서 힌지로 눕는다. `transform-origin` 을 바꾸지 말 것 —
-     힌지가 밑변에서 벗어나면 박스가 바닥을 뚫거나 떠 보인다. */
+  /* ── 테이벼 면 ──────────────────────────────────
+     박스 밑변에서 힐지로 넭는다. `transform-origin` 을 바꾸지 말 것 —
+     힐지가 밑변에서 벗어나면 박스가 테이벼을 뚫거나 뜨 보인다.
+     실측: height 900% 면 먼쪽 끝이 프레임의 53% 에 떨어진다. 그 위가 방이다.
+     (300%→ 66%, 110%→ 75% — 값을 줄이면 테이벼이 짧아지고 방이 좁아진다) */
   .floor{
     position:absolute; left:50%; bottom:0; width:900%; height:900%;
     transform-origin:50% 100%;
     transform:translateX(-50%) rotateX(90deg);
     transform-style:preserve-3d;
     background:
-      /* 판자 이음선 (바닥 로컬 x = 화면 좌우, 깊이 방향으로 달린다) */
+      linear-gradient(180deg, rgba(52,38,24,.5) 0 .5%, rgba(52,38,24,0) 2.2%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.008' numOctaves='3' seed='6'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .40  0 0 0 0 .31  0 0 0 0 .20  .42 .26 .16 0 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23w)' opacity='.42'/%3E%3C/svg%3E") repeat 0 0 / 320px 320px,
       repeating-linear-gradient(90deg,
-        rgba(48,32,18,0) 0 5.6%, rgba(48,32,18,.46) 5.6% 5.76%,
-        rgba(255,240,218,.16) 5.76% 5.96%, rgba(48,32,18,0) 5.96% 6%),
-      linear-gradient(0deg, #7d6144 0%, #96754f 26%, #8a6c49 58%, #7a6042 100%);
+        rgba(64,44,26,0) 0 5.6%, rgba(64,44,26,.34) 5.6% 5.74%,
+        rgba(255,242,220,.20) 5.74% 5.94%, rgba(64,44,26,0) 5.94% 6%),
+      linear-gradient(0deg, #a4835a 0%, #ac8c62 26%, #a1845c 58%, #957a55 100%);
+    background-blend-mode:normal, multiply, normal, normal;
   }
-  /* 나뭇결 텍스처. ⚠ 불투명하게 덮으면 바닥면의 판자 이음선을 가린다 —
-     곱하기로 섞어 결과 이음선이 함께 보이게 한다. (평면 자식이라 3D 는 안전) */
-  /* 근경 바닥 — 힌지(박스 밑변)보다 카메라 쪽. `.floor` 는 힌지에서 뒤로만
-     뻗기 때문에 박스 앞 바닥이 비어 프레임 바탕색이 그대로 드러났다
-     (박스가 '놓인' 게 아니라 '떠 있는' 것으로 보이던 진짜 원인).
-     `.floor` 의 자식이라 이미 회전된 좌표계에 있고 top:100% 가 카메라 쪽이다.
-     ⚠ height 를 키우지 말 것 — 근경은 카메라 쪽으로 뻗으므로 로컬 y 가
-       perspective(1500px)를 넘는 순간 판이 카메라를 통과해 화면이 깨진다.
-       실측: 20%%(=바닥높이의 20%%) 면 프레임 밑변을 넉넉히 덮고, 25%% 부터
-       투영이 급격히 늘어난다. 70%% 는 이미 깨진다.
-     ⚠ 힌지를 옮겨서 해결하려 하지 말 것 — 안개·그림자·접지·반사 위치가 모두
-       `.floor` 밑변 기준이라 전부 어긋난다. */
+  /* 근경 테이벼 — 힐지보다 카베라 쪽. `.floor` 는 힐지에서 뒤로만 뿗기 때밸에
+     박스 앞 테이벼이 뱄어 프레임 배탕색이 그대로 드러났다 (박스가 '높인' 게
+     아니라 '뜨 있는' 것으로 보이던 진짜 원인).
+     ⚠ **배경 목록과 별렌드를 `.floor` 와 똑같이 유지할 것** — 다르게 칠하면
+       박스 밑변에 경계선이 그대로 보인다 (2026-09-10 실패 기록).
+       힐지에서 만나는 색(#a4835a)도 양쪽이 같아야 한다.
+     ⚠ height 를 키우지 말 것 — 근경은 카베라 쪽으로 뿗으므로 로컬 y 가
+       perspective(1500px)를 넘는 순간 판이 카베라를 통과해 화면이 깨진다.
+       실측: 20% 면 프레임 밑변을 넭넨하게 덮고, 25% 부터 특이 급증, 70% 는 깨짐. */
   .floor::after{
     content:""; position:absolute; left:0; right:0; top:100%; height:20%;
     background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' seed='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E") repeat 0 0 / 150px 150px,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.008' numOctaves='3' seed='6'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .40  0 0 0 0 .31  0 0 0 0 .20  .42 .26 .16 0 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23w)' opacity='.42'/%3E%3C/svg%3E") repeat 0 0 / 320px 320px,
       repeating-linear-gradient(90deg,
-        rgba(48,32,18,0) 0 5.6%, rgba(48,32,18,.46) 5.6% 5.76%,
-        rgba(255,240,218,.16) 5.76% 5.96%, rgba(48,32,18,0) 5.96% 6%),
-      /* 창 빛이 근경까지 이어지게 — 없으면 박스 밑변에서 톤이 뚝 끊긴다 */
-      radial-gradient(52% 60% at 12% 0%, rgba(255,250,238,.42), rgba(255,250,238,0) 72%),
-      linear-gradient(180deg,
-        rgba(255,246,232,.26) 0%, rgba(255,246,232,0) 14%),
-      linear-gradient(180deg, #7a5f42 0%, #6a5136 46%, #57432c 100%);
-    background-blend-mode:overlay, normal, normal, normal, normal;
+        rgba(64,44,26,0) 0 5.6%, rgba(64,44,26,.34) 5.6% 5.74%,
+        rgba(255,242,220,.20) 5.74% 5.94%, rgba(64,44,26,0) 5.94% 6%),
+      linear-gradient(180deg, #a4835a 0%, #9a7b52 52%, #8b6f4a 100%);
+    background-blend-mode:multiply, normal, normal;
   }
-
-  .floor__wood{
-    position:absolute; inset:0; overflow:hidden;
-    mix-blend-mode:multiply; opacity:.72;
-  }
-  .floor__wood svg{position:absolute; inset:0; width:100%; height:100%}
-  /* 원경 안개 — 멀어질수록 벽 색으로 빠진다. 심도의 절반은 이 그라디언트다 */
+  /* 나뭇결은 위 두 판이 **같은 CSS 배경**으로 들고 있다. 페이지 마크업의
+     SVG 나뭇결은 먼쪽 판만 덮어 경계선을 만들기 때밸에 쓰지 않는다. */
+  .floor__wood{display:none}
+  /* 원경 흐림 — 방 색으로 살짝 빠진다. 너무 덮으면 나무가 사라진다 */
   .floor__haze{
     position:absolute; inset:0;
     background:linear-gradient(0deg,
-      rgba(226,229,236,0) 0%, rgba(226,229,236,.06) 34%,
-      rgba(228,231,238,.34) 56%, rgba(226,229,236,.78) 74%, #dfe2e9 88%);
+      rgba(226,230,238,0) 0%, rgba(226,230,238,.05) 52%,
+      rgba(226,230,238,.24) 80%, rgba(226,230,238,.4) 100%);
   }
-  /* 창 쪽에서 바닥에 떨어지는 빛 웅덩이 */
+  /* 창 쪽에서 테이벼에 떨어지는 받 웅덩이 */
   .floor__light{
-    position:absolute; left:-10%; top:-6%; width:70%; height:36%;
-    background:radial-gradient(closest-side, rgba(255,255,255,.7), rgba(255,255,255,0));
+    position:absolute; left:-8%; top:-4%; width:66%; height:30%;
+    background:radial-gradient(closest-side, rgba(255,250,236,.6), rgba(255,250,236,0));
     filter:blur(12px);
   }
-  /* 방향성 그림자 — 바닥에 누워 박스 오른쪽 뒤로 늘어난다 */
-  /* ⚠ 광원이 **왼쪽 위**(벽의 창광)이므로 그림자는 오른쪽 뒤로 늘어난다.
-     처음에 왼쪽으로 눕혔더니 빛과 그림자가 같은 쪽에 있어 어색했다. */
+  /* 방향성 그림자 — 테이벼에 누워 박스 오른쪽 뒤로 늘어난다.
+     ⚠ 광원이 **왜쪽 위**(창)이므로 그림자는 오른쪽 뒤로 늘어난다. */
   .floor__shadow{
     position:absolute; left:50%; bottom:-1%; width:30%; height:19%;
     transform:translateX(-34%) skewX(26deg);
-    background:radial-gradient(closest-side, rgba(58,46,32,.62), rgba(58,46,32,0));
+    background:radial-gradient(closest-side, rgba(58,42,26,.5), rgba(58,42,26,0));
     filter:blur(9px);
   }
-  /* 접지 — 밑변에 딱 붙는 좁고 진한 선. 이게 있어야 "닿아 있다" 가 된다.
-     넓고 옅은 그늘을 한 겹 더 깐다 (밑동 주변이 밝으면 박스가 떠 보인다). */
+  /* 접지 — 밑변에 딱 붙는 좁고 진한 선. 이게 있어야 "닿아 있다" 가 된다. */
   .floor__contact{
     position:absolute; left:50%; bottom:0; width:19%; height:3.2%;
     transform:translateX(-50%);
-    background:radial-gradient(closest-side, rgba(30,22,14,.88), rgba(30,22,14,0));
+    background:radial-gradient(closest-side, rgba(34,24,14,.82), rgba(34,24,14,0));
     filter:blur(3px);
   }
   .floor__contact::before{
     content:""; position:absolute; left:-70%; right:-70%; bottom:-160%; top:-260%;
-    background:radial-gradient(closest-side, rgba(40,30,18,.34), rgba(40,30,18,0) 78%);
+    background:radial-gradient(closest-side, rgba(46,34,20,.26), rgba(46,34,20,0) 78%);
     filter:blur(7px);
   }
-  /* 반사 — 바닥에 누운 채 멀어지며 사라진다 */
+  /* 반사 — 나무는 거울이 아니다. 짧고 흐리게 */
   .floor__refl{
-    position:absolute; left:50%; bottom:1%; width:19%; height:26%;
+    position:absolute; left:50%; bottom:1%; width:19%; height:24%;
     transform:translateX(-50%);
     background:linear-gradient(0deg,
-      rgba(26,32,70,.30) 0%, rgba(58,44,96,.10) 38%, rgba(58,44,96,0) 70%);
+      rgba(26,32,70,.26) 0%, rgba(58,44,96,.08) 38%, rgba(58,44,96,0) 70%);
     filter:blur(9px);
   }
 
-  /* 가장자리 비네트 — 사진처럼 눌러 준다 */
+  /* 가장자리 별네트 — 사진처럼 살짝만 눌러 준다.
+     ⚠ 필름 그레인을 얹었다가 화면 전채가 자글자글해짐 것이다. 걷어냈다. */
   .env__vig{
     position:absolute; inset:0; z-index:3; pointer-events:none;
     background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='11'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E") repeat 0 0 / 160px 160px,
-      radial-gradient(72% 60% at 46% 40%, rgba(0,0,0,0) 42%, rgba(30,30,38,.34) 100%),
-      linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 20%);
-    background-blend-mode:overlay, normal, normal;
-    opacity:.96;
+      radial-gradient(84% 70% at 48% 42%, rgba(0,0,0,0) 60%, rgba(38,38,46,.16) 100%),
+      linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 18%);
   }
 
   .box{
@@ -747,7 +771,9 @@
   .pkg--mini .box__lockup{font-size:clamp(8px, 1.05vw, 12px); gap:.26em}
   .pkg--mini .box__side b{font-size:clamp(5px, .62vw, 7px)}
   .pkg--mini .box__side em, .pkg--mini .box__side img{display:none}
-  .pkg--mini .env__wall i{filter:blur(8px)}
+  /* 미니 프레임은 높이가 1/3 이라 같은 흐림이면 방 형태가 다 뭉게지고
+     "사진 전새가 부러" 로 보인다. 흐림을 프레임 크기에 맞춰 줄인다. */
+  .pkg--mini .env__wall{filter:blur(3.5px)}
 
   /* ── 사양 표 ─────────────────────────────────────────────────── */
   .specs{margin-top:44px; border:1px solid var(--line); border-radius:var(--r);
