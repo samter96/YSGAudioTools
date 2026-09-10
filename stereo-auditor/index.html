@@ -381,12 +381,18 @@
         <div class="tile tile--wide rise">
           <h3 data-en="Waveform like real audio, information as colour">파형은 실제 오디오답게, 정보는 색으로</h3>
           <p data-en="The waveform stays readable as audio - the colour carries the verdict. That way a glance across the whole file already tells you where the stereo lives.">파형은 오디오로 읽히게 두고 판정은 색이 나릅니다. 그래서 파일 전체를 한 번 훑는 것만으로 스테레오가 어디에 있는지 보입니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/strength.png" alt="스테레오 강도 색 표시">
-            <div class="shot__ph">
-              <b>assets/v2/strength.png</b>
-              <span data-en="A file whose stereo strength changes across it - mono passage next to a wide one.">강도가 구간마다 바뀌는 파일 — 모노 구간과 넓은 구간이 함께 보이게</span>
-              <em>1400 × 620 · PNG</em>
+          <figure class="shot loaded animshot" style="--demo-h:270px">
+            <div class="animshot__stage" aria-hidden="true">
+              <div class="animshot__top">
+                <span class="anim-pill">mono</span>
+                <span>stereo strength map</span>
+                <span class="anim-pill anim-pill--on">wide</span>
+              </div>
+              <div class="anim-wave anim-panel">
+                <div class="anim-zone"></div><div class="anim-playhead"></div>
+                <span style="--h:24%;--d:1"></span><span style="--h:30%;--d:2"></span><span style="--h:28%;--d:3"></span><span style="--h:34%;--d:4"></span><span style="--h:52%;--d:5"></span><span style="--h:72%;--d:6"></span><span style="--h:86%;--d:7"></span><span style="--h:64%;--d:8"></span><span style="--h:40%;--d:9"></span><span style="--h:22%;--d:10"></span><span style="--h:68%;--d:11"></span><span style="--h:90%;--d:12"></span><span style="--h:58%;--d:13"></span><span style="--h:26%;--d:14"></span><span style="--h:42%;--d:15"></span><span style="--h:76%;--d:16"></span>
+              </div>
+              <div class="animshot__bottom"><span>dual mono</span><span>panned mono</span><span>stereo</span></div>
             </div>
             <figcaption data-en="Stereo strength map">스테레오 강도 표시</figcaption>
           </figure>
@@ -394,12 +400,18 @@
         <div class="tile rise">
           <h3 data-en="Phase track follows the view">위상 트랙이 화면을 따라온다</h3>
           <p data-en="The phase track follows the visible time range and separates normal regions from sustained risk.">위상 트랙도 보이는 시간 범위를 따라가며 정상 구간과 지속 위험 구간을 구분합니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/phase.png" alt="위상 위험 구간">
-            <div class="shot__ph">
-              <b>assets/v2/phase.png</b>
-              <span data-en="Zoomed in on a sustained phase risk region.">지속 위험 구간을 확대한 상태</span>
-              <em>1200 × 420 · PNG</em>
+          <figure class="shot loaded animshot" style="--demo-h:250px">
+            <div class="animshot__stage" aria-hidden="true">
+              <div class="animshot__top">
+                <span class="anim-pill">phase</span>
+                <span>sustained risk</span>
+                <span class="anim-pill anim-pill--on">marked</span>
+              </div>
+              <div class="anim-wave anim-panel">
+                <div class="anim-zone" style="left:46%; width:32%; background:rgba(255,193,95,.18); border-color:var(--bad)"></div><div class="anim-playhead"></div>
+                <span style="--h:50%;--d:1"></span><span style="--h:56%;--d:2"></span><span style="--h:42%;--d:3"></span><span style="--h:60%;--d:4"></span><span style="--h:66%;--d:5"></span><span style="--h:38%;--d:6"></span><span style="--h:70%;--d:7"></span><span style="--h:34%;--d:8"></span><span style="--h:72%;--d:9"></span><span style="--h:32%;--d:10"></span><span style="--h:76%;--d:11"></span><span style="--h:36%;--d:12"></span>
+              </div>
+              <div class="animshot__bottom"><span>normal</span><span>negative correlation</span><span>check in mono</span></div>
             </div>
             <figcaption data-en="Phase risk">위상 위험</figcaption>
           </figure>

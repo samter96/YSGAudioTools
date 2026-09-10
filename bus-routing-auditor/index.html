@@ -391,12 +391,34 @@
         <div class="tile tile--wide rise">
           <h3 data-en="Findings, then the chain">목록에서 사슬로</h3>
           <p data-en="The violation list is the entry point; picking a row opens its chain. The two views are the same pass, not separate tools.">위반 목록이 입구이고, 한 줄을 고르면 그 사슬이 열립니다. 두 화면은 별개의 도구가 아니라 같은 흐름입니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/signal.png" alt="Signal Flow 화면">
-            <div class="shot__ph">
-              <b>assets/v2/signal.png</b>
-              <span data-en="Signal Flow for one violation - the whole chain from sound to expected bus.">위반 하나의 Signal Flow — 사운드부터 기대 버스까지 사슬 전체</span>
-              <em>1400 × 620 · PNG</em>
+          <figure class="shot loaded animshot" style="--demo-h:280px">
+            <div class="animshot__stage" aria-hidden="true">
+              <div class="animshot__top">
+                <span class="anim-pill">선택된 위반</span>
+                <span>current: Master Bus</span>
+                <span class="anim-pill anim-pill--on">expected: UI Bus</span>
+              </div>
+              <div class="anim-nodeflow">
+                <i class="anim-dot"></i>
+                <div class="anim-node anim-panel">Sound<span>button_open</span></div>
+                <div class="anim-node anim-panel">Container<span>menu_group</span></div>
+                <div class="anim-node anim-panel">Work Unit<span>ui_main</span></div>
+                <div class="anim-node anim-panel">Bus<span>route mismatch</span></div>
+              </div>
+              <div class="anim-grid">
+                <div class="anim-card anim-panel">
+                  <h4>상속 경로</h4>
+                  <div class="anim-rows">
+                    <div class="anim-row" style="--w:72%"></div>
+                    <div class="anim-row" style="--w:54%"></div>
+                    <div class="anim-row" style="--w:86%"></div>
+                  </div>
+                </div>
+                <div class="anim-card anim-panel">
+                  <h4>수정 위치</h4>
+                  <div class="anim-tags"><span>override</span><span>direct route</span><span>retarget</span></div>
+                </div>
+              </div>
             </div>
             <figcaption data-en="Signal flow">Signal Flow</figcaption>
           </figure>
@@ -438,12 +460,19 @@
         <b><i style="background:#a02e29"></i><span data-en="35%+ · deal with now">35% 이상 · 즉시 확인</span></b>
       </div>
 
-      <figure class="shot rise" data-shot style="--ph:220px; margin-top:34px">
-        <img data-src="assets/v2/heatmap.png" alt="버스 히트맵 화면">
-        <div class="shot__ph">
-          <b>assets/v2/heatmap.png</b>
-          <span data-en="The heatmap with the bus hierarchy expanded.">버스 계층을 펼친 히트맵 화면</span>
-          <em>1400 × 700 · PNG</em>
+      <figure class="shot loaded animshot rise" style="--demo-h:250px; margin-top:34px">
+        <div class="animshot__stage" aria-hidden="true">
+          <div class="animshot__top">
+            <span class="anim-pill">Hierarchy</span>
+            <span>violation density</span>
+            <span class="anim-pill anim-pill--on">sort by risk</span>
+          </div>
+          <div class="anim-matrix">
+            <i class="anim-cell ok"></i><i class="anim-cell ok"></i><i class="anim-cell"></i><i class="anim-cell hot"></i><i class="anim-cell"></i><i class="anim-cell ok"></i>
+            <i class="anim-cell"></i><i class="anim-cell hot"></i><i class="anim-cell hot"></i><i class="anim-cell"></i><i class="anim-cell ok"></i><i class="anim-cell"></i>
+            <i class="anim-cell ok"></i><i class="anim-cell"></i><i class="anim-cell"></i><i class="anim-cell hot"></i><i class="anim-cell hot"></i><i class="anim-cell"></i>
+          </div>
+          <div class="animshot__bottom"><span>0-15% clean</span><span>15-35% review</span><span>35%+ fix first</span></div>
         </div>
         <figcaption data-en="Bus heatmap">버스 히트맵</figcaption>
       </figure>

@@ -483,12 +483,34 @@
         <div class="tile tile--wide rise">
           <h3 data-en="Judged the way Wwise reads it">Wwise가 해석하는 방식대로</h3>
           <p data-en="A value written on an object can differ from the value that actually applies. The tool starts at the object, walks up until it meets an ancestor with Override Positioning checked, and reads the four properties there. If no ancestor overrides, the object is treated as default 2D with no attenuation and skipped rather than reported. A ShareSet reference of the null GUID form counts as unset.">오브젝트에 적힌 값이 실제로 적용되는 값과 다를 수 있습니다. 대상에서 시작해 Override Positioning이 켜진 조상을 만날 때까지 올라가 그 노드에서 네 항목을 읽습니다. 조상까지 올라가도 override가 없으면 기본 2D · 무 ATT로 간주하고 보고하지 않고 건너뜁니다. ShareSet 참조가 <code>{00000000-…}</code> 형태면 미설정으로 처리합니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/inherit.png" alt="상속 판정 화면">
-            <div class="shot__ph">
-              <b>assets/v2/inherit.png</b>
-              <span data-en="A case where the applied value comes from an ancestor rather than the object.">적용값이 오브젝트가 아니라 조상에서 온 경우</span>
-              <em>1400 × 620 · PNG</em>
+          <figure class="shot loaded animshot" style="--demo-h:280px">
+            <div class="animshot__stage" aria-hidden="true">
+              <div class="animshot__top">
+                <span class="anim-pill">Object</span>
+                <span>inheritance walk</span>
+                <span class="anim-pill anim-pill--on">applied ancestor</span>
+              </div>
+              <div class="anim-nodeflow">
+                <i class="anim-dot"></i>
+                <div class="anim-node anim-panel">Sound<span>unset</span></div>
+                <div class="anim-node anim-panel">Container<span>override off</span></div>
+                <div class="anim-node anim-panel">Parent<span>override on</span></div>
+                <div class="anim-node anim-panel">Result<span>ATT missing</span></div>
+              </div>
+              <div class="anim-grid">
+                <div class="anim-card anim-panel">
+                  <h4>적용값</h4>
+                  <div class="anim-tags"><span>3D Position</span><span>LRR on</span><span>ATT none</span></div>
+                </div>
+                <div class="anim-card anim-panel">
+                  <h4>판정</h4>
+                  <div class="anim-rows">
+                    <div class="anim-row" style="--w:88%"></div>
+                    <div class="anim-row" style="--w:62%"></div>
+                    <div class="anim-row" style="--w:44%"></div>
+                  </div>
+                </div>
+              </div>
             </div>
             <figcaption data-en="Inheritance walk">상속 판정</figcaption>
           </figure>
@@ -504,12 +526,31 @@
         <div class="tile tile--wide rise">
           <h3 data-en="An exception approves one setting, not an object">예외는 설정 하나를 승인한 것</h3>
           <p data-en="Sometimes a mismatch is intended. Register it and the row leaves the list; the tool stores the object path with a snapshot of its spatialization, attenuation and issue kind next to itself in att_auditor_exceptions.json. Every scan compares against that snapshot, and if any of the three has changed the exception releases itself and the row comes back - because the approval was for that setting, not a permanent pass for the object.">어긋난 설정이 의도된 것일 때가 있습니다. 예외로 등록하면 목록에서 빠지고, 툴 옆 <code>att_auditor_exceptions.json</code> 에 오브젝트 경로와 spatialization · attenuation · 위반 종류 스냅샷이 저장됩니다. 스캔마다 그 스냅샷과 비교해 셋 중 하나라도 달라지면 예외가 스스로 풀리고 행이 돌아옵니다. 승인한 것은 그 설정이지, 오브젝트의 영구 면제가 아니기 때문입니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/exceptions.png" alt="예외 탭 화면">
-            <div class="shot__ph">
-              <b>assets/v2/exceptions.png</b>
-              <span data-en="The exception tab with a registered entry and its stored snapshot.">등록된 예외와 보관된 스냅샷이 보이는 예외 탭</span>
-              <em>1400 × 620 · PNG</em>
+          <figure class="shot loaded animshot" style="--demo-h:280px">
+            <div class="animshot__stage" aria-hidden="true">
+              <div class="animshot__top">
+                <span class="anim-pill">Exceptions</span>
+                <span>snapshot compare</span>
+                <span class="anim-pill anim-pill--on">auto release</span>
+              </div>
+              <div class="anim-grid">
+                <div class="anim-card anim-panel">
+                  <h4>저장된 스냅샷</h4>
+                  <div class="anim-tags"><span>path</span><span>spatialization</span><span>attenuation</span><span>issue</span></div>
+                </div>
+                <div class="anim-card anim-panel">
+                  <h4>다음 스캔 비교</h4>
+                  <div class="anim-rows">
+                    <div class="anim-row" style="--w:76%"></div>
+                    <div class="anim-row" style="--w:54%"></div>
+                    <div class="anim-row" style="--w:91%"></div>
+                    <div class="anim-row" style="--w:36%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="anim-matrix">
+                <i class="anim-cell ok"></i><i class="anim-cell ok"></i><i class="anim-cell hot"></i><i class="anim-cell"></i><i class="anim-cell ok"></i><i class="anim-cell hot"></i>
+              </div>
             </div>
             <figcaption data-en="Exceptions">예외 처리</figcaption>
           </figure>

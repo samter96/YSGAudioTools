@@ -792,6 +792,61 @@
   }
   @keyframes bar{ from{height:22%} to{height:100%} }
 
+  /* ── 빈 스크린샷 슬롯 대체용 애니메이션 데모 ─────────────────── */
+  .animshot{
+    --a:#65d8ff; --b:#876dff; --c:#ffc15f; --bad:#ff6680; --ok:#67e4a2;
+    position:relative; overflow:hidden; color:#eef6ff; background:#060a12;
+  }
+  .animshot::before{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.9;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(101,216,255,.25), transparent 30%),
+      radial-gradient(circle at 86% 18%, rgba(135,109,255,.22), transparent 32%),
+      linear-gradient(135deg, rgba(255,255,255,.08), transparent 46%);
+  }
+  .animshot__stage{position:relative; min-height:var(--demo-h,260px); padding:18px; isolation:isolate}
+  .animshot--hero .animshot__stage{min-height:clamp(360px,42vw,520px)}
+  .animshot__top,.animshot__bottom{display:flex; align-items:center; justify-content:space-between; gap:8px; color:rgba(238,246,255,.72); font-size:11px}
+  .animshot__bottom{position:absolute; left:18px; right:18px; bottom:18px}
+  .anim-pill{border:1px solid rgba(255,255,255,.13); border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.055)}
+  .anim-pill--on{color:#071018; background:linear-gradient(90deg, var(--a), #b7efff); border-color:transparent; font-weight:800}
+  .anim-panel{border:1px solid rgba(255,255,255,.1); background:rgba(5,9,17,.68); box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .anim-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px}
+  .anim-rows{display:grid; gap:8px}
+  .anim-row{height:24px; border-radius:8px; background:rgba(255,255,255,.06); position:relative; overflow:hidden}
+  .anim-row::before{content:""; position:absolute; left:10px; top:9px; height:6px; width:var(--w,58%); border-radius:999px; background:linear-gradient(90deg, var(--a), var(--b))}
+  .anim-row::after{content:""; position:absolute; inset:0; width:44%; background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent); animation:animSweep 2.8s linear infinite}
+  .anim-nodeflow{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; align-items:center; margin-top:26px; position:relative}
+  .anim-nodeflow::before{content:""; position:absolute; left:8%; right:8%; top:50%; height:2px; background:linear-gradient(90deg, transparent, var(--a), var(--b), transparent)}
+  .anim-node{position:relative; z-index:1; min-height:72px; border-radius:14px; display:grid; place-items:center; text-align:center; font-size:12px; font-weight:800}
+  .anim-node span{display:block; margin-top:5px; font-size:10px; font-weight:600; color:rgba(238,246,255,.58)}
+  .anim-dot{position:absolute; top:calc(50% - 4px); left:8%; width:8px; height:8px; border-radius:50%; background:var(--a); box-shadow:0 0 16px var(--a); animation:animTravel 3.6s ease-in-out infinite}
+  .anim-radar{position:relative; min-height:190px; border-radius:16px; overflow:hidden}
+  .anim-radar::before,.anim-radar::after{content:""; position:absolute; left:50%; top:50%; border-radius:50%; transform:translate(-50%,-50%); border:1px dashed rgba(101,216,255,.25)}
+  .anim-radar::before{width:178px; height:178px; animation:animSpin 15s linear infinite}
+  .anim-radar::after{width:104px; height:104px; border-color:rgba(135,109,255,.32); animation:animSpin 9s linear infinite reverse}
+  .anim-source{position:absolute; left:50%; top:50%; width:10px; height:10px; margin:-5px; border-radius:50%; background:var(--c); box-shadow:0 0 18px var(--c); transform:rotate(var(--r)) translateX(var(--dist)); animation:animPulse 2.2s ease-in-out infinite}
+  .anim-head{position:absolute; left:50%; top:50%; width:44px; height:56px; border-radius:24px 24px 18px 18px; transform:translate(-50%,-50%); background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.04))}
+  .anim-wave{position:relative; height:170px; border-radius:14px; padding:18px 12px; display:flex; align-items:center; gap:3px; margin-top:14px}
+  .anim-wave span{flex:1; min-width:2px; height:var(--h); border-radius:999px; background:linear-gradient(180deg, rgba(255,255,255,.86), var(--a), rgba(255,255,255,.78)); transform-origin:center; animation:animWave 1.8s ease-in-out infinite alternate; animation-delay:calc(var(--d) * .045s)}
+  .anim-playhead{position:absolute; top:12px; bottom:12px; width:2px; background:var(--c); box-shadow:0 0 14px var(--c); animation:animPlay 4.8s linear infinite}
+  .anim-zone{position:absolute; top:18px; bottom:18px; left:36%; width:24%; border-left:2px solid var(--c); border-right:2px solid var(--c); background:rgba(101,216,255,.14)}
+  .anim-matrix{display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin-top:14px}
+  .anim-cell{height:34px; border-radius:8px; background:rgba(255,255,255,.06); position:relative; overflow:hidden}
+  .anim-cell.hot{background:linear-gradient(135deg, rgba(255,102,128,.2), rgba(255,193,95,.18))}
+  .anim-cell.ok{background:rgba(103,228,162,.16)}
+  .anim-cell::after{content:""; position:absolute; inset:auto 7px 8px 7px; height:5px; border-radius:999px; background:rgba(255,255,255,.32)}
+  .anim-card{border-radius:14px; padding:12px; min-height:150px}
+  .anim-card h4{margin:0 0 12px; font-size:13px}
+  .anim-tags{display:flex; flex-wrap:wrap; gap:7px}
+  .anim-tags span{font-size:10px; padding:6px 8px; border-radius:999px; color:rgba(238,246,255,.76); background:rgba(255,255,255,.08)}
+  @keyframes animSweep{from{transform:translateX(-120%)}to{transform:translateX(260%)}}
+  @keyframes animTravel{0%{left:8%; opacity:0}10%,78%{opacity:1}88%,100%{left:90%; opacity:0}}
+  @keyframes animSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  @keyframes animPulse{50%{transform:rotate(var(--r)) translateX(var(--dist)) scale(1.55); opacity:.65}}
+  @keyframes animWave{to{transform:scaleY(.68)}}
+  @keyframes animPlay{from{left:6%}to{left:92%}}
+
   /* ── 큰 수치 하나 ──────────────────────────────────────────── */
   .stat{
     margin-top:44px; padding:clamp(26px,3vw,44px); border-radius:var(--r);
@@ -873,7 +928,8 @@
     transition:opacity .5s ease, transform .5s cubic-bezier(.2,.8,.2,1)}
 
   @media (prefers-reduced-motion: reduce){
-    .aura i, .box, .flow .pulse, .flow .stage, .bars i{animation:none !important}
+    .aura i, .box, .flow .pulse, .flow .stage, .bars i,
+    .animshot *, .animshot::before{animation:none !important}
     .js .rise{opacity:1 !important; transform:none !important}
     html{scroll-behavior:auto}
   }
@@ -897,6 +953,10 @@
     .tile--wide{grid-column:span 1}
     .specs div{grid-template-columns:1fr; gap:5px}
     .hero__head{max-width:none}
+    .anim-grid, .anim-nodeflow{grid-template-columns:1fr !important}
+    .anim-nodeflow::before{top:8%; bottom:8%; left:50%; right:auto; width:2px; height:auto}
+    .anim-dot{display:none}
+    .animshot--hero .animshot__stage{min-height:420px}
   }
   @media (max-width: 720px){
     .brand__v{display:none}

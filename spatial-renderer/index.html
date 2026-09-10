@@ -250,12 +250,32 @@
         </div>
       </div>
 
-      <figure class="shot shot--hero" data-shot>
-        <img data-src="assets/v2/field.png" alt="공간 필드 실시간 뷰">
-        <div class="shot__ph">
-          <b>assets/v2/field.png</b>
-          <span data-en="The spatial field view with a moving object - azimuth, distance, ITD and ILD readouts visible.">공간 필드 실시간 뷰 — 방위각·거리·ITD·ILD 수치가 함께 보이게</span>
-          <em>2560 × 1400 · PNG</em>
+      <figure class="shot shot--hero loaded animshot animshot--hero">
+        <div class="animshot__stage" aria-hidden="true">
+          <div class="animshot__top">
+            <span class="anim-pill">Realtime Field</span>
+            <span>azimuth · distance · ITD · ILD</span>
+            <span class="anim-pill anim-pill--on">binaural render</span>
+          </div>
+          <div class="anim-grid" style="grid-template-columns:1.2fr .8fr; align-items:stretch">
+            <div class="anim-radar anim-panel" style="min-height:360px">
+              <div class="anim-head"></div>
+              <i class="anim-source" style="--r:-34deg; --dist:142px"></i>
+              <i class="anim-source" style="--r:58deg; --dist:104px; --c:#876dff; animation-delay:.45s"></i>
+              <i class="anim-source" style="--r:174deg; --dist:128px; --c:#65d8ff; animation-delay:.9s"></i>
+            </div>
+            <div class="anim-card anim-panel">
+              <h4>Object Metadata</h4>
+              <div class="anim-tags"><span>position</span><span>directivity</span><span>near-field</span><span>occlusion</span></div>
+              <div class="anim-rows" style="margin-top:18px">
+                <div class="anim-row" style="--w:76%"></div>
+                <div class="anim-row" style="--w:48%"></div>
+                <div class="anim-row" style="--w:88%"></div>
+                <div class="anim-row" style="--w:61%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="animshot__bottom"><span>listener tracking</span><span>per-ear delay</span><span>HRTF interpolation</span></div>
         </div>
         <figcaption data-en="Spatial field - real-time view">공간 필드 · 실시간 뷰</figcaption>
       </figure>
@@ -404,12 +424,24 @@
         <div class="tile tile--wide rise">
           <h3 data-en="Reflections arrive before reverb">잔향보다 먼저 도착하는 것은 방이다</h3>
           <p data-en="What tells you a space is narrow, hard or open is not the reverb tail but the first few reflections off nearby surfaces. Those paths come from game geometry and are coloured by the material they hit.">공간이 좁은지, 단단한지, 트인 곳인지를 알려주는 것은 잔향 꼬리가 아니라 주변 면에서 가장 먼저 돌아오는 몇 개의 초기 반사음입니다. 그 경로를 게임 지오메트리에서 받아 부딪힌 재질대로 색을 입힙니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/reflections.png" alt="초기 반사 경로">
-            <div class="shot__ph">
-              <b>assets/v2/reflections.png</b>
-              <span data-en="Traced reflection paths - first and second order, with culled paths visible.">탐색된 반사 경로 — 1차·2차, 제외된 경로까지 보이게</span>
-              <em>1400 × 620 · PNG</em>
+          <figure class="shot loaded animshot" style="--demo-h:290px">
+            <div class="animshot__stage" aria-hidden="true">
+              <div class="animshot__top">
+                <span class="anim-pill">Geometry</span>
+                <span>early reflection paths</span>
+                <span class="anim-pill anim-pill--on">material tint</span>
+              </div>
+              <div class="anim-nodeflow">
+                <i class="anim-dot"></i>
+                <div class="anim-node anim-panel">Source<span>direct</span></div>
+                <div class="anim-node anim-panel">Wall<span>wood</span></div>
+                <div class="anim-node anim-panel">Corner<span>stone</span></div>
+                <div class="anim-node anim-panel">Listener<span>filtered</span></div>
+              </div>
+              <div class="anim-matrix">
+                <i class="anim-cell ok"></i><i class="anim-cell"></i><i class="anim-cell hot"></i><i class="anim-cell ok"></i><i class="anim-cell"></i><i class="anim-cell hot"></i>
+                <i class="anim-cell"></i><i class="anim-cell ok"></i><i class="anim-cell"></i><i class="anim-cell"></i><i class="anim-cell hot"></i><i class="anim-cell ok"></i>
+              </div>
             </div>
             <figcaption data-en="Early reflection paths">초기 반사 경로</figcaption>
           </figure>
