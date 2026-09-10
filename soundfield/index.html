@@ -15,6 +15,89 @@
 <style>
   /* SoundField 는 공용 기본값(블루)이 그대로 자기 키컬러다.
      그래서 이 페이지에는 덮어쓸 변수가 없다. */
+  .sf-demo{
+    --demo-accent:#73d8ff;
+    --demo-accent-2:#8a72ff;
+    --demo-warm:#ffc05a;
+    --demo-red:#ff6680;
+    position:relative;
+    overflow:hidden;
+    color:#edf5ff;
+    background:#060a12;
+  }
+  .sf-demo::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(115,216,255,.28), transparent 31%),
+      radial-gradient(circle at 88% 8%, rgba(138,114,255,.24), transparent 28%),
+      linear-gradient(135deg, rgba(255,255,255,.08), transparent 42%);
+    opacity:.9;
+  }
+  .sf-demo__stage{position:relative; min-height:var(--demo-h,250px); padding:18px; isolation:isolate}
+  .sf-demo__topbar,
+  .sf-demo__footer{display:flex; align-items:center; gap:8px; color:rgba(237,245,255,.72); font-size:11px}
+  .sf-demo__topbar{justify-content:space-between; margin-bottom:16px}
+  .sf-pill{border:1px solid rgba(255,255,255,.13); border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.055)}
+  .sf-pill--on{color:#061019; background:linear-gradient(90deg, var(--demo-accent), #a8f0ff); border-color:transparent; font-weight:700}
+  .sf-panel{border:1px solid rgba(255,255,255,.1); background:rgba(5,9,17,.68); box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .sf-rows{display:grid; gap:8px}
+  .sf-row{height:22px; border-radius:7px; background:rgba(255,255,255,.055); position:relative; overflow:hidden}
+  .sf-row::after{content:""; position:absolute; inset:0; width:45%; background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent); animation:sfSweep 2.8s linear infinite}
+  .sf-row i{position:absolute; left:10px; top:8px; height:6px; width:var(--w,58%); border-radius:999px; background:linear-gradient(90deg, var(--demo-accent), var(--demo-accent-2))}
+  .sf-mini-label{font-size:10px; color:rgba(237,245,255,.58)}
+  .sf-demo--binaural{--demo-h:290px}
+  .sf-orbit{position:absolute; left:50%; top:54%; width:184px; height:184px; transform:translate(-50%,-50%); border:1px solid rgba(115,216,255,.18); border-radius:50%}
+  .sf-orbit::before,.sf-orbit::after{content:""; position:absolute; border:1px dashed rgba(115,216,255,.2); border-radius:50%; inset:28px; animation:sfSpin 16s linear infinite}
+  .sf-orbit::after{inset:58px; animation-duration:9s; animation-direction:reverse; border-color:rgba(138,114,255,.28)}
+  .sf-head{position:absolute; left:50%; top:50%; width:54px; height:64px; transform:translate(-50%,-50%); border-radius:28px 28px 22px 22px; background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.035)); box-shadow:0 0 30px rgba(115,216,255,.3)}
+  .sf-head::before,.sf-head::after{content:""; position:absolute; top:21px; width:10px; height:22px; border:2px solid var(--demo-accent); border-radius:12px}
+  .sf-head::before{left:-8px}.sf-head::after{right:-8px}
+  .sf-speaker{--a:-30deg; position:absolute; left:50%; top:50%; width:9px; height:9px; margin:-4px; border-radius:50%; background:var(--demo-accent); box-shadow:0 0 16px currentColor; transform:rotate(var(--a)) translateX(92px); color:var(--demo-accent); animation:sfPulse 2.4s ease-in-out infinite}
+  .sf-speaker:nth-child(2){--a:30deg; animation-delay:.2s}.sf-speaker:nth-child(3){--a:90deg; color:var(--demo-accent-2); background:var(--demo-accent-2); animation-delay:.5s}
+  .sf-speaker:nth-child(4){--a:150deg; animation-delay:.8s}.sf-speaker:nth-child(5){--a:210deg; color:var(--demo-warm); background:var(--demo-warm); animation-delay:1.1s}
+  .sf-speaker:nth-child(6){--a:270deg; animation-delay:1.4s}.sf-speaker:nth-child(7){--a:330deg; color:var(--demo-accent-2); background:var(--demo-accent-2); animation-delay:1.7s}
+  .sf-routing{position:absolute; inset:86px 18px auto 18px; height:94px; pointer-events:none}
+  .sf-routing i{position:absolute; height:2px; width:34%; background:linear-gradient(90deg, transparent, var(--demo-accent), transparent); top:var(--y); left:var(--x); transform:rotate(var(--r)); animation:sfRoute 2.2s ease-in-out infinite}
+  .sf-routing i:nth-child(1){--x:10%;--y:5%;--r:14deg}.sf-routing i:nth-child(2){--x:58%;--y:20%;--r:-14deg;animation-delay:.35s}.sf-routing i:nth-child(3){--x:15%;--y:78%;--r:-10deg;animation-delay:.7s}.sf-routing i:nth-child(4){--x:57%;--y:72%;--r:11deg;animation-delay:1.05s}
+  .sf-demo--index{--demo-h:245px}
+  .sf-index-grid{display:grid; grid-template-columns:1fr 1.25fr; gap:14px}
+  .sf-gauge{height:168px; border-radius:16px; display:grid; place-items:center; position:relative}
+  .sf-gauge::before{content:""; width:112px; height:112px; border-radius:50%; background:conic-gradient(var(--demo-accent) 0 286deg, rgba(255,255,255,.08) 286deg); mask:radial-gradient(circle, transparent 54%, #000 55%); animation:sfGauge 4s ease-in-out infinite}
+  .sf-gauge b{position:absolute; font-size:28px}.sf-gauge span{position:absolute; bottom:30px; font-size:11px; color:rgba(237,245,255,.6)}
+  .sf-phase{padding:12px; border-radius:14px}.sf-phase h4{margin:0 0 10px; font-size:12px}.sf-bar{height:9px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; margin:8px 0 14px}.sf-bar i{display:block; width:78%; height:100%; border-radius:inherit; background:linear-gradient(90deg, var(--demo-accent), var(--demo-warm)); animation:sfWidth 4s ease-in-out infinite}
+  .sf-demo--results{--demo-h:300px}
+  .sf-search-ui{display:grid; gap:9px}.sf-query{height:28px; border-radius:8px; border:1px solid rgba(255,255,255,.1); background:rgba(0,0,0,.22); position:relative}.sf-query::before{content:attr(data-op); position:absolute; left:10px; top:7px; font-size:10px; color:var(--demo-accent)}.sf-query i{position:absolute; left:60px; right:14px; top:10px; height:7px; border-radius:999px; background:rgba(255,255,255,.18)}
+  .sf-table{margin-top:12px; border-radius:12px; overflow:hidden}.sf-table-row{display:grid; grid-template-columns:1.4fr .6fr .7fr .5fr; gap:10px; padding:9px 11px; border-top:1px solid rgba(255,255,255,.06); font-size:10px; color:rgba(237,245,255,.66)}.sf-table-row:first-child{border-top:0; color:#fff; background:rgba(115,216,255,.1)}.sf-table-row:nth-child(4){background:rgba(138,114,255,.13)}
+  .sf-demo--tree{--demo-h:300px}.sf-tree-layout{display:grid; grid-template-columns:96px 1fr; gap:12px}.sf-tabs{display:flex; flex-direction:column; gap:8px}.sf-tab{height:30px; border-radius:8px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}.sf-tab:first-child{background:rgba(115,216,255,.16); border-color:rgba(115,216,255,.34)}
+  .sf-tree{border-radius:14px; padding:12px; height:210px; overflow:hidden}.sf-branch{height:24px; display:flex; align-items:center; gap:8px; color:rgba(237,245,255,.72); font-size:11px}.sf-branch::before{content:""; width:12px; height:9px; border:1px solid rgba(115,216,255,.65); border-radius:2px}.sf-branch b{margin-left:auto; color:var(--demo-accent); font-size:10px}.sf-sticky{position:sticky; top:0; background:linear-gradient(90deg, rgba(115,216,255,.2), rgba(138,114,255,.12)); border-radius:8px; color:#fff}
+  .sf-demo--duplicate{--demo-h:300px}.sf-dup-group{border-radius:14px; padding:12px; margin-bottom:10px}.sf-dup-head{display:flex; justify-content:space-between; font-size:11px; margin-bottom:9px}.sf-dup-item{height:28px; border-radius:8px; margin-top:6px; background:rgba(255,255,255,.055); position:relative}.sf-dup-item::before{content:""; position:absolute; left:10px; top:10px; height:8px; width:58%; border-radius:999px; background:rgba(255,255,255,.22)}.sf-dup-item.keep{background:rgba(115,216,255,.14)}.sf-dup-item.hide{opacity:.42; transform:translateX(16px); animation:sfHide 3.8s ease-in-out infinite}
+  .sf-demo--wave{--demo-h:270px}.sf-wave-lane{position:relative; height:178px; border-radius:14px; padding:18px 12px 24px; display:flex; align-items:center; gap:3px}.sf-wave-lane span{flex:1; height:var(--h); min-width:2px; border-radius:999px; background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(115,216,255,.45), rgba(255,255,255,.82)); opacity:.86; transform-origin:center; animation:sfWave 1.7s ease-in-out infinite alternate; animation-delay:calc(var(--d) * .05s)}.sf-selection{position:absolute; left:33%; width:28%; top:18px; bottom:24px; border-left:2px solid var(--demo-warm); border-right:2px solid var(--demo-warm); background:rgba(115,216,255,.16)}.sf-playhead{position:absolute; top:12px; bottom:18px; width:2px; background:var(--demo-warm); box-shadow:0 0 14px var(--demo-warm); animation:sfPlay 5s linear infinite}
+  .sf-demo--export{--demo-h:255px}.sf-export-flow{display:grid; grid-template-columns:1fr 46px 1fr; align-items:center; gap:10px}.sf-region-card,.sf-file-card{border-radius:15px; min-height:156px; padding:14px}.sf-region-card{display:flex; align-items:center; gap:3px}.sf-region-card span{flex:1; height:var(--h); border-radius:999px; background:rgba(115,216,255,.55)}.sf-export-arrow{height:2px; background:linear-gradient(90deg, transparent, var(--demo-accent), transparent); position:relative}.sf-export-arrow::after{content:""; position:absolute; right:0; top:-5px; width:10px; height:10px; border-top:2px solid var(--demo-accent); border-right:2px solid var(--demo-accent); transform:rotate(45deg)}.sf-file-card h4{margin:0 0 14px; font-size:13px}.sf-chip-grid{display:flex; flex-wrap:wrap; gap:7px}.sf-chip-grid span{font-size:10px; padding:6px 8px; border-radius:999px; background:rgba(255,255,255,.08); color:rgba(237,245,255,.76)}
+  .sf-theme-demo{--demo-h:150px; margin-top:20px}.sf-theme-demo .sf-demo__stage{min-height:150px; padding:12px}.sf-mini-window{height:118px; border-radius:12px; overflow:hidden; display:grid; grid-template-rows:22px 1fr; border:1px solid rgba(255,255,255,.12)}.sf-mini-window .bar{display:flex; gap:5px; align-items:center; padding:0 8px; background:rgba(255,255,255,.08)}.sf-mini-window .bar i{width:6px;height:6px;border-radius:50%;background:var(--demo-accent)}.sf-mini-body{display:grid; grid-template-columns:35% 1fr; gap:8px; padding:8px}.sf-mini-list,.sf-mini-main{border-radius:8px; background:rgba(255,255,255,.08); position:relative; overflow:hidden}.sf-mini-main::after{content:""; position:absolute; left:8px; right:8px; bottom:14px; height:28px; background:repeating-linear-gradient(90deg, rgba(255,255,255,.6) 0 4px, transparent 4px 8px); mask:linear-gradient(180deg, transparent, #000 45%, #000 55%, transparent); animation:sfMiniWave 2s ease-in-out infinite}.sf-theme-neutral{--demo-accent:#cfd4dc;--demo-accent-2:#868d98}.sf-theme-neon{--demo-accent:#58b7ff;--demo-accent-2:#7b61ff}.sf-theme-light{--demo-accent:#8b5b36;--demo-accent-2:#d99a55; color:#1b160f; background:#f5eee3}.sf-theme-light .sf-demo__stage{background:linear-gradient(135deg, rgba(255,255,255,.5), rgba(139,91,54,.08))}.sf-theme-light .sf-mini-window{border-color:rgba(77,54,35,.2)}.sf-theme-light .sf-mini-window .bar,.sf-theme-light .sf-mini-list,.sf-theme-light .sf-mini-main{background:rgba(77,54,35,.11)}
+  @keyframes sfSweep{from{transform:translateX(-120%)}to{transform:translateX(260%)}}
+  @keyframes sfSpin{to{transform:rotate(360deg)}}
+  @keyframes sfPulse{50%{transform:rotate(var(--a)) translateX(92px) scale(1.7); opacity:.55}}
+  @keyframes sfRoute{50%{opacity:.25; transform:rotate(var(--r)) translateX(18px)}}
+  @keyframes sfGauge{50%{transform:rotate(12deg)}}
+  @keyframes sfWidth{50%{width:91%}}
+  @keyframes sfHide{50%{opacity:.24; transform:translateX(28px)}}
+  @keyframes sfWave{to{transform:scaleY(.72)}}
+  @keyframes sfPlay{from{left:6%}to{left:92%}}
+  @keyframes sfMiniWave{50%{transform:translateY(-4px) scaleY(1.25)}}
+  @media (max-width:700px){
+    .sf-demo__stage{padding:14px}
+    .sf-index-grid,.sf-tree-layout,.sf-export-flow{grid-template-columns:1fr}
+    .sf-export-arrow{height:24px; width:2px; justify-self:center}
+    .sf-export-arrow::after{right:-4px; top:14px; transform:rotate(135deg)}
+    .sf-table-row{grid-template-columns:1fr .45fr; font-size:9px}
+    .sf-table-row span:nth-child(n+3){display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .sf-demo *, .sf-demo::before{animation-duration:.01ms!important; animation-iteration-count:1!important}
+  }
 </style>
 </head>
 <body>
@@ -390,12 +473,24 @@
         <div class="tile tile--wide rise">
           <h3 data-en="Channel order">채널 순서 비교</h3>
           <p data-en="The same 5.1 travels in two orders - film (L C R Lb Rb LFE) and Windows (L R C LFE Lb Rb). Get it wrong and the centre pulls to one side while LFE lands in a speaker slot. Listen to both, then save for one file or for every file of that channel count in the folder.">같은 5.1이 영화 순서(L C R Lb Rb LFE)와 윈도우 순서(L R C LFE Lb Rb) 두 갈래로 돌아다닙니다. 잘못 잡으면 중앙이 한쪽으로 쏠리고 LFE가 스피커 자리에 들어갑니다. 번갈아 듣고 파일 하나 또는 폴더 전체에 적용합니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/binaural.png" alt="바이노럴 모니터링 화면">
-            <div class="shot__ph">
-              <b>assets/v2/binaural.png</b>
-              <span data-en="The binaural monitoring panel with a multichannel file loaded - detected layout and the A/B buttons visible.">멀티채널 파일을 물린 바이노럴 모니터링 패널 — 판정된 배치와 A/B 버튼이 보이게</span>
-              <em>1400 × 620 · PNG</em>
+          <figure class="shot loaded sf-demo sf-demo--binaural">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-demo__topbar">
+                <span class="sf-pill">6ch WAV</span>
+                <span class="sf-pill">자동 · 5.1</span>
+                <span class="sf-pill sf-pill--on">바이노럴</span>
+              </div>
+              <div class="sf-routing"><i></i><i></i><i></i><i></i></div>
+              <div class="sf-orbit">
+                <i class="sf-speaker"></i><i class="sf-speaker"></i><i class="sf-speaker"></i>
+                <i class="sf-speaker"></i><i class="sf-speaker"></i><i class="sf-speaker"></i>
+                <div class="sf-head"></div>
+              </div>
+              <div class="sf-demo__footer" style="position:absolute; left:18px; right:18px; bottom:18px; justify-content:space-between">
+                <span>film order A/B</span>
+                <span>0 samples offset</span>
+                <span>headphones 2ch</span>
+              </div>
             </div>
             <figcaption data-en="Binaural monitoring">바이노럴 모니터링</figcaption>
           </figure>
@@ -432,12 +527,26 @@
         <div class="tile tile--wide rise">
           <h3 data-en="Two-phase indexing">2단계 색인</h3>
           <p data-en="Phase 1 lists files and paths as fast as the disk allows, so search opens early. Phase 2 fills in length, sample rate, channels and tags in the background.">1단계는 파일 목록과 경로만 최대한 빠르게 훑어 검색을 먼저 열어 줍니다. 2단계가 뒤에서 길이·샘플레이트·채널·태그를 채웁니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/indexing.png" alt="인덱싱 진행 화면">
-            <div class="shot__ph">
-              <b>assets/v2/indexing.png</b>
-              <span data-en="Indexing in progress - phase label, count and ETA.">인덱싱 진행 중 — 단계 표시 · 개수 · 예상시간</span>
-              <em>1200 × 300 · PNG</em>
+          <figure class="shot loaded sf-demo sf-demo--index">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-demo__topbar">
+                <span class="sf-pill sf-pill--on">Phase 1</span>
+                <span>파일 목록 수집</span>
+                <span>예상시간 산정 중</span>
+              </div>
+              <div class="sf-index-grid">
+                <div class="sf-gauge sf-panel"><b>1,141,329</b><span>검색 가능 파일</span></div>
+                <div class="sf-phase sf-panel">
+                  <h4>백그라운드 메타 분석</h4>
+                  <div class="sf-bar"><i></i></div>
+                  <div class="sf-rows">
+                    <div class="sf-row"><i style="--w:74%"></i></div>
+                    <div class="sf-row"><i style="--w:53%"></i></div>
+                    <div class="sf-row"><i style="--w:88%"></i></div>
+                    <div class="sf-row"><i style="--w:42%"></i></div>
+                  </div>
+                </div>
+              </div>
             </div>
             <figcaption data-en="Indexing progress">인덱싱 진행</figcaption>
           </figure>
@@ -465,12 +574,20 @@
         <div class="tile tile--wide rise">
           <h3 data-en="A results table that stays how you left it">결과 표는 놔둔 대로</h3>
           <p data-en="Drag column headers into the order you want and close the ones you never read. The layout is saved and restored on the next launch.">컬럼 헤더를 끌어 순서를 바꾸고 안 보는 컬럼은 닫습니다. 바뀐 배치는 저장돼 다음 실행에 복원됩니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/results.png" alt="검색 결과 표">
-            <div class="shot__ph">
-              <b>assets/v2/results.png</b>
-              <span data-en="Search rows plus the results table, with a few filters filled in.">검색 행 + 결과 표 — 필터 몇 개를 채운 상태로</span>
-              <em>1400 × 620 · PNG</em>
+          <figure class="shot loaded sf-demo sf-demo--results">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-search-ui">
+                <div class="sf-query" data-op="AND"><i style="width:44%"></i></div>
+                <div class="sf-query" data-op="OR"><i style="width:68%"></i></div>
+                <div class="sf-query" data-op="NOT"><i style="width:31%"></i></div>
+              </div>
+              <div class="sf-table sf-panel">
+                <div class="sf-table-row"><span>파일명</span><span>길이</span><span>채널</span><span>SR</span></div>
+                <div class="sf-table-row"><span>impact_metal_big_5.1.wav</span><span>2.41s</span><span>6</span><span>96k</span></div>
+                <div class="sf-table-row"><span>whoosh_trailer_deep.wav</span><span>4.02s</span><span>2</span><span>48k</span></div>
+                <div class="sf-table-row"><span>gunshot_room_tail.wav</span><span>1.18s</span><span>1</span><span>96k</span></div>
+                <div class="sf-table-row"><span>arcane_hit_surround.wav</span><span>37.11s</span><span>6</span><span>96k</span></div>
+              </div>
             </div>
             <figcaption data-en="Search and results">검색과 결과 표</figcaption>
           </figure>
@@ -479,12 +596,22 @@
         <div class="tile rise">
           <h3 data-en="Several libraries, one tree">여러 라이브러리, 한 트리</h3>
           <p data-en="Register multiple roots and browse them as a single tree. Tabs separate working contexts, parent folders stay pinned while you scroll, and any subtree can be re-scanned on its own.">여러 저장 위치를 등록해 하나의 트리로 봅니다. 탭으로 작업 맥락을 나누고, 스크롤해도 상위 폴더가 상단에 고정되며, 하위 폴더만 따로 다시 색인할 수 있습니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/tree.png" alt="폴더 트리와 탭">
-            <div class="shot__ph">
-              <b>assets/v2/tree.png</b>
-              <span data-en="The folder tree with its tabs and a pinned parent path.">탭이 보이는 폴더 트리 · 고정된 상위 경로</span>
-              <em>760 × 900 · PNG</em>
+          <figure class="shot loaded sf-demo sf-demo--tree">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-tree-layout">
+                <div class="sf-tabs">
+                  <i class="sf-tab"></i><i class="sf-tab"></i><i class="sf-tab"></i>
+                </div>
+                <div class="sf-tree sf-panel">
+                  <div class="sf-branch sf-sticky">Soundlibrary <b>446,758</b></div>
+                  <div class="sf-branch" style="padding-left:14px">Boom Library <b>85,204</b></div>
+                  <div class="sf-branch" style="padding-left:28px">Cinematic <b>12,905</b></div>
+                  <div class="sf-branch" style="padding-left:28px">Metal <b>8,622</b></div>
+                  <div class="sf-branch" style="padding-left:14px">NEXONGAMES <b>694,571</b></div>
+                  <div class="sf-branch" style="padding-left:28px">ProSoundEffect <b>41,030</b></div>
+                  <div class="sf-branch" style="padding-left:28px">Designed <b>19,404</b></div>
+                </div>
+              </div>
             </div>
             <figcaption data-en="Folder tree">폴더 트리</figcaption>
           </figure>
@@ -493,12 +620,19 @@
         <div class="tile rise">
           <h3 data-en="Duplicates go to a review list">중복은 검수 목록으로</h3>
           <p data-en="Identical files across paths are grouped, not deleted. Excluding a group keeps the shortest path and hides the rest from search only - files and index entries stay, and any exclusion can be undone.">같은 파일이 여러 경로에 있으면 묶어서 보여 줍니다. 제외하면 경로가 가장 짧은 하나만 남기고 나머지를 검색 결과에서만 가립니다. 파일도 색인도 지우지 않고, 언제든 되돌릴 수 있습니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/duplicate.png" alt="중복 검수 화면">
-            <div class="shot__ph">
-              <b>assets/v2/duplicate.png</b>
-              <span data-en="Duplicate review - a few groups with their counts.">중복 검수 — 그룹 몇 개와 개수가 보이게</span>
-              <em>1200 × 700 · PNG</em>
+          <figure class="shot loaded sf-demo sf-demo--duplicate">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-dup-group sf-panel">
+                <div class="sf-dup-head"><b>impact_metal_big</b><span>3 copies</span></div>
+                <div class="sf-dup-item keep"></div>
+                <div class="sf-dup-item hide"></div>
+                <div class="sf-dup-item hide"></div>
+              </div>
+              <div class="sf-dup-group sf-panel">
+                <div class="sf-dup-head"><b>whoosh_trailer_deep</b><span>2 copies</span></div>
+                <div class="sf-dup-item keep"></div>
+                <div class="sf-dup-item hide"></div>
+              </div>
             </div>
             <figcaption data-en="Duplicate review">중복 검수</figcaption>
           </figure>
@@ -509,12 +643,17 @@
           <!-- 움직임 ④ — 오디오 툴이라는 신호. 정보는 아니지만 이 카드에서는 성격이다 -->
           <div class="bars" aria-hidden="true"></div>
           <p data-en="Selecting a result draws its waveform and plays it. The time axis always fits the whole file; only amplitude zooms. Silence-based segment detection splits a take into blocks, a history drawer brings back what you just heard, and playback runs from 0.5x to 2.0x.">결과를 고르면 파형이 그려지고 재생됩니다. 시간축은 항상 파일 전체가 한 화면에 들어오고 세로(진폭)만 확대됩니다. 무음 기준 세그먼트 감지로 소리 덩어리를 나누고, 히스토리 드로어로 방금 들은 소리를 다시 꺼내며, 0.5x~2.0x 배속을 지원합니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/waveform.png" alt="파형 플레이어">
-            <div class="shot__ph">
-              <b>assets/v2/waveform.png</b>
-              <span data-en="The waveform player - a dragged region and the detected segment markers.">파형 플레이어 — 드래그한 구간과 세그먼트 표시가 보이게</span>
-              <em>1400 × 480 · PNG</em>
+          <figure class="shot loaded sf-demo sf-demo--wave">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-demo__topbar">
+                <span>0:11 / 0:37</span>
+                <span class="sf-pill">5.1 → 스테레오 2ch</span>
+                <span>1.0x</span>
+              </div>
+              <div class="sf-wave-lane sf-panel">
+                <div class="sf-selection"></div><div class="sf-playhead"></div>
+                <span style="--h:34%;--d:1"></span><span style="--h:62%;--d:2"></span><span style="--h:72%;--d:3"></span><span style="--h:28%;--d:4"></span><span style="--h:48%;--d:5"></span><span style="--h:81%;--d:6"></span><span style="--h:43%;--d:7"></span><span style="--h:16%;--d:8"></span><span style="--h:58%;--d:9"></span><span style="--h:89%;--d:10"></span><span style="--h:36%;--d:11"></span><span style="--h:23%;--d:12"></span><span style="--h:67%;--d:13"></span><span style="--h:75%;--d:14"></span><span style="--h:31%;--d:15"></span><span style="--h:18%;--d:16"></span><span style="--h:54%;--d:17"></span><span style="--h:86%;--d:18"></span><span style="--h:46%;--d:19"></span><span style="--h:26%;--d:20"></span><span style="--h:61%;--d:21"></span><span style="--h:78%;--d:22"></span><span style="--h:37%;--d:23"></span><span style="--h:19%;--d:24"></span>
+              </div>
             </div>
             <figcaption data-en="Waveform player">파형 플레이어</figcaption>
           </figure>
@@ -523,12 +662,20 @@
         <div class="tile rise">
           <h3 data-en="Export just the region">구간만 내보내기</h3>
           <p data-en="A WAV region is cut out of the original data chunk byte by byte, so nothing is re-encoded, and the broadcast and production chunks - bext, iXML, cue - carry over. MP3, FLAC and AIFF cannot be sliced, so those pass through whole.">WAV 구간은 원본 데이터 청크를 바이트 단위로 잘라내 다시 인코딩하지 않고, 방송용(bext)·제작(iXML)·마커(cue) 청크를 그대로 옮깁니다. MP3·FLAC·AIFF는 구간 잘라내기를 지원하지 않아 원본 전체가 전달됩니다.</p>
-          <figure class="shot" data-shot>
-            <img data-src="assets/v2/export.png" alt="구간 내보내기">
-            <div class="shot__ph">
-              <b>assets/v2/export.png</b>
-              <span data-en="A selected region, ready to export or drag out.">내보내거나 끌어낼 준비가 된 선택 구간</span>
-              <em>1200 × 420 · PNG</em>
+          <figure class="shot loaded sf-demo sf-demo--export">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-export-flow">
+                <div class="sf-region-card sf-panel">
+                  <span style="--h:30%"></span><span style="--h:62%"></span><span style="--h:82%"></span><span style="--h:44%"></span><span style="--h:68%"></span><span style="--h:52%"></span><span style="--h:22%"></span>
+                </div>
+                <div class="sf-export-arrow"></div>
+                <div class="sf-file-card sf-panel">
+                  <h4>arcane_hit_region.wav</h4>
+                  <div class="sf-chip-grid">
+                    <span>data slice</span><span>bext</span><span>iXML</span><span>cue</span><span>drag out</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <figcaption data-en="Region export">구간 내보내기</figcaption>
           </figure>
@@ -555,9 +702,13 @@
           <span class="num">NEUTRAL</span>
           <h3 data-en="Greyscale">무채색</h3>
           <p data-en="Nothing competes with the waveform. This is the default.">파형과 색이 경쟁하지 않습니다. 기본 테마입니다.</p>
-          <figure class="shot" data-shot style="--ph:160px; margin-top:20px">
-            <img data-src="assets/v2/theme-neutral.png" alt="Neutral 테마">
-            <div class="shot__ph"><b>assets/v2/theme-neutral.png</b><em>1200 × 740</em></div>
+          <figure class="shot loaded sf-demo sf-theme-demo sf-theme-neutral">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-mini-window">
+                <div class="bar"><i></i><i></i><i></i></div>
+                <div class="sf-mini-body"><div class="sf-mini-list"></div><div class="sf-mini-main"></div></div>
+              </div>
+            </div>
             <figcaption>Neutral</figcaption>
           </figure>
         </div>
@@ -565,9 +716,13 @@
           <span class="num">NEON</span>
           <h3 data-en="Deep navy">짙은 네이비</h3>
           <p data-en="Navy ground with a blue accent.">네이비 바탕에 블루 포인트.</p>
-          <figure class="shot" data-shot style="--ph:160px; margin-top:20px">
-            <img data-src="assets/v2/theme-neon.png" alt="Neon 테마">
-            <div class="shot__ph"><b>assets/v2/theme-neon.png</b><em>1200 × 740</em></div>
+          <figure class="shot loaded sf-demo sf-theme-demo sf-theme-neon">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-mini-window">
+                <div class="bar"><i></i><i></i><i></i></div>
+                <div class="sf-mini-body"><div class="sf-mini-list"></div><div class="sf-mini-main"></div></div>
+              </div>
+            </div>
             <figcaption>Neon</figcaption>
           </figure>
         </div>
@@ -575,9 +730,13 @@
           <span class="num">LIGHT</span>
           <h3 data-en="Warm light">밝은 베이지</h3>
           <p data-en="A light warm ground with a brown accent.">베이지 바탕에 브라운 포인트.</p>
-          <figure class="shot" data-shot style="--ph:160px; margin-top:20px">
-            <img data-src="assets/v2/theme-light.png" alt="Light 테마">
-            <div class="shot__ph"><b>assets/v2/theme-light.png</b><em>1200 × 740</em></div>
+          <figure class="shot loaded sf-demo sf-theme-demo sf-theme-light">
+            <div class="sf-demo__stage" aria-hidden="true">
+              <div class="sf-mini-window">
+                <div class="bar"><i></i><i></i><i></i></div>
+                <div class="sf-mini-body"><div class="sf-mini-list"></div><div class="sf-mini-main"></div></div>
+              </div>
+            </div>
             <figcaption>Light</figcaption>
           </figure>
         </div>
