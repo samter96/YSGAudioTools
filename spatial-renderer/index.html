@@ -37,6 +37,15 @@
     font-size:13.5px; font-weight:600; color:var(--key);
   }
   .devnote b{font-weight:800}
+  .product-photo{
+    margin:0; align-self:stretch; min-height:clamp(360px,38vw,554px);
+    border-radius:var(--r); overflow:hidden; background:#080b12;
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 34px 72px -38px rgba(16,6,52,.86), 0 0 0 1px rgba(255,255,255,.04);
+  }
+  .product-photo img{
+    display:block; width:100%; height:100%; object-fit:cover;
+  }
   /* 개발 현황 목록 */
   .status{margin-top:44px; display:grid; gap:14px}
   .status li{
@@ -56,6 +65,7 @@
     border-color:rgba(107,60,224,.4); color:var(--key); background:rgba(107,60,224,.07);
   }
   @media (max-width:640px){
+    .product-photo{min-height:auto; aspect-ratio:1}
     .status li{grid-template-columns:1fr; gap:8px}
     .status span{justify-self:start}
   }
@@ -104,117 +114,9 @@
       </p>
 
       <div class="pitch">
-        <div class="pkg" aria-hidden="true">
-          <div class="env__wall"><i></i><i></i><i></i></div>
-          <div class="pkg__stage">
-            <div class="floor">
-              <div class="floor__wood">
-                <svg viewBox="0 0 300 300" preserveAspectRatio="none">
-                  <defs>
-                    <filter id="srWood" x="0" y="0" width="100%" height="100%">
-                      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012" numOctaves="3" seed="6"/>
-                      <feColorMatrix type="matrix"
-                        values="0 0 0 0 .42  0 0 0 0 .33  0 0 0 0 .22  .5 .3 .2 0 0"/>
-                    </filter>
-                  </defs>
-                  <rect width="300" height="300" filter="url(#srWood)" opacity=".72"/>
-                </svg>
-              </div>
-              <div class="floor__light"></div>
-              <div class="floor__haze"></div>
-              <div class="floor__refl"></div>
-              <div class="floor__shadow"></div>
-              <div class="floor__contact"></div>
-            </div>
-            <div class="box" id="box">
-              <div class="box__f box__top"></div>
-              <div class="box__f box__side">
-                <b>SpatialRenderer</b>
-                <em>HRTF binaural</em>
-                <img src="../assets/ysg-mark-color.svg" alt="">
-              </div>
-              <div class="box__f box__front">
-                <!-- 앞면 아트워크. 색만 제품 키컬러 계열(바이올렛·마젠타)로 바꿨다.
-                     구조는 공용 부품과 같다 — 저주파로 덩어리, 고주파로 실오라기. -->
-                <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                  <defs>
-                    <filter id="srFlow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
-                      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="4" seed="19" result="n"/>
-                      <feDisplacementMap in="SourceGraphic" in2="n" scale="170" xChannelSelector="R" yChannelSelector="G"/>
-                      <feGaussianBlur stdDeviation="9"/>
-                    </filter>
-                    <filter id="srWisp" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
-                      <feTurbulence type="fractalNoise" baseFrequency="0.016 0.03" numOctaves="5" seed="8" result="w"/>
-                      <feDisplacementMap in="SourceGraphic" in2="w" scale="64" xChannelSelector="R" yChannelSelector="B"/>
-                      <feGaussianBlur stdDeviation="3.2"/>
-                    </filter>
-                    <linearGradient id="srScrim" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="#07050f" stop-opacity="0"/>
-                      <stop offset="52%" stop-color="#07050f" stop-opacity=".18"/>
-                      <stop offset="100%" stop-color="#07050f" stop-opacity=".92"/>
-                    </linearGradient>
-                    <radialGradient id="srVig" cx="48%" cy="38%" r="76%">
-                      <stop offset="52%" stop-color="#000" stop-opacity="0"/>
-                      <stop offset="100%" stop-color="#060410" stop-opacity=".8"/>
-                    </radialGradient>
-                  </defs>
-                  <rect width="300" height="390" fill="#0a0718"/>
-                  <g filter="url(#srFlow)">
-                    <ellipse cx="120" cy="126" rx="112" ry="140" fill="#3a1c96"/>
-                    <ellipse cx="205" cy="212" rx="96"  ry="118" fill="#6b3ce0"/>
-                    <ellipse cx="96"  cy="252" rx="86"  ry="104" fill="#a83ad0"/>
-                    <ellipse cx="220" cy="104" rx="70"  ry="82"  fill="#5b6cf0"/>
-                    <ellipse cx="146" cy="330" rx="76"  ry="66"  fill="#d63a8e"/>
-                    <ellipse cx="74"  cy="80"  rx="50"  ry="54"  fill="#8f6cff"/>
-                    <ellipse cx="246" cy="300" rx="40"  ry="44"  fill="#ff9ad0"/>
-                  </g>
-                  <g filter="url(#srWisp)" opacity=".38">
-                    <ellipse cx="150" cy="150" rx="96" ry="120" fill="none" stroke="#d5c2ff" stroke-width="9"/>
-                    <ellipse cx="170" cy="250" rx="74" ry="92"  fill="none" stroke="#ffb8ea" stroke-width="7"/>
-                    <ellipse cx="110" cy="200" rx="58" ry="70"  fill="none" stroke="#b6c6ff" stroke-width="4"/>
-                  </g>
-                  <rect width="300" height="390" fill="url(#srVig)"/>
-                  <rect width="300" height="390" fill="url(#srScrim)"/>
-                </svg>
-                <div class="box__gloss"></div>
-
-                <div class="box__brandline">
-                  <img src="../assets/ysg-mark-color.svg" alt="">
-                  <span>YSG Audio Tools</span>
-                </div>
-                <div class="box__lockup">
-                  <!-- 제품 마크 — 기존 페이지의 제품 마크(원 + 두 아치 + 중심점)를
-                       그대로 벡터로 옮긴 것이다. 새로 디자인하지 않았다. -->
-                  <svg class="box__pmark" viewBox="1.5 3.6 21 16.8" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="srPmarkGrad" x1="0" y1="1" x2="1" y2="0">
-                        <stop offset="0" stop-color="#b6c6ff"/>
-                        <stop offset=".55" stop-color="#d5c2ff"/>
-                        <stop offset="1" stop-color="#ffb8ea"/>
-                      </linearGradient>
-                    </defs>
-                    <g fill="none" stroke="url(#srPmarkGrad)" stroke-linecap="round">
-                      <circle cx="12" cy="12" r="4.2" stroke-width="1.5"/>
-                      <path d="M5.4 6.6a9 9 0 0 0 0 10.8M18.6 6.6a9 9 0 0 1 0 10.8" stroke-width="1.4"/>
-                    </g>
-                    <circle cx="12" cy="12" r="1.5" fill="url(#srPmarkGrad)"/>
-                  </svg>
-                  <span class="box__pname">SpatialRenderer</span>
-                </div>
-                <div class="box__tag">Dev build &middot; not released</div>
-                <div class="box__foot">
-                  <small>Wwise 2025.1<br>Unreal Engine</small>
-                  <div class="box__bars">
-                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="env__vig"></div>
-        </div>
-
+        <figure class="product-photo" aria-label="YSGSpatialRenderer 제품 박스 이미지">
+          <img src="assets/v2/product-box.png" alt="YSGSpatialRenderer 제품 박스 이미지">
+        </figure>
         <div class="pitch__copy">
           <p data-en="Per-sound behaviour is authored where designers already work - on the sound itself - and travels with the audio object as metadata. The renderer reads it on the bus and applies it per object, so a whole game is never tied to one global setting.">
             사운드별 동작은 디자이너가 이미 작업하는 자리, 즉 사운드 자체에 설정하고

@@ -52,7 +52,12 @@
     position:absolute; left:0; right:0; top:0; height:3px;
     background:linear-gradient(90deg, var(--key), var(--key-2));
   }
-  .tool--featured{grid-column:span 2}
+  .tool--featured{
+    grid-column:span 2;
+    grid-template-columns:minmax(300px, 380px) minmax(0, 560px);
+    justify-content:center;
+    gap:clamp(32px,4vw,58px);
+  }
   .tool__eyebrow{
     display:block; font-size:11px; font-weight:700; letter-spacing:.18em;
     text-transform:uppercase; color:var(--key);
@@ -83,13 +88,18 @@
     mix-blend-mode:screen; opacity:.35;
   }
   .tool__badge img{display:block; width:100%; height:100%; object-fit:cover}
-  .tool--featured .tool__badge{width:min(268px,100%)}
+  .tool--featured .tool__badge{width:100%; justify-self:end}
   @media (max-width:1000px){
     .tools{grid-template-columns:1fr}
-    .tool--featured{grid-column:span 1}
+    .tool--featured{
+      grid-column:span 1;
+      grid-template-columns:minmax(260px, 340px) minmax(0,1fr);
+      justify-content:start;
+    }
   }
   @media (max-width:560px){
     .tool{grid-template-columns:1fr}
+    .tool--featured{grid-template-columns:1fr}
     .tool .pkg{max-width:200px}
     .tool__badge{max-width:220px}
   }
