@@ -27,6 +27,15 @@
        기준 실측: 이름 필요폭 136.8px vs 사용가능 134px. 20px 이면 130px. */
     --lock-size: clamp(12px, 1.75vw, 20px);
   }
+  /* 다크 지면도 청록으로 물들인다 — 다른 다크 페이지와 같은 남색이
+     아니라 이 페이지만의 검정이 되도록 (2026-09-10). */
+  body.theme-dark{
+    --paper:  #081617;
+    --tint:   #0d1f21;
+    --tint-2: #122a2c;
+    --line:   #1c3a3d;
+    --line-2: #2a5054;
+  }
   /* 판정 종류 표 — 이 툴에만 있는 부품 */
   .verdicts{margin-top:44px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
   .verdict{
