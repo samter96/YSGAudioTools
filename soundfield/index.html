@@ -77,6 +77,25 @@
   .sf-demo--wave{--demo-h:270px}.sf-wave-lane{position:relative; height:178px; border-radius:14px; padding:18px 12px 24px; display:flex; align-items:center; gap:3px}.sf-wave-lane span{flex:1; height:var(--h); min-width:2px; border-radius:999px; background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(115,216,255,.45), rgba(255,255,255,.82)); opacity:.86; transform-origin:center; animation:sfWave 1.7s ease-in-out infinite alternate; animation-delay:calc(var(--d) * .05s)}.sf-selection{position:absolute; left:33%; width:28%; top:18px; bottom:24px; border-left:2px solid var(--demo-warm); border-right:2px solid var(--demo-warm); background:rgba(115,216,255,.16)}.sf-playhead{position:absolute; top:12px; bottom:18px; width:2px; background:var(--demo-warm); box-shadow:0 0 14px var(--demo-warm); animation:sfPlay 5s linear infinite}
   .sf-demo--export{--demo-h:255px}.sf-export-flow{display:grid; grid-template-columns:1fr 46px 1fr; align-items:center; gap:10px}.sf-region-card,.sf-file-card{border-radius:15px; min-height:156px; padding:14px}.sf-region-card{display:flex; align-items:center; gap:3px}.sf-region-card span{flex:1; height:var(--h); border-radius:999px; background:rgba(115,216,255,.55)}.sf-export-arrow{height:2px; background:linear-gradient(90deg, transparent, var(--demo-accent), transparent); position:relative}.sf-export-arrow::after{content:""; position:absolute; right:0; top:-5px; width:10px; height:10px; border-top:2px solid var(--demo-accent); border-right:2px solid var(--demo-accent); transform:rotate(45deg)}.sf-file-card h4{margin:0 0 14px; font-size:13px}.sf-chip-grid{display:flex; flex-wrap:wrap; gap:7px}.sf-chip-grid span{font-size:10px; padding:6px 8px; border-radius:999px; background:rgba(255,255,255,.08); color:rgba(237,245,255,.76)}
   .sf-theme-demo{--demo-h:150px; margin-top:20px}.sf-theme-demo .sf-demo__stage{min-height:150px; padding:12px}.sf-mini-window{height:118px; border-radius:12px; overflow:hidden; display:grid; grid-template-rows:22px 1fr; border:1px solid rgba(255,255,255,.12)}.sf-mini-window .bar{display:flex; gap:5px; align-items:center; padding:0 8px; background:rgba(255,255,255,.08)}.sf-mini-window .bar i{width:6px;height:6px;border-radius:50%;background:var(--demo-accent)}.sf-mini-body{display:grid; grid-template-columns:35% 1fr; gap:8px; padding:8px}.sf-mini-list,.sf-mini-main{border-radius:8px; background:rgba(255,255,255,.08); position:relative; overflow:hidden}.sf-mini-main::after{content:""; position:absolute; left:8px; right:8px; bottom:14px; height:28px; background:repeating-linear-gradient(90deg, rgba(255,255,255,.6) 0 4px, transparent 4px 8px); mask:linear-gradient(180deg, transparent, #000 45%, #000 55%, transparent); animation:sfMiniWave 2s ease-in-out infinite}.sf-theme-neutral{--demo-accent:#cfd4dc;--demo-accent-2:#868d98}.sf-theme-neon{--demo-accent:#58b7ff;--demo-accent-2:#7b61ff}.sf-theme-light{--demo-accent:#8b5b36;--demo-accent-2:#d99a55; color:#1b160f; background:#f5eee3}.sf-theme-light .sf-demo__stage{background:linear-gradient(135deg, rgba(255,255,255,.5), rgba(139,91,54,.08))}.sf-theme-light .sf-mini-window{border-color:rgba(77,54,35,.2)}.sf-theme-light .sf-mini-window .bar,.sf-theme-light .sf-mini-list,.sf-theme-light .sf-mini-main{background:rgba(77,54,35,.11)}
+  .sf-demo::before{animation:sfAurora 9s ease-in-out infinite alternate}
+  .sf-demo::after{content:""; position:absolute; inset:0; pointer-events:none; opacity:.15; background:linear-gradient(90deg, transparent 0 25px, rgba(255,255,255,.12) 26px, transparent 27px), linear-gradient(0deg, transparent 0 25px, rgba(255,255,255,.08) 26px, transparent 27px); background-size:52px 52px; mask:linear-gradient(180deg, transparent, #000 18%, #000 84%, transparent); animation:sfGrid 18s linear infinite}
+  .sf-panel{position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 18px 40px rgba(0,0,0,.18)}
+  .sf-panel::before{content:""; position:absolute; inset:-1px; pointer-events:none; background:linear-gradient(110deg, transparent 12%, rgba(255,255,255,.08), transparent 36%); transform:translateX(-120%); animation:sfGlass 5.4s ease-in-out infinite}
+  .sf-row i{background:linear-gradient(90deg, var(--demo-accent), var(--demo-accent-2), var(--demo-warm)); background-size:180% 100%; animation:sfGradient 3.6s ease-in-out infinite alternate}
+  .sf-orbit{background:conic-gradient(from 0deg, transparent, rgba(115,216,255,.16), transparent 34%); animation:sfRadarSweep 7s linear infinite}
+  .sf-gauge::before{animation:sfGauge 4s ease-in-out infinite, sfSpin 13s linear infinite}
+  .sf-table-row{animation:sfRowFloat 4.8s ease-in-out infinite}.sf-table-row:nth-child(2){animation-delay:.15s}.sf-table-row:nth-child(3){animation-delay:.3s}.sf-table-row:nth-child(4){animation-delay:.45s}.sf-table-row:nth-child(5){animation-delay:.6s}
+  .sf-branch{animation:sfRowFloat 5s ease-in-out infinite}.sf-branch:nth-child(2){animation-delay:.16s}.sf-branch:nth-child(3){animation-delay:.32s}.sf-branch:nth-child(4){animation-delay:.48s}.sf-branch:nth-child(5){animation-delay:.64s}.sf-branch:nth-child(6){animation-delay:.8s}.sf-branch:nth-child(7){animation-delay:.96s}
+  .sf-sticky{background-size:200% 100%; animation:sfGradient 4s linear infinite}
+  .sf-region-card span{transform-origin:center; animation:sfWave 1.9s ease-in-out infinite alternate}.sf-region-card span:nth-child(2){animation-delay:.12s}.sf-region-card span:nth-child(3){animation-delay:.24s}.sf-region-card span:nth-child(4){animation-delay:.36s}.sf-region-card span:nth-child(5){animation-delay:.48s}.sf-region-card span:nth-child(6){animation-delay:.6s}.sf-region-card span:nth-child(7){animation-delay:.72s}
+  .sf-export-arrow{background-size:220% 100%; animation:sfGradient 2.8s linear infinite}
+  .sf-file-card h4{animation:sfRowFloat 4.6s ease-in-out infinite}
+  .sf-chip-grid span{animation:sfTag 3.2s ease-in-out infinite}.sf-chip-grid span:nth-child(2){animation-delay:.18s}.sf-chip-grid span:nth-child(3){animation-delay:.36s}.sf-chip-grid span:nth-child(4){animation-delay:.54s}.sf-chip-grid span:nth-child(5){animation-delay:.72s}
+  .sf-mini-window{animation:sfMiniGlow 4.5s ease-in-out infinite}.sf-mini-window .bar i{animation:sfTag 3s ease-in-out infinite}.sf-mini-window .bar i:nth-child(2){animation-delay:.25s}.sf-mini-window .bar i:nth-child(3){animation-delay:.5s}
+  @keyframes sfAurora{0%{filter:hue-rotate(0deg); transform:scale(1)}50%{filter:hue-rotate(18deg); transform:scale(1.04)}100%{filter:hue-rotate(-10deg); transform:scale(1.08) translate3d(-1.5%,1%,0)}}
+  @keyframes sfGrid{to{background-position:52px 104px, 104px 52px}}
+  @keyframes sfGlass{0%,42%{transform:translateX(-120%)}68%,100%{transform:translateX(120%)}}
+  @keyframes sfGradient{to{background-position:100% 0}}
   @keyframes sfSweep{from{transform:translateX(-120%)}to{transform:translateX(260%)}}
   @keyframes sfSpin{to{transform:rotate(360deg)}}
   @keyframes sfPulse{50%{transform:rotate(var(--a)) translateX(92px) scale(1.7); opacity:.55}}
@@ -87,6 +106,10 @@
   @keyframes sfWave{to{transform:scaleY(.72)}}
   @keyframes sfPlay{from{left:6%}to{left:92%}}
   @keyframes sfMiniWave{50%{transform:translateY(-4px) scaleY(1.25)}}
+  @keyframes sfRadarSweep{to{filter:hue-rotate(22deg)}}
+  @keyframes sfRowFloat{50%{transform:translateY(-1px); color:rgba(237,245,255,.86)}}
+  @keyframes sfMiniGlow{50%{box-shadow:0 0 26px rgba(115,216,255,.2)}}
+  @keyframes sfTag{50%{transform:translateY(-1px); filter:brightness(1.4)}}
   @media (max-width:700px){
     .sf-demo__stage{padding:14px}
     .sf-index-grid,.sf-tree-layout,.sf-export-flow{grid-template-columns:1fr}
@@ -94,9 +117,6 @@
     .sf-export-arrow::after{right:-4px; top:14px; transform:rotate(135deg)}
     .sf-table-row{grid-template-columns:1fr .45fr; font-size:9px}
     .sf-table-row span:nth-child(n+3){display:none}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .sf-demo *, .sf-demo::before{animation-duration:.01ms!important; animation-iteration-count:1!important}
   }
 </style>
 </head>
