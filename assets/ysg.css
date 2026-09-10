@@ -275,7 +275,8 @@
 
      ⚠ 박스에 **버전 번호를 넣지 말 것** (사용자 지시 2026-09-09).
        버전이 올라가는 순간 이 그림이 거짓이 된다.
-     움직임 ② — 아주 느린 부유 + 포인터 기울기. */
+     박스는 고정 자세다 — 부유 애니메이션은 뺐다 (사용자 지시 2026-09-10).
+       살아 있는 느낌은 배경 번짐(.aura)만으로 낸다. */
   /* ── 제품 사진의 공간 ───────────────────────────────────────────
      박스를 테이블에 올려놓은 사진처럼 보이게 만든 장면이다. 사진이 아니다.
 
@@ -454,7 +455,8 @@
     position:absolute; inset:0; z-index:3; pointer-events:none;
     background:
       radial-gradient(84% 70% at 48% 42%, rgba(0,0,0,0) 60%, rgba(38,38,46,.16) 100%),
-      linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 18%);
+      linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 18%),
+      radial-gradient(55% 45% at 18% 8%, rgba(255,214,158,.14), rgba(255,214,158,0) 72%);
   }
 
   .box{
@@ -462,14 +464,15 @@
     position:relative; width:var(--bw); height:var(--bh);
     transform-style:preserve-3d;
     transform:rotateX(3deg) rotateY(-30deg);
-    animation:hover 9s ease-in-out infinite alternate;
-    transition:transform .6s cubic-bezier(.2,.8,.2,1);
-  }
-  @keyframes hover{
-    0%{transform:rotateX(3deg) rotateY(-30deg) translateY(0)}
-    100%{transform:rotateX(2deg) rotateY(-26deg) translateY(-8px)}
   }
   .box__f{position:absolute; top:0; left:0; overflow:hidden; backface-visibility:hidden}
+  /* 인쇄면 결 — 완벽한 그라디언트는 화면처럼 보인다. 아주 옅은 노이즈를
+     overlay 로 얹어 실물 인쇄/코팅 질감을 준다. 앞·측·윗면 공통 부품. */
+  .box__f::after{
+    content:""; position:absolute; inset:0; z-index:3; pointer-events:none;
+    mix-blend-mode:overlay; opacity:.4;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E") repeat 0 0 / 120px 120px;
+  }
 
   .box__front{
     width:var(--bw); height:100%; transform:translateZ(calc(var(--bd) / 2));
@@ -481,12 +484,16 @@
   }
   /* 앞면 아트워크 — SVG 필터로 만든 유체. 글자 뒤에 깔린다 */
   .box__art{position:absolute; inset:0; width:100%; height:100%; z-index:0}
-  /* 비닐 포장 광택 — 사선 하이라이트 한 줄 */
+  /* 비닐 포장 광택 — 창(왼쪽 위) 방향 하이라이트 한 줄 + 작은 캐치라이트.
+     실사진의 유광 코팅은 넓게 번진 사선 한 줄만으로는 안 되고, 광원이 맺히는
+     작은 밝은 점이 하나 더 있어야 "빛이 반사되고 있다" 로 읽힌다. */
   .box__gloss{
     position:absolute; inset:0; z-index:1; pointer-events:none;
-    background:linear-gradient(112deg,
-      rgba(255,255,255,0) 26%, rgba(255,255,255,.16) 38%,
-      rgba(255,255,255,.03) 46%, rgba(255,255,255,0) 60%);
+    background:
+      radial-gradient(38% 22% at 22% 16%, rgba(255,255,255,.5), rgba(255,255,255,0) 70%),
+      linear-gradient(112deg,
+        rgba(255,255,255,0) 24%, rgba(255,255,255,.2) 36%, rgba(255,255,255,.22) 39%,
+        rgba(255,255,255,.04) 47%, rgba(255,255,255,0) 60%);
   }
   .box__front > *{position:relative; z-index:2}
 
