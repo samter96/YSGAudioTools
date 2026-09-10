@@ -441,6 +441,18 @@
           <h3 data-en="Out of the head">머리 밖으로</h3>
           <p data-en="The externaliser's amount and character are adjustable, so the image can be pushed as far out as the scene needs.">외재화의 양과 성격을 조절할 수 있어, 장면이 요구하는 만큼 상을 밖으로 밀어냅니다.</p>
         </div>
+        <div class="tile tile--wide rise">
+          <h3 data-en="A measured set is where it starts, not where it ends">실측 세트는 출발점이지 도착점이 아니다</h3>
+          <p data-en="The MIT KEMAR measurements are the foundation, and dropping them in unchanged is not the same as making them sound right. What ships is time-aligned with an interaural decorrelation baked into its phase, then corrected by measurement in every direction it is used: interaural level over 24 azimuths and 7 bands, the common tonal colour over the same grid, elevation over 8 more. The ambisonic decoders are not raw responses through virtual speakers either - they are a least-squares fit, matching phase below the point a head can still resolve it and magnitude above.">
+            MIT KEMAR 실측이 토대입니다. 다만 그 데이터를 그대로 얹는 것과
+            제대로 들리게 만드는 것은 다른 일입니다. 실제로 탑재되는 것은 시간 정렬을 거치고
+            양 귀 사이 상관을 위상에 배이크한 뒤, 쓰이는 모든 방향에서 측정으로 보정한 결과입니다.
+            양 귀 레벨차는 24개 방위 × 7개 대역, 공통 음색은 같은 격자로,
+            고도는 8단으로 따로 잡았습니다. 앰비소닉 디코더도 원시 응답을 가상 스피커에
+            흘리는 방식이 아니라 최소자승으로 설계했습니다. 머리가 위상을 분간할 수 있는
+            지점까지는 위상을, 그 위로는 크기를 맞춥니다.
+          </p>
+        </div>
         <div class="tile rise">
           <h3 data-en="Shared basis">공유 필터 기저</h3>
           <p data-en="Rather than a full convolution per object, rendering runs on a shared set of directional filters.">오브젝트마다 완전한 컨볼루션을 따로 들고 가는 대신, 공유된 방향 필터 집합 위에서 렌더링합니다.</p>
@@ -588,7 +600,7 @@
         <div><b>renderers</b><span data-en="Object Renderer · Renderer (channel beds)">Object Renderer · Renderer (채널 베드)</span></div>
         <div><b>metadata</b><span>Near-field · Directivity · Stereo-Width · LFE Gain</span></div>
         <div><b>authoring</b><span data-en="Custom panel · live monitor · nine checks · KO/EN">전용 패널 · 라이브 모니터 · 검사 9종 · 한/영</span></div>
-        <div><b>hrtf</b><span data-en="MIT KEMAR measured set · 48 kHz core">MIT KEMAR 실측 세트 · 48 kHz 코어</span></div>
+        <div><b>hrtf</b><span data-en="MIT KEMAR measured set, corrected per direction and band · 48 kHz core">MIT KEMAR 실측 세트를 방향·대역별로 보정 · 48 kHz 코어</span></div>
         <div><b>ambisonic</b><span data-en="1st-5th order · 512-tap binaural decoder">1~5차 · 512탭 바이노럴 디코더</span></div>
         <div><b>objects</b><span data-en="64-512 preallocated · shared-basis path for dense scenes">64~512 사전 확보 · 밀집 장면용 공유 기저 경로</span></div>
         <div><b>status</b><span data-en="In development · no public build">개발 중 · 공개 빌드 없음</span></div>
@@ -650,6 +662,12 @@
 <footer class="footer">
   <div class="wrap">
     <p data-en="Made by YSG Audio Tools (You Seung Gyun) · contact: Samter96@naver.com">Made by YSG Audio Tools (You Seung Gyun) · 문의 : Samter96@naver.com</p>
+    <p data-en="HRTF measurements: MIT KEMAR (normal pinna) by Gardner and Martin, MIT Media Lab. SOFA conversion by Piotr Majdak and Michael Mihocic, Acoustics Research Institute (OeAW). Used under a licence that asks only that the authors be cited. The data shipped in this product is derived from that set, not a copy of it.">
+      HRTF 실측 : MIT KEMAR (normal pinna), Gardner and Martin, MIT Media Lab.
+      SOFA 변환 : Piotr Majdak, Michael Mihocic, Acoustics Research Institute (OeAW).
+      저자 인용만을 조건으로 하는 라이선스에 따라 사용합니다.
+      이 제품에 탑재된 데이터는 해당 세트를 그대로 복제한 것이 아니라 그로부터 파생한 것입니다.
+    </p>
     <p id="year"></p>
   </div>
 </footer>
