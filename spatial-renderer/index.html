@@ -85,9 +85,10 @@
       <span class="brand__v" data-en="dev build">개발 중</span>
     </a>
     <nav class="navlinks" aria-label="페이지 섹션">
+      <a href="#keys" data-en="Features">기능</a>
+      <a href="#hear" data-en="What you hear">들리는 변화</a>
       <a href="#overview" data-en="Overview">개요</a>
       <a href="#parts" data-en="What you author">설정하는 것</a>
-      <a href="#keys" data-en="Features">기능</a>
       <a href="#space" data-en="Space">공간 처리</a>
       <a href="#panel" data-en="Panel">저작 패널</a>
       <a href="#status" data-en="Status">개발 현황</a>
@@ -147,6 +148,132 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ── Key Features ───────────────────────────────────────── -->
+  <section id="keys" class="keys">
+    <div class="wrap">
+      <div class="rise">
+        <span class="eyebrow" data-en="Key features">주요 기능</span>
+        <h2 class="h2" data-en="Everything it does, at a glance">한눈에 보는 기능</h2>
+        <p class="keys__lead" data-en="Nine things the renderer does. The binaural core, the spatial stages and the authoring panel are opened up below.">
+          이 렌더러가 하는 일 아홉 가지입니다. 바이노럴 코어와 공간 처리, 저작 패널은
+          아래에서 더 자세히 풀어 두었습니다.
+        </p>
+      </div>
+      <div class="keys__grid">
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="7"/><path d="M9 20a11 11 0 0 1 22 0"/><path d="M9 20v5a2.5 2.5 0 0 0 5 0v-5M31 20v5a2.5 2.5 0 0 1-5 0v-5"/></svg>
+          <h3 data-en="HRTF binaural">HRTF 바이노럴</h3>
+          <p data-en="Measured head-related impulse responses interpolated per direction, updated while the listener moves.">실측 머리 전달 임펄스 응답을 방향마다 보간하고, 청취자가 움직이는 동안 계속 갱신합니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 20h6"/><path d="M12 12v16"/><path d="M28 8v24"/><path d="M28 20h6"/><path d="M15 20h10"/><path d="M15 24h10" opacity=".5"/></svg>
+          <h3 data-en="Per-ear delay">귀별 지연</h3>
+          <p data-en="Arrival time difference is explicit rather than buried in the filter, so the image holds when a source crosses the front.">도달 시간차를 필터 안에 묻지 않고 귀별 지연으로 명시해, 음원이 정면을 가로질러도 상이 흔들리지 않습니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="5"/><circle cx="20" cy="20" r="11" opacity=".55"/><circle cx="20" cy="20" r="16" opacity=".3"/><path d="M20 4v4M20 32v4M4 20h4M32 20h4"/></svg>
+          <h3 data-en="Externalisation">외재화</h3>
+          <p data-en="An adjustable stage pushes the image out of the head, so sources that would collapse to the centre stand outside it.">양과 성격을 조절할 수 있는 단계가 상을 머리 밖으로 밀어내, 그대로 두면 머리 한가운데 붙는 음원을 바깥에 세웁니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 31 20 9l13 22"/><path d="M13 31h14" opacity=".5"/><path d="M20 9v22" opacity=".35"/><circle cx="20" cy="9" r="2"/></svg>
+          <h3 data-en="Early reflections">초기 반사</h3>
+          <p data-en="Reflection paths come from game geometry, take the colour of the material they hit, and get culled before they cost anything if they will not be heard.">반사 경로를 게임 지오메트리에서 받아 부딪힌 재질대로 색을 입히고, 들리지 않을 경로는 비용을 치르기 전에 걸러 냅니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="14" cy="20" r="6"/><path d="M22 14c3 2 5 4 5 6s-2 4-5 6"/><path d="M27 10c4 3 7 6 7 10s-3 7-7 10" opacity=".5"/></svg>
+          <h3 data-en="Near-field">근접장</h3>
+          <p data-en="Inside a metre the difference between the ears widens sharply and the near ear gains low end. Near-field processing makes that happen instead of just raising volume.">1m 안쪽에서는 양 귀의 차이가 급격히 벌어지고 가까운 쪽 귀에 저역이 실립니다. 볼륨만 올리는 대신 그 변화를 만들어 냅니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M14 20a6 6 0 0 1 12 0"/><path d="M14 20a6 6 0 0 0 12 0" opacity=".35"/><path d="M20 20 32 9M20 20l12 11" opacity=".55"/><circle cx="20" cy="20" r="2.4"/></svg>
+          <h3 data-en="Directivity">지향성</h3>
+          <p data-en="A turned source changes level and colour, not position. Directivity applies both by angle and leaves the direction of arrival where the source is.">돌아선 음원은 위치가 아니라 크기와 음색이 변합니다. 각도에 따른 레벨과 색을 적용하되 도달 방향은 그 자리에 그대로 둡니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M22 6v28"/><path d="M22 6H10v28h12" opacity=".35"/><path d="M22 14c-5 2-8 4-8 6s3 4 8 6" opacity=".7"/><path d="M28 20h6"/></svg>
+          <h3 data-en="Occlusion &amp; diffraction">차폐와 회절</h3>
+          <p data-en="A blocked direct path does not stop sound. It arrives around the corner, darker, from the corner. Treated as a question of direction and colour, not a volume cut.">직선 경로가 막혀도 소리는 도착합니다. 모서리를 돌아, 더 어둡게, 모서리 쪽에서 옵니다. 단순한 볼륨 감소가 아니라 방향과 음색의 문제로 다룹니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="10" width="28" height="20" rx="3"/><path d="M6 24h28" opacity=".45"/><circle cx="13" cy="17" r="2"/><circle cx="20" cy="17" r="2"/><circle cx="27" cy="17" r="2"/></svg>
+          <h3 data-en="Every layout">모든 레이아웃</h3>
+          <p data-en="Binaural is the default path. The same renderer also handles 2.0, 4.0, 5.1, 7.1, 7.1.4, ambisonic orders 1 to 5 and extended layouts such as Auro.">바이노럴이 기본 경로입니다. 같은 렌더러가 2.0·4.0·5.1·7.1·7.1.4, 앰비소닉 1~5차, Auro 같은 확장 레이아웃도 함께 다룹니다.</p>
+        </div>
+        <div class="key rise">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 30h28" opacity=".45"/><path d="M10 30V19M17 30v-8M24 30v-15M31 30v-6"/><circle cx="10" cy="19" r="1.8"/><circle cx="24" cy="15" r="1.8"/></svg>
+          <h3 data-en="Built for many objects">많은 오브젝트를 위한 설계</h3>
+          <p data-en="Heavy work is shared rather than repeated per object: a shared filter basis, a frequency-domain path for dense scenes, and an early exit for anything out of audible range.">무거운 계산을 오브젝트마다 반복하지 않고 나눠 씁니다. 공유 필터 기저, 밀집 장면용 주파수 영역 경로, 가청 범위 밖 조기 제외.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 들리는 변화 ────────────────────────────────────────────
+       기능 목록 다음에 와야 하는 것은 원리가 아니라 결과다. 여기 있는
+       문장은 전부 "무엇이 들리는가"로 쓰고, 어떻게 그렇게 되는지는
+       아래 절들에 남긴다. -->
+  <section id="hear" class="band">
+    <div class="wrap">
+      <div class="rise">
+        <span class="eyebrow" data-en="What you hear">들리는 변화</span>
+        <h2 class="h2" data-en='Not a longer feature list.<br><span class="grad">Things you could not hear before</span>'>기능이 하나 더 늘어나는 게 아니라<br><span class="grad">전에 없던 것이 들립니다</span></h2>
+        <p class="lead" data-en="Everything below is described as a listener hears it, on ordinary headphones. How each one is produced is opened up further down the page.">
+          아래는 전부 평범한 헤드폰을 쓴 청취자가 듣는 대로 적었습니다.
+          그것을 어떻게 만들어 내는지는 페이지 아래에서 다룹니다.
+        </p>
+      </div>
+      <div class="tiles">
+        <div class="tile rise">
+          <h3 data-en="Behind you, and you know it">뒤에서 나는 소리가 뒤에서 납니다</h3>
+          <p data-en="A footstep that walks around you keeps going when it passes behind - it does not fold into the front or jump from one side to the other. Front and back stop being the same place.">
+            주변을 도는 발소리가 등 뒤를 지날 때 그대로 이어집니다.
+            앞으로 접히지도, 좌우로 튀지도 않습니다. 앞과 뒤가 같은 자리가 아니게 됩니다.
+          </p>
+        </div>
+        <div class="tile rise">
+          <h3 data-en="Above and below, not just around">위아래로도 움직입니다</h3>
+          <p data-en="A bird crossing overhead, a drone climbing, a voice from the floor below - height reads as height instead of collapsing onto the horizontal ring where most panning lives.">
+            머리 위를 가로지르는 새, 올라가는 드론, 아래층에서 올라오는 목소리.
+            높이가 높이로 들립니다. 대부분의 패닝이 갇혀 있는 수평 고리로 눌리지 않습니다.
+          </p>
+        </div>
+        <div class="tile rise">
+          <h3 data-en="Through the wall, from the doorway">벽 뒤의 소리가 문틈에서 들립니다</h3>
+          <p data-en="A conversation in the next room is not just quieter and duller. It arrives from the edge it bends around, so you can hear where the opening is - and the moment the wall clears, it snaps back to the talker.">
+            옆방의 대화가 그냥 작고 둔해지는 게 아닙니다.
+            소리가 돌아 나오는 모서리 쪽에서 들려서 <b>어디가 트여 있는지</b>가 들립니다.
+            벽이 걷히는 순간 다시 말하는 사람 쪽으로 돌아옵니다.
+          </p>
+        </div>
+        <div class="tile rise">
+          <h3 data-en="Close enough to feel">귀 옆까지 다가옵니다</h3>
+          <p data-en="Inside arm&#39;s reach a whisper stops sounding like a quiet voice across the room and starts sounding close: weight on the near ear, the far ear falling away, the kind of proximity a volume fader cannot fake.">
+            팔 길이 안으로 들어오면, 속삭임이 &lsquo;멀리서 조용히 말하는 소리&rsquo;가 아니라
+            가까운 소리가 됩니다. 가까운 쪽 귀에 무게가 실리고 먼 쪽이 빠집니다.
+            볼륨 페이더로는 흉내 낼 수 없는 종류의 거리감입니다.
+          </p>
+        </div>
+        <div class="tile rise">
+          <h3 data-en="You can hear which way it faces">어느 쪽을 보고 있는지 들립니다</h3>
+          <p data-en="A speaker turning away goes darker and smaller while staying exactly where it is. A shout aimed at you and the same shout aimed away are different sounds from the same position.">
+            돌아서는 확성기가 자리를 지킨 채 어두워지고 작아집니다.
+            나를 향해 지르는 외침과 반대쪽을 향해 지르는 외침이,
+            같은 자리에서 나는 서로 다른 소리가 됩니다.
+          </p>
+        </div>
+        <div class="tile rise">
+          <h3 data-en="The room answers back">방이 대답합니다</h3>
+          <p data-en="A corridor, a stairwell and an open yard stop sounding like three reverb presets. The first reflections come off the surfaces that are actually there, so the size and hardness of the space arrive before any tail does.">
+            복도와 계단실과 트인 마당이 서로 다른 잔향 프리셋 세 개로 들리지 않게 됩니다.
+            초기 반사가 실제로 그 자리에 있는 면에서 돌아오기 때문에,
+            잔향 꼬리가 오기 전에 공간의 크기와 단단함이 먼저 도착합니다.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -232,67 +359,6 @@
     </div>
   </section>
 
-  <!-- ── Key Features ───────────────────────────────────────── -->
-  <section id="keys" class="keys">
-    <div class="wrap">
-      <div class="rise">
-        <span class="eyebrow" data-en="Key features">주요 기능</span>
-        <h2 class="h2" data-en="Everything it does, at a glance">한눈에 보는 기능</h2>
-        <p class="keys__lead" data-en="Nine things the renderer does. The binaural core, the spatial stages and the authoring panel are opened up below.">
-          이 렌더러가 하는 일 아홉 가지입니다. 바이노럴 코어와 공간 처리, 저작 패널은
-          아래에서 더 자세히 풀어 두었습니다.
-        </p>
-      </div>
-      <div class="keys__grid">
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="7"/><path d="M9 20a11 11 0 0 1 22 0"/><path d="M9 20v5a2.5 2.5 0 0 0 5 0v-5M31 20v5a2.5 2.5 0 0 1-5 0v-5"/></svg>
-          <h3 data-en="HRTF binaural">HRTF 바이노럴</h3>
-          <p data-en="Measured head-related impulse responses interpolated per direction, updated while the listener moves.">실측 머리 전달 임펄스 응답을 방향마다 보간하고, 청취자가 움직이는 동안 계속 갱신합니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 20h6"/><path d="M12 12v16"/><path d="M28 8v24"/><path d="M28 20h6"/><path d="M15 20h10"/><path d="M15 24h10" opacity=".5"/></svg>
-          <h3 data-en="Per-ear delay">귀별 지연</h3>
-          <p data-en="Arrival time difference is explicit rather than buried in the filter, so the image holds when a source crosses the front.">도달 시간차를 필터 안에 묻지 않고 귀별 지연으로 명시해, 음원이 정면을 가로질러도 상이 흔들리지 않습니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="5"/><circle cx="20" cy="20" r="11" opacity=".55"/><circle cx="20" cy="20" r="16" opacity=".3"/><path d="M20 4v4M20 32v4M4 20h4M32 20h4"/></svg>
-          <h3 data-en="Externalisation">외재화</h3>
-          <p data-en="An adjustable stage pushes the image out of the head, so sources that would collapse to the centre stand outside it.">양과 성격을 조절할 수 있는 단계가 상을 머리 밖으로 밀어내, 그대로 두면 머리 한가운데 붙는 음원을 바깥에 세웁니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 31 20 9l13 22"/><path d="M13 31h14" opacity=".5"/><path d="M20 9v22" opacity=".35"/><circle cx="20" cy="9" r="2"/></svg>
-          <h3 data-en="Early reflections">초기 반사</h3>
-          <p data-en="Reflection paths come from game geometry, take the colour of the material they hit, and get culled before they cost anything if they will not be heard.">반사 경로를 게임 지오메트리에서 받아 부딪힌 재질대로 색을 입히고, 들리지 않을 경로는 비용을 치르기 전에 걸러 냅니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="14" cy="20" r="6"/><path d="M22 14c3 2 5 4 5 6s-2 4-5 6"/><path d="M27 10c4 3 7 6 7 10s-3 7-7 10" opacity=".5"/></svg>
-          <h3 data-en="Near-field">근접장</h3>
-          <p data-en="Inside a metre the difference between the ears widens sharply and the near ear gains low end. Near-field processing makes that happen instead of just raising volume.">1m 안쪽에서는 양 귀의 차이가 급격히 벌어지고 가까운 쪽 귀에 저역이 실립니다. 볼륨만 올리는 대신 그 변화를 만들어 냅니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M14 20a6 6 0 0 1 12 0"/><path d="M14 20a6 6 0 0 0 12 0" opacity=".35"/><path d="M20 20 32 9M20 20l12 11" opacity=".55"/><circle cx="20" cy="20" r="2.4"/></svg>
-          <h3 data-en="Directivity">지향성</h3>
-          <p data-en="A turned source changes level and colour, not position. Directivity applies both by angle and leaves the direction of arrival where the source is.">돌아선 음원은 위치가 아니라 크기와 음색이 변합니다. 각도에 따른 레벨과 색을 적용하되 도달 방향은 그 자리에 그대로 둡니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M22 6v28"/><path d="M22 6H10v28h12" opacity=".35"/><path d="M22 14c-5 2-8 4-8 6s3 4 8 6" opacity=".7"/><path d="M28 20h6"/></svg>
-          <h3 data-en="Occlusion &amp; diffraction">차폐와 회절</h3>
-          <p data-en="A blocked direct path does not stop sound. It arrives around the corner, darker, from the corner. Treated as a question of direction and colour, not a volume cut.">직선 경로가 막혀도 소리는 도착합니다. 모서리를 돌아, 더 어둡게, 모서리 쪽에서 옵니다. 단순한 볼륨 감소가 아니라 방향과 음색의 문제로 다룹니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="10" width="28" height="20" rx="3"/><path d="M6 24h28" opacity=".45"/><circle cx="13" cy="17" r="2"/><circle cx="20" cy="17" r="2"/><circle cx="27" cy="17" r="2"/></svg>
-          <h3 data-en="Every layout">모든 레이아웃</h3>
-          <p data-en="Binaural is the default path. The same renderer also handles 2.0, 4.0, 5.1, 7.1, 7.1.4, ambisonic orders 1 to 5 and extended layouts such as Auro.">바이노럴이 기본 경로입니다. 같은 렌더러가 2.0·4.0·5.1·7.1·7.1.4, 앰비소닉 1~5차, Auro 같은 확장 레이아웃도 함께 다룹니다.</p>
-        </div>
-        <div class="key rise">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 30h28" opacity=".45"/><path d="M10 30V19M17 30v-8M24 30v-15M31 30v-6"/><circle cx="10" cy="19" r="1.8"/><circle cx="24" cy="15" r="1.8"/></svg>
-          <h3 data-en="Built for many objects">많은 오브젝트를 위한 설계</h3>
-          <p data-en="Heavy work is shared rather than repeated per object: a shared filter basis, a frequency-domain path for dense scenes, and an early exit for anything out of audible range.">무거운 계산을 오브젝트마다 반복하지 않고 나눠 씁니다. 공유 필터 기저, 밀집 장면용 주파수 영역 경로, 가청 범위 밖 조기 제외.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ── 대표 기능: 바이노럴 코어 ───────────────────────────── -->
   <section id="core">
     <div class="wrap">
@@ -326,6 +392,40 @@
           <text class="sub" x="26" y="104">낮은 주파수는 머리를 돌아 양 귀에 거의 같게 닿고, 높은 주파수는 그렇지 않습니다</text>
           <text class="sub" x="26" y="119">이 차이를 대역별로 지켜야 소리가 한쪽으로 커지는 대신 방향으로 읽힙니다</text>
         </svg>
+      </div>
+
+      <!-- 수치. 전부 이 저장소의 실측이거나 구현 사실이고, 어림값이 아니다. -->
+      <div class="stat rise">
+        <div>
+          <div class="stat__n">35.4 dB</div>
+          <p data-en="Left-to-right level swing the renderer produces across a full horizontal sweep. A binaural path that collapses this is what makes sources sit inside the head instead of beside it.">
+            수평 한 바퀴를 도는 동안 렌더러가 만들어 내는 좌우 레벨 차이의 폭입니다.
+            이 값이 무너진 바이노럴 경로가 소리를 머리 옆이 아니라 머리 속에 앉힙니다.
+          </p>
+        </div>
+        <div>
+          <div class="stat__n">±0.01 dB</div>
+          <p data-en="Octave-band error against the measured HRTF set above 250 Hz. The direction it puts a sound in is the direction the measurement says, not an approximation of it.">
+            250 Hz 위에서 실측 HRTF 세트 대비 옥타브 밴드 오차입니다.
+            소리를 놓는 방향이 측정값이 말하는 그 방향이지, 그것의 근사가 아닙니다.
+          </p>
+        </div>
+        <div>
+          <div class="stat__n">624 Hz</div>
+          <p data-en="Where the decoder switches from matching phase to matching magnitude - the spatial aliasing limit of a head 8.75 cm across. Below it the ears get true arrival time; above it, the level and colour that actually carry direction up there.">
+            디코더가 위상을 맞추다 크기를 맞추는 쪽으로 넘어가는 지점입니다.
+            반지름 8.75 cm 머리의 공간 에일리어싱 한계이고, 아래에서는 실제 도달 시간을,
+            위에서는 그 대역에서 실제로 방향을 나르는 레벨과 음색을 맞춥니다.
+          </p>
+        </div>
+        <div>
+          <div class="stat__n">9 ms</div>
+          <p data-en="Time constant the apparent direction glides on, reaching 10-90% in about 20 ms. Fast enough that motion is not lagged, slow enough that a source jumping to a new diffraction edge does not click.">
+            겉보기 방향이 미끄러지는 시상수입니다. 10–90%까지 약 20 ms.
+            움직임이 늦게 따라오지 않을 만큼 빠르고, 회절 모서리가 바뀌며
+            음원이 순간이동해도 딸깍거리지 않을 만큼 느립니다.
+          </p>
+        </div>
       </div>
 
       <div class="tiles">
@@ -488,6 +588,9 @@
         <div><b>renderers</b><span data-en="Object Renderer · Renderer (channel beds)">Object Renderer · Renderer (채널 베드)</span></div>
         <div><b>metadata</b><span>Near-field · Directivity · Stereo-Width · LFE Gain</span></div>
         <div><b>authoring</b><span data-en="Custom panel · live monitor · nine checks · KO/EN">전용 패널 · 라이브 모니터 · 검사 9종 · 한/영</span></div>
+        <div><b>hrtf</b><span data-en="MIT KEMAR measured set · 48 kHz core">MIT KEMAR 실측 세트 · 48 kHz 코어</span></div>
+        <div><b>ambisonic</b><span data-en="1st-5th order · 512-tap binaural decoder">1~5차 · 512탭 바이노럴 디코더</span></div>
+        <div><b>objects</b><span data-en="64-512 preallocated · shared-basis path for dense scenes">64~512 사전 확보 · 밀집 장면용 공유 기저 경로</span></div>
         <div><b>status</b><span data-en="In development · no public build">개발 중 · 공개 빌드 없음</span></div>
       </div>
     </div>
