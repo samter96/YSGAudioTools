@@ -35,12 +35,15 @@
      기준이라 그대로 동작한다. 여기서 다시 선언하지 말 것. */
 
   .tools{
-    display:grid; grid-template-columns:repeat(2,1fr); gap:20px;
+    display:grid; grid-template-columns:1fr; gap:24px;
     margin-top:clamp(40px,5vw,64px);
   }
   .tool{
-    position:relative; display:grid; grid-template-columns:auto 1fr; gap:clamp(18px,2.4vw,32px);
+    position:relative; display:grid;
+    grid-template-columns:minmax(240px, 360px) minmax(420px, 640px);
+    gap:clamp(34px,4.6vw,72px);
     align-items:center; padding:clamp(20px,2.4vw,30px);
+    justify-content:center;
     background:#fff; border:1px solid var(--line); border-radius:var(--r);
     box-shadow:var(--shadow); overflow:hidden;
     transition:transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s;
@@ -53,10 +56,7 @@
     background:linear-gradient(90deg, var(--key), var(--key-2));
   }
   .tool--featured{
-    grid-column:span 2;
-    grid-template-columns:minmax(300px, 380px) minmax(0, 560px);
-    justify-content:center;
-    gap:clamp(32px,4vw,58px);
+    grid-template-columns:minmax(280px, 380px) minmax(440px, 620px);
   }
   .tool__eyebrow{
     display:block; font-size:11px; font-weight:700; letter-spacing:.18em;
@@ -67,7 +67,11 @@
     margin-top:8px;
   }
   .tool--featured .tool__name{font-size:clamp(24px,3vw,36px)}
-  .tool__body p{margin:12px 0 0; font-size:14.5px; color:var(--ink-2); line-height:1.7; max-width:52ch}
+  .tool__body{min-width:0}
+  .tool__body p{
+    margin:12px 0 0; font-size:15.5px; color:var(--ink-2);
+    line-height:1.75; max-width:56ch; word-break:keep-all;
+  }
   .tool__foot{display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-top:22px}
   .tool__status{
     font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
@@ -90,12 +94,9 @@
   .tool__badge img{display:block; width:100%; height:100%; object-fit:cover}
   .tool--featured .tool__badge{width:100%; justify-self:end}
   @media (max-width:1000px){
-    .tools{grid-template-columns:1fr}
-    .tool--featured{
-      grid-column:span 1;
-      grid-template-columns:minmax(260px, 340px) minmax(0,1fr);
-      justify-content:start;
-    }
+    .tool,
+    .tool--featured{grid-template-columns:minmax(220px, 320px) minmax(0,1fr); justify-content:start}
+    .tool__body p{max-width:48ch}
   }
   @media (max-width:560px){
     .tool{grid-template-columns:1fr}
