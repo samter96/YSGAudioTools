@@ -8,6 +8,14 @@
      --key --key-2 --key-grad     제품 키컬러 (버튼·눈썹 점·강조 글자)
      --keys-1 --keys-2 --keys-3   Key Features 패널 그라디언트 (어두운 3정지점)
 
+   페이지 전체를 어두운 지면으로 바꾸려면 `<body class="theme-dark">` 를 쓴다.
+   토큰(--paper 등)만 다시 정의하면 되고, 개별 부품은 손대지 않는다 — 단,
+   흰색을 하드코딩한 몇몇 부품(칩·버튼·카드 등)은 이 파일 안에서
+   `body.theme-dark` 로 따로 갈아끼워 뒀다. 페이지별 개성(밝음/어두움 +
+   키컬러 조합)은 2026-09-10 사용자 지시로 확정됐다:
+     허브=밝음+인디고, SoundField=밝음+파랑, SpatialRenderer=어두움+보라,
+     Stereo Auditor=어두움+청록, Bus Routing=밝음+초록, Attenuation=어두움+호박색.
+
    ⚠ 명암비를 재지 않고 키컬러를 넣지 말 것. 지켜야 하는 값:
        흰 글자 / --key         >= 4.5
        --key 글자 / 흰 바탕    >= 4.5
@@ -83,6 +91,39 @@
     --pad: clamp(18px, 4vw, 44px);
     --r: 14px;
     --shadow: 0 1px 2px rgba(27,34,51,.04), 0 12px 32px -12px rgba(27,34,51,.12);
+  }
+
+  /* ── 다크 테마 (제품별 개성) ────────────────────────────────────
+     토큰만 다시 정의한다. 대비 확인(검정 지면 #0b0e18 기준):
+       --ink-2 #9aa3c0 ≈ 7.7:1 · --ink-3 #757fa0 ≈ 4.86:1 (AA 통과) */
+  body.theme-dark{
+    --paper:  #0b0e18;
+    --tint:   #11162a;
+    --tint-2: #171d34;
+    --line:   #262e48;
+    --line-2: #34406a;
+
+    --ink:    #eef1f8;
+    --ink-2:  #9aa3c0;
+    --ink-3:  #757fa0;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 20px 46px -18px rgba(0,0,0,.6);
+  }
+  /* 흰색을 하드코딩한 부품들 — 다크 테마에서만 지면 위 카드 색(--tint-2)으로 */
+  body.theme-dark .topbar{background:rgba(11,14,24,.78)}
+  body.theme-dark .ysglogo,
+  body.theme-dark .langswitch,
+  body.theme-dark .ghicon,
+  body.theme-dark .btn,
+  body.theme-dark .chip,
+  body.theme-dark .shot figcaption,
+  body.theme-dark .rule,
+  body.theme-dark .tile,
+  body.theme-dark .flow,
+  body.theme-dark .specs{background:var(--tint-2)}
+  body.theme-dark .flow .st{fill:var(--tint-2)}
+  body.theme-dark .shot:not(.loaded){
+    background:repeating-linear-gradient(135deg, #141a30 0 12px, #10152a 12px 24px)
   }
 
   *{box-sizing:border-box}
@@ -234,13 +275,15 @@
     position:absolute; border-radius:50%; filter:blur(90px); opacity:.5;
     animation:drift 24s ease-in-out infinite alternate;
   }
+  /* 색은 고정값이 아니라 페이지의 --key/--key-2 를 그대로 쓴다 — 배경 번짐도
+     제품 액센트를 따라가야 페이지마다 다른 분위기가 난다. */
   .aura i:nth-child(1){width:46vw; height:46vw; left:-6vw; top:-8vw;
-    background:radial-gradient(circle, rgba(44,107,224,.34), transparent 68%)}
+    background:radial-gradient(circle, color-mix(in srgb, var(--key) 60%, transparent), transparent 68%)}
   .aura i:nth-child(2){width:38vw; height:38vw; right:-4vw; top:2vw;
-    background:radial-gradient(circle, rgba(18,181,201,.30), transparent 68%);
+    background:radial-gradient(circle, color-mix(in srgb, var(--key-2) 55%, transparent), transparent 68%);
     animation-delay:-9s}
   .aura i:nth-child(3){width:30vw; height:30vw; left:38vw; top:18vw;
-    background:radial-gradient(circle, rgba(27,42,107,.16), transparent 70%);
+    background:radial-gradient(circle, color-mix(in srgb, var(--indigo) 30%, transparent), transparent 70%);
     animation-delay:-16s}
   @keyframes drift{
     0%{transform:translate3d(0,0,0) scale(1)}
