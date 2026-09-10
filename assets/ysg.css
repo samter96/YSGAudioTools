@@ -430,9 +430,15 @@
   /* ⚠ 기준 크기는 **락업**에 준다. 마크 높이와 제품명 크기를 각각 다른
      요소에서 `em` 으로 잡으면 서로 다른 기준(박스 본문 16px vs 제품명 33px)에
      걸려 마크만 작아지고, 한 줄이 박스 폭을 넘친다 (실측 락업 145 < 이름 147). */
+  /* 락업 기준 크기. 마크 높이와 제품명이 모두 이 값에서 파생된다.
+     ⚠ 제품명이 길면 **페이지에서 `--lock-size` 를 줄인다.** 기본값으로 두면
+       이름이 앞면 폭을 넘겨 `overflow:hidden` 에 조용히 잘린다 — 스크롤이
+       생기지 않으니 눈으로만 보면 놓친다 (SpatialRenderer 가 그랬다).
+       기준: 이름폭 + 1.4em(마크+간격) <= 앞면 내용폭(약 146px @1280). */
   .box__lockup{
     display:flex; flex-direction:row; align-items:center; gap:.3em;
-    font-size:clamp(14px, 1.95vw, 23px);
+    font-size:var(--lock-size, clamp(14px, 1.95vw, 23px));
+    min-width:0;
   }
   .box__pmark{
     /* viewBox 를 막대에 맞춰 잘라 뒀으므로 높이를 글자에 맞추면 바로 정렬된다 */
