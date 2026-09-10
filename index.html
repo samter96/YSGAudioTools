@@ -71,6 +71,19 @@
   }
   .tool .btnrow{margin-top:0}
   .tool .btn{height:42px; padding:0 20px; font-size:14px}
+  .tool__badge{
+    position:relative; display:block; align-self:center;
+    width:min(236px,100%); aspect-ratio:1; border-radius:22px;
+    overflow:hidden; background:#080b12; border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 24px 48px -24px rgba(27,34,51,.34), 0 0 0 1px rgba(20,28,45,.08);
+  }
+  .tool__badge::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(135deg, rgba(255,255,255,.24), rgba(255,255,255,0) 34%, rgba(0,0,0,.18) 100%);
+    mix-blend-mode:screen; opacity:.35;
+  }
+  .tool__badge img{display:block; width:100%; height:100%; object-fit:cover}
+  .tool--featured .tool__badge{width:min(268px,100%)}
   @media (max-width:1000px){
     .tools{grid-template-columns:1fr}
     .tool--featured{grid-column:span 1}
@@ -78,6 +91,7 @@
   @media (max-width:560px){
     .tool{grid-template-columns:1fr}
     .tool .pkg{max-width:200px}
+    .tool__badge{max-width:220px}
   }
 </style>
 </head>
@@ -167,49 +181,9 @@
                --pkg-4:#5b6cf0; --pkg-5:#d63a8e; --pkg-6:#8f6cff; --pkg-7:#ff9ad0;
                --lock-1:#b6c6ff; --lock-2:#d5c2ff; --lock-3:#ffb8ea">
         <div class="tool__band"></div>
-        <div class="pkg pkg--mini" aria-hidden="true">
-          <div class="env__wall"><i></i><i></i><i></i></div>
-          <div class="pkg__stage">
-            <div class="floor">
-              <div class="floor__wood">
-                <svg viewBox="0 0 300 300" preserveAspectRatio="none">
-                  <rect width="300" height="300" filter="url(#hubWood)" opacity=".72"/>
-                </svg>
-              </div>
-              <div class="floor__light"></div>
-              <div class="floor__haze"></div>
-              <div class="floor__refl"></div>
-              <div class="floor__shadow"></div>
-              <div class="floor__contact"></div>
-            </div>
-            <div class="box">
-              <div class="box__f box__top"></div>
-              <div class="box__f box__side"><b>SpatialRenderer</b></div>
-              <div class="box__f box__front">
-                <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                  <rect width="300" height="390" fill="var(--pkg-0)"/>
-                  <g filter="url(#hubFlow)">
-                    <ellipse cx="120" cy="126" rx="112" ry="140" fill="var(--pkg-1)"/>
-                    <ellipse cx="205" cy="212" rx="96"  ry="118" fill="var(--pkg-2)"/>
-                    <ellipse cx="96"  cy="252" rx="86"  ry="104" fill="var(--pkg-3)"/>
-                    <ellipse cx="220" cy="104" rx="70"  ry="82"  fill="var(--pkg-4)"/>
-                    <ellipse cx="146" cy="330" rx="76"  ry="66"  fill="var(--pkg-5)"/>
-                    <ellipse cx="74"  cy="80"  rx="50"  ry="54"  fill="var(--pkg-6)"/>
-                    <ellipse cx="246" cy="300" rx="40"  ry="44"  fill="var(--pkg-7)"/>
-                  </g>
-                  <rect width="300" height="390" fill="url(#hubVig)"/>
-                  <rect width="300" height="390" fill="url(#hubScrim)"/>
-                </svg>
-                <div class="box__gloss"></div>
-                <div class="box__lockup">
-                  <svg class="box__pmark" viewBox="1.5 3.6 21 16.8" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#hubLock1)" stroke-width="1.5"/><path d="M5.4 6.6a9 9 0 0 0 0 10.8M18.6 6.6a9 9 0 0 1 0 10.8" fill="none" stroke="url(#hubLock1)" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="1.5" fill="url(#hubLock1)"/></svg>
-                  <span class="box__pname">SpatialRenderer</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="env__vig"></div>
-        </div>
+        <a class="tool__badge" href="spatial-renderer/" aria-label="YSGSpatialRenderer 페이지 보기">
+          <img src="spatial-renderer/assets/v2/product-box.png" alt="YSGSpatialRenderer 제품 이미지">
+        </a>
         <div class="tool__body">
           <span class="tool__eyebrow">HRTF · REFLECTIONS · AMBISONIC</span>
           <h2 class="tool__name">YSGSpatialRenderer</h2>
