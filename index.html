@@ -50,22 +50,60 @@
     background:radial-gradient(circle, rgba(168,90,23,.22), transparent 72%);
   }
 
-  /* ── 제품 진열대 — 히어로의 중심 시각 요소 ───────────────────────────
-     5개 제품 박스를 한 무대(바닥·벽 하나)에 나란히 세운다. 부품은 카드용
-     `.pkg--mini` 와 완전히 같다 — 무대만 가로로 넓혀 5개를 한 줄에 세운다. */
-  .shelf{ margin-top:clamp(36px,4.5vw,56px) }
-  .shelf .pkg__stage{
-    display:flex; align-items:flex-end; justify-content:center;
-    gap:clamp(10px,2.4vw,26px);
+  /* ── 히어로 레이아웃 — 좌: 카피, 우: 움직이는 브랜드 마크.
+     제품 페이지들은 전부 "가운데 정렬 + 아래 박스" 구조라, 허브는 일부러
+     비대칭 2단으로 짠다 — 허브만의 구조 (2026-09-10, "레이아웃도 바꿔라" 지시). */
+  .hero__grid{
+    display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(28px,5vw,64px);
+    align-items:center; text-align:left;
   }
-  .shelf .box{ flex:0 0 auto }
-  .shelf .box__side em, .shelf .box__side img{display:none}
-  .shelf .box__brandline, .shelf .box__tag, .shelf .box__foot{display:none}
-  .shelf .box__front{padding:11% 9%; justify-content:flex-end}
-  .shelf .box__lockup{font-size:clamp(7px, 1vw, 11px); gap:.26em}
-  .shelf .box__side b{font-size:clamp(4.5px, .58vw, 6.5px)}
-  @media (max-width:760px){
-    .shelf{ display:none } /* 좁은 화면에선 다섯 개가 뭉개진다 — 칩 목록으로 충분 */
+  .hero__grid .hero__sub{margin-left:0; text-align:left}
+  .hero__grid .chips{justify-content:flex-start}
+  @media (max-width:900px){
+    .hero__grid{grid-template-columns:1fr; text-align:center}
+    .hero__grid .hero__sub{margin-left:auto; margin-right:auto; text-align:center}
+    .hero__grid .chips{justify-content:center}
+  }
+
+  /* ── 움직이는 브랜드 마크 — 히어로의 중심 시각 요소.
+     로고 자체(세 날)는 브랜드 정체성이라 계속 돌리지 않는다 — 코어 발광과
+     날의 은은한 명멸만 살아있고, 5개 제품 고유색 점 다섯 개가 궤도를
+     돈다. "움직이는 로고 모션그래픽" 지시(2026-09-10)의 구현. */
+  .heromark{ position:relative; width:100%; aspect-ratio:1/1; max-width:380px; margin:0 auto }
+  .heromark__rings{ position:absolute; inset:6%; border-radius:50%; pointer-events:none }
+  .heromark__rings::before, .heromark__rings::after{
+    content:""; position:absolute; inset:0; border-radius:50%;
+    border:1px dashed rgba(58,69,194,.22);
+  }
+  .heromark__rings::before{ animation:hmSpin 46s linear infinite }
+  .heromark__rings::after{ inset:11%; border-color:rgba(12,130,144,.20); animation:hmSpin 32s linear infinite reverse }
+  .heromark__glow{
+    position:absolute; inset:14%; border-radius:50%; filter:blur(26px);
+    background:radial-gradient(circle, rgba(58,69,194,.35), transparent 70%);
+    animation:hmGlow 4.5s ease-in-out infinite;
+  }
+  .heromark__glyph{ position:absolute; inset:22%; filter:drop-shadow(0 18px 30px rgba(42,47,134,.28)) }
+  .heromark__glyph .hm-blade{ animation:hmShimmer 5.6s ease-in-out infinite }
+  .heromark__glyph .hm-blade--b{ animation-delay:.5s }
+  .heromark__glyph .hm-blade--c{ animation-delay:1s }
+  .heromark__glyph .hm-core{ animation:hmCore 4.5s ease-in-out infinite }
+  .heromark__orbit{ position:absolute; inset:0 }
+  .heromark__orbit i{
+    position:absolute; top:50%; left:50%; width:9px; height:9px; margin:-4.5px;
+    border-radius:50%; background:var(--c); box-shadow:0 0 12px var(--c);
+    animation:hmOrbit var(--dur,16s) linear infinite; animation-delay:var(--delay,0s);
+  }
+  @keyframes hmSpin{ to{ transform:rotate(360deg) } }
+  @keyframes hmGlow{ 0%,100%{ opacity:.65; transform:scale(1) } 50%{ opacity:1; transform:scale(1.08) } }
+  @keyframes hmCore{ 0%,100%{ opacity:.9; transform:scale(1) } 50%{ opacity:1; transform:scale(1.12) } }
+  @keyframes hmShimmer{ 0%,100%{ opacity:1 } 50%{ opacity:.72 } }
+  @keyframes hmOrbit{ from{ transform:rotate(0deg) translateX(var(--r,150px)) } to{ transform:rotate(360deg) translateX(var(--r,150px)) } }
+  @media (max-width:900px){ .heromark{ margin-top:8px } }
+  @media (prefers-reduced-motion:reduce){
+    .heromark__rings::before, .heromark__rings::after, .heromark__glow,
+    .heromark__glyph .hm-blade, .heromark__glyph .hm-core, .heromark__orbit i{
+      animation:none !important;
+    }
   }
 
   /* ── 컬러 칩 — 이름 앞에 그 제품의 키컬러 점을 찍는다 */
@@ -191,133 +229,52 @@
   <section class="hero">
     <div class="aura" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <div class="wrap">
-      <div class="hero__head">
-        <span class="eyebrow" data-en="Tool library">툴 모음</span>
-        <h1 class="display" data-en='Audio workflow tools<br><span class="grad">for game sound designers</span>'>게임 사운드 디자이너를 위한<br><span class="grad">오디오 워크플로우 툴</span></h1>
-      </div>
-      <p class="hero__sub" data-en="Tools built for game sound work. Find a sound, hear the space on headphones, and catch settings that quietly disagree.">
-        게임 사운드 작업을 위해 만든 툴입니다.
-        소리를 찾고, 공간을 헤드폰으로 확인하고, 조용히 어긋난 설정을 잡아냅니다.
-      </p>
-      <div class="chips chip--dot" style="justify-content:center">
-        <span class="chip chip--dot"><i style="background:#6b3ce0"></i>YSGSpatialRenderer</span>
-        <span class="chip chip--dot"><i style="background:#2c6be0"></i>SoundField</span>
-        <span class="chip chip--dot"><i style="background:#0c8290"></i>Stereo Auditor</span>
-        <span class="chip chip--dot"><i style="background:#167a51"></i>Bus Routing Auditor</span>
-        <span class="chip chip--dot"><i style="background:#a85a17"></i>Attenuation Auditor</span>
-      </div>
-
-      <!-- 제품 진열대 — 5개 제품을 한 무대에 세운 히어로의 중심 시각 요소.
-           부품은 카드의 `.pkg--mini` 박스 렌더와 완전히 같다 (2026-09-10). -->
-      <div class="pkg pkg--mini shelf" aria-hidden="true">
-        <div class="env__wall"><i></i><i></i><i></i></div>
-        <div class="pkg__stage">
-          <div class="floor">
-            <div class="floor__wood"><svg viewBox="0 0 300 300" preserveAspectRatio="none"><rect width="300" height="300" filter="url(#hubWood)" opacity=".72"/></svg></div>
-            <div class="floor__light"></div>
-            <div class="floor__haze"></div>
-            <div class="floor__refl"></div>
-            <div class="floor__shadow"></div>
-            <div class="floor__contact"></div>
+      <div class="hero__grid">
+        <div>
+          <div class="hero__head">
+            <span class="eyebrow" data-en="Tool library">툴 모음</span>
+            <h1 class="display" data-en='Audio workflow tools<br><span class="grad">for game sound designers</span>'>게임 사운드 디자이너를 위한<br><span class="grad">오디오 워크플로우 툴</span></h1>
           </div>
-
-          <div class="box" style="--pkg-0:#0a0718; --pkg-1:#3a1c96; --pkg-2:#6b3ce0; --pkg-3:#a83ad0; --pkg-4:#5b6cf0; --pkg-5:#d63a8e; --pkg-6:#8f6cff; --pkg-7:#ff9ad0">
-            <div class="box__f box__top"></div>
-            <div class="box__f box__side"><b>SpatialRenderer</b></div>
-            <div class="box__f box__front">
-              <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                <rect width="300" height="390" fill="var(--pkg-0)"/>
-                <g filter="url(#hubFlow)">
-                  <ellipse cx="120" cy="126" rx="112" ry="140" fill="var(--pkg-1)"/><ellipse cx="205" cy="212" rx="96" ry="118" fill="var(--pkg-2)"/><ellipse cx="96" cy="252" rx="86" ry="104" fill="var(--pkg-3)"/><ellipse cx="220" cy="104" rx="70" ry="82" fill="var(--pkg-4)"/><ellipse cx="146" cy="330" rx="76" ry="66" fill="var(--pkg-5)"/><ellipse cx="74" cy="80" rx="50" ry="54" fill="var(--pkg-6)"/><ellipse cx="246" cy="300" rx="40" ry="44" fill="var(--pkg-7)"/>
-                </g>
-                <rect width="300" height="390" fill="url(#hubVig)"/><rect width="300" height="390" fill="url(#hubScrim)"/>
-              </svg>
-              <div class="box__gloss"></div>
-              <div class="box__lockup">
-                <svg class="box__pmark" viewBox="1.5 3.6 21 16.8" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#hubLock1)" stroke-width="1.5"/><path d="M5.4 6.6a9 9 0 0 0 0 10.8M18.6 6.6a9 9 0 0 1 0 10.8" fill="none" stroke="url(#hubLock1)" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="1.5" fill="url(#hubLock1)"/></svg>
-                <span class="box__pname">SpatialRenderer</span>
-              </div>
-            </div>
+          <p class="hero__sub" data-en="Tools built for game sound work. Find a sound, hear the space on headphones, and catch settings that quietly disagree.">
+            게임 사운드 작업을 위해 만든 툴입니다.
+            소리를 찾고, 공간을 헤드폰으로 확인하고, 조용히 어긋난 설정을 잡아냅니다.
+          </p>
+          <div class="chips chip--dot">
+            <span class="chip chip--dot"><i style="background:#6b3ce0"></i>YSGSpatialRenderer</span>
+            <span class="chip chip--dot"><i style="background:#2c6be0"></i>SoundField</span>
+            <span class="chip chip--dot"><i style="background:#0c8290"></i>Stereo Auditor</span>
+            <span class="chip chip--dot"><i style="background:#167a51"></i>Bus Routing Auditor</span>
+            <span class="chip chip--dot"><i style="background:#a85a17"></i>Attenuation Auditor</span>
           </div>
-
-          <div class="box" style="--pkg-0:#060a16; --pkg-1:#1d2b96; --pkg-2:#2c6be0; --pkg-3:#7a3ce0; --pkg-4:#12b5c9; --pkg-5:#c9457f; --pkg-6:#34e0e8; --pkg-7:#ffb454">
-            <div class="box__f box__top"></div>
-            <div class="box__f box__side"><b>SoundField</b></div>
-            <div class="box__f box__front">
-              <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                <rect width="300" height="390" fill="var(--pkg-0)"/>
-                <g filter="url(#hubFlow)">
-                  <ellipse cx="120" cy="126" rx="112" ry="140" fill="var(--pkg-1)"/><ellipse cx="205" cy="212" rx="96" ry="118" fill="var(--pkg-2)"/><ellipse cx="96" cy="252" rx="86" ry="104" fill="var(--pkg-3)"/><ellipse cx="220" cy="104" rx="70" ry="82" fill="var(--pkg-4)"/><ellipse cx="146" cy="330" rx="76" ry="66" fill="var(--pkg-5)"/><ellipse cx="74" cy="80" rx="50" ry="54" fill="var(--pkg-6)"/><ellipse cx="246" cy="300" rx="40" ry="44" fill="var(--pkg-7)"/>
-                </g>
-                <rect width="300" height="390" fill="url(#hubVig)"/><rect width="300" height="390" fill="url(#hubScrim)"/>
-              </svg>
-              <div class="box__gloss"></div>
-              <div class="box__lockup">
-                <svg class="box__pmark" viewBox="4.5 6 15.2 11.6" aria-hidden="true"><rect x="4.86" y="10.36" width="1.36" height="3.28" rx=".68" fill="url(#hubLock2)"/><rect x="7.02" y="8.90" width="1.36" height="6.19" rx=".68" fill="url(#hubLock2)"/><rect x="9.17" y="7.27" width="1.36" height="9.47" rx=".68" fill="url(#hubLock2)"/><rect x="11.33" y="6.47" width="1.36" height="11.06" rx=".68" fill="url(#hubLock2)"/><rect x="13.48" y="7.27" width="1.36" height="9.47" rx=".68" fill="url(#hubLock2)"/><rect x="15.64" y="8.90" width="1.36" height="6.19" rx=".68" fill="url(#hubLock2)"/><rect x="17.79" y="10.36" width="1.36" height="3.28" rx=".68" fill="url(#hubLock2)"/></svg>
-                <span class="box__pname">SoundField</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="box" style="--pkg-0:#05131a; --pkg-1:#0a5a72; --pkg-2:#0c8290; --pkg-3:#1f8f6a; --pkg-4:#2f7fb8; --pkg-5:#6d9b2f; --pkg-6:#3ecfd8; --pkg-7:#a7d84e">
-            <div class="box__f box__top"></div>
-            <div class="box__f box__side"><b>Stereo Auditor</b></div>
-            <div class="box__f box__front">
-              <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                <rect width="300" height="390" fill="var(--pkg-0)"/>
-                <g filter="url(#hubFlow)">
-                  <ellipse cx="120" cy="126" rx="112" ry="140" fill="var(--pkg-1)"/><ellipse cx="205" cy="212" rx="96" ry="118" fill="var(--pkg-2)"/><ellipse cx="96" cy="252" rx="86" ry="104" fill="var(--pkg-3)"/><ellipse cx="220" cy="104" rx="70" ry="82" fill="var(--pkg-4)"/><ellipse cx="146" cy="330" rx="76" ry="66" fill="var(--pkg-5)"/><ellipse cx="74" cy="80" rx="50" ry="54" fill="var(--pkg-6)"/><ellipse cx="246" cy="300" rx="40" ry="44" fill="var(--pkg-7)"/>
-                </g>
-                <rect width="300" height="390" fill="url(#hubVig)"/><rect width="300" height="390" fill="url(#hubScrim)"/>
-              </svg>
-              <div class="box__gloss"></div>
-              <div class="box__lockup">
-                <svg class="box__pmark" viewBox="0 0 30 20" aria-hidden="true"><text x="15" y="15.4" text-anchor="middle" fill="url(#hubLock3)" font-family="Pretendard, sans-serif" font-size="15" font-weight="800" letter-spacing="-.5">L/R</text></svg>
-                <span class="box__pname">Stereo Auditor</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="box" style="--pkg-0:#061410; --pkg-1:#0e5238; --pkg-2:#167a51; --pkg-3:#537419; --pkg-4:#12806c; --pkg-5:#8a9a1c; --pkg-6:#3ecf94; --pkg-7:#cfd94e">
-            <div class="box__f box__top"></div>
-            <div class="box__f box__side"><b>Bus Routing</b></div>
-            <div class="box__f box__front">
-              <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                <rect width="300" height="390" fill="var(--pkg-0)"/>
-                <g filter="url(#hubFlow)">
-                  <ellipse cx="120" cy="126" rx="112" ry="140" fill="var(--pkg-1)"/><ellipse cx="205" cy="212" rx="96" ry="118" fill="var(--pkg-2)"/><ellipse cx="96" cy="252" rx="86" ry="104" fill="var(--pkg-3)"/><ellipse cx="220" cy="104" rx="70" ry="82" fill="var(--pkg-4)"/><ellipse cx="146" cy="330" rx="76" ry="66" fill="var(--pkg-5)"/><ellipse cx="74" cy="80" rx="50" ry="54" fill="var(--pkg-6)"/><ellipse cx="246" cy="300" rx="40" ry="44" fill="var(--pkg-7)"/>
-                </g>
-                <rect width="300" height="390" fill="url(#hubVig)"/><rect width="300" height="390" fill="url(#hubScrim)"/>
-              </svg>
-              <div class="box__gloss"></div>
-              <div class="box__lockup">
-                <svg class="box__pmark" viewBox="21 26 88 76" aria-hidden="true"><path d="M31 36h25c9 0 14 5 14 14v28c0 9 5 14 14 14h13M31 64h66M31 92h25c9 0 14-5 14-14V50c0-9 5-14 14-14h13" fill="none" stroke="url(#hubLock4)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="31" cy="36" r="8" fill="url(#hubLock4)"/><circle cx="31" cy="64" r="8" fill="#ffffff"/><circle cx="31" cy="92" r="8" fill="url(#hubLock4)"/><circle cx="97" cy="36" r="7" fill="url(#hubLock4)"/><circle cx="97" cy="64" r="7" fill="url(#hubLock4)"/><circle cx="97" cy="92" r="7" fill="url(#hubLock4)"/></svg>
-                <span class="box__pname">Bus Routing</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="box" style="--pkg-0:#160905; --pkg-1:#6e2f10; --pkg-2:#a85a17; --pkg-3:#a02e29; --pkg-4:#c98a1e; --pkg-5:#8a1f3c; --pkg-6:#e8b455; --pkg-7:#ff8a6b">
-            <div class="box__f box__top"></div>
-            <div class="box__f box__side"><b>Attenuation</b></div>
-            <div class="box__f box__front">
-              <svg class="box__art" viewBox="0 0 300 390" preserveAspectRatio="xMidYMid slice">
-                <rect width="300" height="390" fill="var(--pkg-0)"/>
-                <g filter="url(#hubFlow)">
-                  <ellipse cx="120" cy="126" rx="112" ry="140" fill="var(--pkg-1)"/><ellipse cx="205" cy="212" rx="96" ry="118" fill="var(--pkg-2)"/><ellipse cx="96" cy="252" rx="86" ry="104" fill="var(--pkg-3)"/><ellipse cx="220" cy="104" rx="70" ry="82" fill="var(--pkg-4)"/><ellipse cx="146" cy="330" rx="76" ry="66" fill="var(--pkg-5)"/><ellipse cx="74" cy="80" rx="50" ry="54" fill="var(--pkg-6)"/><ellipse cx="246" cy="300" rx="40" ry="44" fill="var(--pkg-7)"/>
-                </g>
-                <rect width="300" height="390" fill="url(#hubVig)"/><rect width="300" height="390" fill="url(#hubScrim)"/>
-              </svg>
-              <div class="box__gloss"></div>
-              <div class="box__lockup">
-                <svg class="box__pmark" viewBox="0 0 34 22" aria-hidden="true"><text x="17" y="10" text-anchor="middle" fill="url(#hubLock5)" font-family="Pretendard, sans-serif" font-size="10" font-weight="800" letter-spacing="-.3">3D</text><text x="17" y="20" text-anchor="middle" fill="#fff" opacity=".82" font-family="Pretendard, sans-serif" font-size="8.5" font-weight="700" letter-spacing=".6">ATT</text></svg>
-                <span class="box__pname">Attenuation</span>
-              </div>
-            </div>
-          </div>
-
         </div>
-        <div class="env__vig"></div>
+
+        <!-- 움직이는 브랜드 마크 — 히어로의 중심 시각 요소.
+             코어 발광·날의 명멸이 계속 살아있고, 5개 제품 고유색 점이
+             궤도를 돈다 (2026-09-10, "움직이는 로고 모션그래픽" 지시). -->
+        <div class="heromark" aria-hidden="true">
+          <div class="heromark__rings"></div>
+          <div class="heromark__glow"></div>
+          <svg class="heromark__glyph" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="hmDown" gradientUnits="userSpaceOnUse" x1="12" y1="9.78" x2="12" y2="19.68"><stop offset="0" stop-color="#34E0E8"/><stop offset="1" stop-color="#2C6BE0"/></linearGradient>
+              <linearGradient id="hmUpleft" gradientUnits="userSpaceOnUse" x1="12" y1="9.78" x2="3.43" y2="4.83"><stop offset="0" stop-color="#2C6BE0"/><stop offset="1" stop-color="#1B2A6B"/></linearGradient>
+              <linearGradient id="hmUpright" gradientUnits="userSpaceOnUse" x1="12" y1="9.78" x2="20.57" y2="4.83"><stop offset="0" stop-color="#34E0E8"/><stop offset="1" stop-color="#2C6BE0"/></linearGradient>
+              <radialGradient id="hmCoreGrad" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#34E0E8" stop-opacity="0.95"/><stop offset="0.55" stop-color="#34E0E8" stop-opacity="0.35"/><stop offset="1" stop-color="#34E0E8" stop-opacity="0"/></radialGradient>
+            </defs>
+            <circle class="hm-core" cx="12" cy="9.785" r="7.4" fill="url(#hmCoreGrad)"/>
+            <path class="hm-blade hm-blade--a" d="M 9.400 9.785 L 11.400 19.685 L 12.600 19.685 L 14.600 9.785 Z" fill="url(#hmDown)" stroke="#34E0E8" stroke-opacity="0.42" stroke-width=".38" stroke-linejoin="round"/>
+            <path class="hm-blade hm-blade--b" d="M 13.300 7.533 L 3.726 4.315 L 3.126 5.354 L 10.700 12.036 Z" fill="url(#hmUpleft)" stroke="#34E0E8" stroke-opacity="0.42" stroke-width=".38" stroke-linejoin="round"/>
+            <path class="hm-blade hm-blade--c" d="M 13.300 12.036 L 20.874 5.354 L 20.274 4.315 L 10.700 7.533 Z" fill="url(#hmUpright)" stroke="#34E0E8" stroke-opacity="0.42" stroke-width=".38" stroke-linejoin="round"/>
+            <circle cx="12" cy="9.785" r=".72" fill="#FFB454"/>
+          </svg>
+          <div class="heromark__orbit">
+            <i style="--c:#6b3ce0; --dur:15s; --delay:0s; --r:150px"></i>
+            <i style="--c:#2c6be0; --dur:15s; --delay:-3s; --r:150px"></i>
+            <i style="--c:#0c8290; --dur:15s; --delay:-6s; --r:150px"></i>
+            <i style="--c:#167a51; --dur:15s; --delay:-9s; --r:150px"></i>
+            <i style="--c:#a85a17; --dur:15s; --delay:-12s; --r:150px"></i>
+          </div>
+        </div>
       </div>
     </div>
   </section>
